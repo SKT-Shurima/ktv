@@ -3,7 +3,7 @@
     <header class="primary-header primary-bg">
 	    <i class="icon icon-109" id='back'></i>关于我们
 	</header>
-	<div class="container"></div>
+	<div class="container">关于我们</div>
   </div>
 </template>
 
