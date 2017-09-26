@@ -1,0 +1,106 @@
+body{
+	overflow-y: scroll;
+	overflow-x: hidden;
+	background-color: #fff;
+}
+#back{
+	position: absolute;
+	left: .22rem;
+	top: .3rem;
+	color: #f65287;
+}
+.order-wrap{
+	position: relative;
+	width: 100%;
+	padding-bottom: 1.2rem;
+}
+.staff-info{
+	width: 50%;
+	margin: 0px auto;
+	padding-top: .5rem;
+}
+.staff-info>dt{
+	width: 1.32rem;
+	height: 1.32rem;
+	margin: 0px auto;
+}
+.staff-info>dd{
+	text-align: center;
+	padding: .28rem 0px;
+	font-size: .36rem;
+}
+.staff-info img{
+	width: 100%;
+	border-radius: 50%;
+}
+.labels,.com-labels{
+	display: flex;
+	justify-content: space-between;
+	padding: .34rem 0px;
+	width: 80%;
+	margin:0px auto;
+}
+.labels>.weui_btn{
+	width: 1.28rem;
+	font-size: .3rem;
+	padding: .2rem .14rem;
+}
+.com-labels>.weui_btn{
+	width: 1.6rem;
+	font-size: .3rem;
+	padding: .2rem .14rem;
+}
+.com-labels>.border-1px::after{
+	border-color: #ccc;
+}
+.labels>.border-1px::after{
+	border-color: #ccc;
+}
+.labels>.btn-checkced.border-1px::after{
+	border-color: #f65287;
+}
+.labels>.btn-checkced.border-1px{
+	color: #f65287;
+}
+.com-labels>.btn-checkced.border-1px::after{
+	border-color: #f65287;
+}
+.com-labels>.btn-checkced.border-1px{
+	color: #f65287;
+}
+.amount-box{
+	font-size: .28rem;
+	text-align: center;
+	margin-top: .24rem;
+}
+.input-box{
+	display: inline-block;
+	line-height: .62rem;
+	width: 1.78rem;
+	border-radius: 4px;
+	background-color: #f2f2f2;
+	border: none;
+	outline: none;
+	margin: 0px .18rem;
+}
+.note-box{
+	position: relative;
+	font-size: .3rem;
+	width: 80%;
+	margin: 0px auto;
+}
+.note-box>i{
+	position: absolute;
+	right: 0px;
+	top: 6px;
+}
+.note-box>.input-box{
+	width: 100%;
+	padding: 0px 1rem 0px .28rem;
+	margin: 0px;
+}
+.rate{
+	font-size: .46rem;
+	text-align: center;
+	width: 100%;
+}

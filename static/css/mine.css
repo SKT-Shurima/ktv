@@ -1,0 +1,19 @@
+body{
+    background-color: #fff;
+}
+.mine-top{
+    height:3.4rem;
+    text-align:center;
+    font-size:.3rem;
+    color:white;
+}
+.mine-top img{
+    margin-top:.5rem;
+    margin-bottom:.3rem;
+    width:1.3rem;
+    height:1.3rem;
+    border-radius:50%;
+}
+.mine-top dd{
+    margin-bottom: .2rem;
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="full-screen" content="yes">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/weui.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/weuix.css">
+	  <link rel="stylesheet" type="text/css" href="../../static/css/home.css">
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src='../../static/js/rem.js'></script>
+	  <script type="text/javascript" src='../../static/js/zepto.min.js'></script>
+  	<script type="text/javascript" src='../../static/js/swipe.js'></script>
+  	<script type="text/javascript" src='../../static/js/lazyimg.js'></script>
+  	<script type="text/javascript" src='../../static/js/common.js'></script>
+    <script>
+      $(function(){
+    		$('#slide').swipeSlide({
+      		autoSwipe:true,//自动切换默认是
+      		speed:3000,//速度默认4000
+      		continuousScroll:true,//默认否
+      		transitionType:'cubic-bezier(0.22, 0.69, 0.72, 0.88)',//过渡动画linear/ease/ease-in/ease-out/ease-in-out/cubic-bezier
+      		lazyLoad:true,//懒加载默认否
+      		firstCallback : function(i,sum,me){
+            me.find('.dot').children().first().addClass('cur');
+          },
+          callback : function(i,sum,me){
+            me.find('.dot').children().eq(i).addClass('cur').siblings().removeClass('cur');
+          }
+    		});
+	    });    
+    </script>
+</head>
+<body ontouchstart>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+</body>
+</html>

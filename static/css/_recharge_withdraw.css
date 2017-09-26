@@ -1,0 +1,55 @@
+._recharge_withdraw-container{
+    margin:.36rem .3rem;
+    padding:.4rem .55rem;
+    background-color:#fff;
+    font-size:.3rem;
+    overflow: hidden;
+}
+
+.div-2{
+    margin-top:.75rem;
+    padding-bottom:.46rem;
+    height:.6rem;
+    line-height:.6rem;
+    font-size:.6rem;
+    overflow: hidden;
+}
+
+.div-2 >span{
+    float:left;
+    margin-right:.5rem;
+}
+
+.div-2 >div{
+    height:inherit;
+    overflow: hidden;
+}
+
+.div-2 input{
+    height:inherit;
+    border:none;
+    outline:none;
+    font-size:inherit;
+    vertical-align: top;
+}
+
+.div-3{
+    margin-top:.15rem;
+}
+
+._recharge_withdraw-btn{
+    margin-top:.5rem;
+    height:1rem;
+    line-height:1rem;
+    text-align:center;
+    border-radius: 5px;
+    color:#fff;
+    font-size:.36rem;
+}
+
+.withdraw-instruction{
+    margin-top:.2rem;
+    text-decoration: underline;
+    color:#7ac9f9;
+    text-align:center;
+}

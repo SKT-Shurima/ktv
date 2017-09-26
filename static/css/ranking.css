@@ -1,0 +1,64 @@
+body{
+	background-color: #fff;
+}
+.ranking-num{
+	text-align: center;
+}
+.ranking-s{
+	color: #4bcdff;
+}
+.ranking-s-name{
+	font-size: .3rem;
+}
+.ranking-f{
+	color: #ffc000;
+}
+.ranking-f-name{
+	font-size: .32rem;
+}
+.ranking-t{
+	color: #ff9a4a;
+}
+.ranking-t-name{
+	font-size: .28rem;
+}
+.ranking-price{
+	font-size: .2rem;
+	line-height: .38rem;
+}
+.ranking-item{
+	overflow: hidden;
+	padding: .2rem .65rem .2rem .55rem;
+}
+.ranking-item i{
+	float: left;
+	display: inline-block;
+	width: .3rem;
+	height: .3rem;
+	text-align: center;
+	font-size: .2rem;
+	margin-top: .2rem;
+	color: #fff;
+	background-color: #ccc;
+	border-radius: 4px;
+}
+.ranking-item img{
+	float: left;
+	display: inline-block;
+	width: .7rem;
+	height: .7rem;
+	border-radius: 50%;
+	margin: 0px .52rem 0px .42rem;
+}
+.ranking-item strong{
+	float: left;
+	font-size: .26rem;
+	margin-top: .2rem;
+	color: #666;
+}
+.ranking-item span{
+	float: right;
+	font-size: .24rem;
+	display: inline-block;
+	margin-top: .2rem;
+}

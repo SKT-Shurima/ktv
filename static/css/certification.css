@@ -1,0 +1,152 @@
+#back{
+	position: absolute;
+	left: .26rem;
+	top: .26rem;
+}
+#edit{
+	position: absolute;
+	right: .26rem;
+	top: .26rem;
+	font-size: .28rem;
+	color: #fff;
+}
+.info-box{
+	margin: 1.2rem .42rem .9rem;
+	padding-right: 1.2rem;
+	overflow: hidden;
+	position: relative;
+}
+.info-box>dt,.info-box>dd{
+	float: left;
+}
+.info-box>dd{
+	margin:.1rem .26rem;
+	font-size: .28rem;
+	color: #fff;
+}
+.info-box .signin{
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	margin: auto;
+	width: .92rem;
+	height: .92rem;
+	line-height: .92rem;
+	font-size: .3rem;
+	border-radius: 50%;
+	text-align: center;
+}
+.signin-bg{
+	background-color: #ffc600;
+}
+.signup-bg{
+	background-color: #4ed8c8;
+}
+.signed-bg{
+	background-color: #ccc;
+}
+.avater{
+	width: 1.32rem;
+	height: 1.32rem;
+}
+.avater>img{
+	width: 100%;
+	border-radius: 50%;
+}
+.info-box .name{
+	line-height: .72rem;
+}
+.container{
+	padding: 0px 0px 1rem;
+}
+.upload-avater{
+	background-color: #fff;
+}
+.upload-limit{
+	font-size: .3rem;
+	padding: .3rem;
+}
+.avater-list-wrap{
+	width: 100%;
+	overflow-y: hidden;
+	overflow-x: scroll;
+	padding: 0px .3rem;
+}
+.avater-list-box{
+	overflow: hidden;
+}
+.weui_uploader_files{
+	float: left;
+	overflow: hidden;
+}
+.base-info{
+	margin-top: .26rem;
+	padding: 0px .4rem;
+	background-color: #fff;
+}
+.cell{
+	position: relative;
+	padding: .3rem  0px;
+	overflow: hidden;
+}
+.cell>em{
+	float: right;
+	font-size: .3rem;
+	line-height: .5rem;
+}
+.cell-label{
+	display: inline-block;
+	float: left;
+	width: 20%;
+	font-size: .3rem;
+	line-height: .5rem;
+}
+.cell-input{
+	display: inline-block;
+	float: right;
+	width: 80%;
+	text-align: right;
+	font-size: .3rem;
+	line-height: .5rem;
+}
+.tag{
+	padding: .3rem .4rem;
+	background-color: #fff;
+}
+.tag>h1{
+	font-size: .3rem;
+	font-weight: lighter;
+}
+.labels{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: .34rem 0px;
+    font-size: .26rem;
+}
+.labels>.weui_btn{
+    width: 2rem;
+    font-size: .3rem;
+    margin-bottom: .2rem;
+}
+.labels>.border-1px::after{
+    border-color: #999;
+}
+.labels>.border-1px::after{
+	border-color: #ccc;
+}
+.labels>.btn-checked.border-1px::after{
+	border-color: #f65287;
+}
+.labels>.btn-checked.border-1px{
+	color: #f65287;
+}
+.icon.icon-108{
+	position: absolute;
+	top: .3rem;
+	right: 0px;
+	font-size: .2rem;
+	line-height: .5rem;
+	color: #ccc;
+}
