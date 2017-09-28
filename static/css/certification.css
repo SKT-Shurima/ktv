@@ -74,11 +74,28 @@
 	padding: 0px .3rem;
 }
 .avater-list-box{
+	min-width: 100%;
 	overflow: hidden;
 }
 .weui_uploader_files{
 	float: left;
 	overflow: hidden;
+}
+.weui_uploader_file{
+	position: relative;
+}
+.weui_uploader_file>i{
+	display: inline-block;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 16px;
+	height: 16px;
+	font-size: 14px;
+	line-height: 16px;
+	text-align: center;
+	color: #fff;
+	background-color: #999;
 }
 .base-info{
 	margin-top: .26rem;
@@ -118,29 +135,15 @@
 	font-size: .3rem;
 	font-weight: lighter;
 }
-.labels{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding: .34rem 0px;
-    font-size: .26rem;
+.mood-icon{
+	float: right;
+	line-height: .2rem;
 }
-.labels>.weui_btn{
-    width: 2rem;
-    font-size: .3rem;
-    margin-bottom: .2rem;
-}
-.labels>.border-1px::after{
-    border-color: #999;
-}
-.labels>.border-1px::after{
-	border-color: #ccc;
-}
-.labels>.btn-checked.border-1px::after{
-	border-color: #f65287;
-}
-.labels>.btn-checked.border-1px{
-	color: #f65287;
+.mood-icon>i{
+	display: inline-block;
+	width: .5rem;
+	height: .5rem;
+	margin-left: .2rem;
 }
 .icon.icon-108{
 	position: absolute;

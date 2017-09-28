@@ -46,6 +46,8 @@
             <button class="weui_btn weui_btn_primary border-1px">皮肤白皙</button>
             <button class="weui_btn weui_btn_primary border-1px">眼睛水灵</button>
             <button class="weui_btn weui_btn_primary border-1px">标准身材</button>
+            <button class="weui_btn weui_btn_primary border-1px">眼睛水灵</button>
+            <button class="weui_btn weui_btn_primary border-1px">标准身材</button>
         </div>
       </div>
       <div class="comments">
@@ -89,7 +91,9 @@
     </div>
     <div class="weui-flex complete-order op-btn">
         <div class="weui-flex-item reminder blue-bg" @touchstart='payment'>立即支付</div>
-        <div class="weui-flex-item cancle-order green-bg" id='reward'>打赏</div>
+        <div class="weui-flex-item green-bg">
+          <a :href='"orderDetail.html?id="+item' style="color: #fff;">打赏</a>
+        </div>
     </div>
     <pay-for ref='payfor'></pay-for>
   </div>

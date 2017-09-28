@@ -12,7 +12,7 @@ body{
 .order-wrap{
 	position: relative;
 	width: 100%;
-	padding-bottom: 1.2rem;
+	padding: 0px .5rem 1.2rem;
 }
 .staff-info{
 	width: 50%;
@@ -33,34 +33,22 @@ body{
 	width: 100%;
 	border-radius: 50%;
 }
-.labels,.com-labels{
-	display: flex;
-	justify-content: space-between;
-	padding: .34rem 0px;
-	width: 80%;
-	margin:0px auto;
-}
 .labels>.weui_btn{
-	width: 1.28rem;
-	font-size: .3rem;
-	padding: .2rem .14rem;
+	width: 1.38rem;
+	padding: .14rem;
+}
+.com-labels{
+	display: flex;
+    justify-content: space-between;
+    margin: .5rem auto;
 }
 .com-labels>.weui_btn{
 	width: 1.6rem;
 	font-size: .3rem;
-	padding: .2rem .14rem;
+	padding: .14rem;
 }
 .com-labels>.border-1px::after{
 	border-color: #ccc;
-}
-.labels>.border-1px::after{
-	border-color: #ccc;
-}
-.labels>.btn-checkced.border-1px::after{
-	border-color: #f65287;
-}
-.labels>.btn-checkced.border-1px{
-	color: #f65287;
 }
 .com-labels>.btn-checkced.border-1px::after{
 	border-color: #f65287;
@@ -86,7 +74,6 @@ body{
 .note-box{
 	position: relative;
 	font-size: .3rem;
-	width: 80%;
 	margin: 0px auto;
 }
 .note-box>i{
@@ -100,7 +87,8 @@ body{
 	margin: 0px;
 }
 .rate{
-	font-size: .46rem;
-	text-align: center;
-	width: 100%;
+    display: flex;
+    width: 50%;
+    margin: 0px auto;
+    justify-content: space-between;
 }

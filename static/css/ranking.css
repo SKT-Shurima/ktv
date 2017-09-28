@@ -1,13 +1,18 @@
 body{
 	background-color: #fff;
 }
+.container{
+	position: relative;
+	top: .88rem;
+}
 .ranking-num{
+	margin-top: .4rem;
 	text-align: center;
 }
 .ranking-s{
 	color: #4bcdff;
 }
-.ranking-s-name{
+.ranking-s-name,.ranking-t-name{
 	font-size: .3rem;
 }
 .ranking-f{
@@ -18,9 +23,6 @@ body{
 }
 .ranking-t{
 	color: #ff9a4a;
-}
-.ranking-t-name{
-	font-size: .28rem;
 }
 .ranking-price{
 	font-size: .2rem;

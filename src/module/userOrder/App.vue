@@ -62,7 +62,7 @@
                     <div class="name">
                         <span>林发可</span>
                         <em class="price">&yen;50</em>
-                    </div>a
+                    </div>
                     <div class="con2">
                         <div class="info ellipsis-2">
                             <span>
@@ -100,6 +100,10 @@
       payment(){
         this.$refs.payfor.maskBol = true;
       }
+    },
+    mounted(){
+        this.$nextTick(()=>{
+        })
     }
   }
 </script>

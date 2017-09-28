@@ -265,3 +265,25 @@
     float: right;
     margin-left:.2rem;
 }
+/*按钮*/
+.labels{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: .34rem 0px;
+    margin: 0px auto;
+}
+.labels>.weui_btn{
+    width: 2rem;
+    font-size: .3rem;
+    margin-bottom: .2rem;
+}
+.labels>.border-1px::after{
+    border-color: #ccc;
+}
+.labels>.btn-checkced.border-1px::after{
+    border-color: #f65287;
+}
+.labels>.btn-checkced.border-1px{
+    color: #f65287;
+}

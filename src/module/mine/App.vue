@@ -35,7 +35,13 @@
 	    </a>
 	    <a class="row border-bottom-1px" href='certification.html' v-if='userInfo.userBean.employee_is===1'>
 	        <i class="row-icon icon-cer"></i>
-	        <span class="row-title">员工认证/签到</span>
+	        <span class="row-title">员工签到</span>
+	        <img class="row-arrow">
+	        <i class="icon icon-108"></i>
+	    </a>
+	    <a class="row border-bottom-1px" href='certification.html' v-else>
+	        <i class="row-icon icon-cer"></i>
+	        <span class="row-title">员工认证</span>
 	        <img class="row-arrow">
 	        <i class="icon icon-108"></i>
 	    </a>
