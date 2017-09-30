@@ -7,7 +7,7 @@
 	        <li class="border-bottom-1px">
 	          <i class="cash"></i>现金支付
 	        </li>
-	        <li class="border-bottom-1px" @touchstart='payBol=false;rewardBol=true;'>
+	        <li class="border-bottom-1px" @touchstart='payBol=false;rewardBol=true;optype_id=1;'>
 	          <i class="wx"></i>微信支付
 	        </li>
 	      </ul>
@@ -16,49 +16,49 @@
 	    <div class="reward-box" :class='{"box-visible":rewardBol}'>
 	        <ul>
 	          <li class="reward-list">
-	            <dl :class="{'border-1px':rewardAccount===300}" @touchstart='rewardAccount=300;'>
+	            <dl :class="{'border-1px':order_amount===300}" @touchstart='order_amount=300;'>
 	              <dt class="reward-icon-300"></dt>
 	              <dd>300</dd>
 	            </dl>
 	          </li>
 	          <li class="reward-list">
-	            <dl :class="{'border-1px':rewardAccount===400}" @touchstart='rewardAccount=400;'>
+	            <dl :class="{'border-1px':order_amount===400}" @touchstart='order_amount=400;'>
 	              <dt class="reward-icon-400"></dt>
 	              <dd>400</dd>
 	            </dl>
 	          </li>
 	          <li class="reward-list">
-	            <dl :class="{'border-1px':rewardAccount===500}" @touchstart='rewardAccount=500;'>
+	            <dl :class="{'border-1px':order_amount===500}" @touchstart='order_amount=500;'>
 	              <dt class="reward-icon-500"></dt>
 	              <dd>500</dd>
 	            </dl>
 	          </li>
 	          <li class="reward-list">
-	            <dl :class="{'border-1px':rewardAccount===600}" @touchstart='rewardAccount=600;'>
+	            <dl :class="{'border-1px':order_amount===600}" @touchstart='order_amount=600;'>
 	              <dt class="reward-icon-600"></dt>
 	              <dd>600</dd>
 	            </dl>
 	          </li>
 	          <li class="reward-list">
-	            <dl :class="{'border-1px':rewardAccount===700}" @touchstart='rewardAccount=700;'>
+	            <dl :class="{'border-1px':order_amount===700}" @touchstart='order_amount=700;'>
 	              <dt class="reward-icon-700"></dt>
 	              <dd>700</dd>
 	            </dl>
 	          </li>
 	          <li class="reward-list">
-	            <dl :class="{'border-1px':rewardAccount===800}" @touchstart='rewardAccount=800;'>
+	            <dl :class="{'border-1px':order_amount===800}" @touchstart='order_amount=800;'>
 	              <dt class="reward-icon-800"></dt>
 	              <dd>800</dd>
 	            </dl>
 	          </li>
 	          <li class="reward-list">
-	            <dl :class="{'border-1px':rewardAccount===900}" @touchstart='rewardAccount=900;'>
+	            <dl :class="{'border-1px':order_amount===900}" @touchstart='order_amount=900;'>
 	              <dt class="reward-icon-900"></dt>
 	              <dd>900</dd>
 	            </dl>
 	          </li>
 	          <li class="reward-list">
-	            <dl :class="{'border-1px':rewardAccount===1000}" @touchstart='rewardAccount=1000;'>
+	            <dl :class="{'border-1px':order_amount===1000}" @touchstart='order_amount=1000;'>
 	              <dt class="reward-icon-1000"></dt>
 	              <dd>1000</dd>
 	            </dl>
@@ -77,7 +77,9 @@
 				maskBol: false,
 				payBol: false,
 				rewardBol: false,
-				rewardAccount: ''
+				order_amount: '',
+				listPayType: [],
+				optype_id: ''
 			}
 		},
 		watch:{
@@ -91,10 +93,39 @@
 		},
 		methods: {
 			ensureReward(){
+				let payObj = {
+					optype_id: this.optype_id,
+					order_amount: this.order_amount
+				}
+				this.$emit('payType',payObj);
 				this.rewardBol = false;
 				this.maskBol=false;
-				this.rewardAccount ='';
+				this.order_amount ='';
+			},
+			getPayType(){
+				let params ={
+	              token: getCookie('token')
+	            }
+	            $.ajax({
+	              	url: `${baseAjax}/pay/listPayType.jhtml.jhtml`,
+	              	type: 'GET',
+	              	dataType: 'json',
+	              	data: params,
+	              	success: res=>{
+	                	let {code,data,desc} =res;
+	                	if (code===0) {
+	                		this.listPayType = data.listPayType;
+	                	}else{
+	                  		error(desc)
+	                	}
+	              	}
+	            });
 			}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				// this.getPayType();
+			})
 		}
 	}
 </script>

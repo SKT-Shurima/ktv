@@ -2,6 +2,7 @@
   <div id="app">
      <div class="slide" id="slide">
         <i class="icon icon-109" id='back'></i>
+        <i class="mood-icon"></i>
         <ul>
             <li>
                 <a href="#">
@@ -73,29 +74,29 @@
           </ul>
         </div>
     </div>
-     <div class="op-btn primary-bg" id='predate' style='display: none;'>
+     <div class="op-btn primary-bg" @touchstart='predate' v-if='false'>
       立即预约
     </div>
-    <div class="weui-flex nore-order op-btn" style='display:none;'>
+    <div class="weui-flex nore-order op-btn" v-if='false'>
         <div class="weui-flex-item order-time color-9"><i class="time-icon"></i>08:20</div>
         <div class="weui-flex-item reminder blue-bg">催单</div>
-        <div class="weui-flex-item cancle-order gray-bg">取消预约</div>
+        <div class="weui-flex-item cancle-order gray-bg" @touchstart='cancelOrder'>取消预约</div>
     </div>
-    <div class="weui-flex re-order op-btn" style='display:none;'>
+    <div class="weui-flex re-order op-btn" v-if='false'>
         <div class="weui-flex-item order-time color-9"><i class="time-icon"></i>08:20</div>
         <div class="weui-flex-item reminder blue-bg">投诉</div>
-        <div class="weui-flex-item cancle-order gray-bg">取消预约</div>
+        <div class="weui-flex-item cancle-order gray-bg" @touchstart='cancelOrder'>取消预约</div>
     </div>
-     <div class="op-btn gray-bg" style='display:none;'>
+     <div class="op-btn gray-bg" v-if='false'>
       已取消
     </div>
-    <div class="weui-flex complete-order op-btn">
+    <div class="weui-flex complete-order op-btn" v-if='true'>
         <div class="weui-flex-item reminder blue-bg" @touchstart='payment'>立即支付</div>
         <div class="weui-flex-item green-bg">
           <a :href='"orderDetail.html?id="+item' style="color: #fff;">打赏</a>
         </div>
     </div>
-    <pay-for ref='payfor'></pay-for>
+    <pay-for ref='payfor' @payType='payfor'></pay-for>
   </div>
 </template>
 
@@ -114,6 +115,90 @@
     methods: {
       payment(){
         this.$refs.payfor.maskBol = true;
+      },
+      getRoom(){
+        let params ={
+          token: getCookie('token')
+        }
+        $.ajax({
+          url: `${baseAjax}/order/listAllRoom.jhtml`,
+          type: 'GET',
+          dataType: 'json',
+          data: params,
+          success: res=>{
+            let {code,data,desc} =res;
+            if (code===0) {
+              let room = data.roomList;
+              let roomList  = [];
+              for (let i = 0; i < room.length; i++) {
+                  let item = {
+                    text: room[i].room_name,
+                    value: room[i].room_id
+                  };
+                  roomList.push(item);
+              }
+              this.roomPicker = new Picker({
+                data: [roomList],
+                title: ""
+              });
+            }else{
+              error(desc)
+            }
+          }
+        });
+      },
+      predate(){
+        this.roomPicker.show();
+        this.roomPicker.on('picker.select',(val, index)=> {
+          this.createOrder(val[0]);
+        });
+      },
+      createOrder(id){
+        let params ={
+          token: getCookie('token'),
+          employee_id: 1,
+          room_id: id
+        }
+        $.ajax({
+          url: `${baseAjax}/order/createOrder.jhtml`,
+          type: 'POST',
+          dataType: 'json',
+          data: params,
+          success: res=>{
+            let {code,data,desc} =res;
+            if (code===0) {
+              
+            }else{
+              error(desc)
+            }
+          }
+        });
+      },
+      payfor(payParams){
+        let {order_amount,optype_id} =payParams;
+        let params ={
+          token: getCookie('token'),
+          order_id: 16,
+          optype_id: optype_id,
+          order_amount: order_amount
+        }
+        $.ajax({
+          url: `${baseAjax}/pay/payOrder.jhtml`,
+          type: 'POST',
+          dataType: 'json',
+          data: params,
+          success: res=>{
+            let {code,data,desc} =res;
+            if (code===0) {
+              
+            }else{
+              error(desc)
+            }
+          }
+        });
+      },
+      cancelOrder(){
+
       }
     },
     ceated(){
@@ -121,6 +206,7 @@
     },
     mounted(){
     	this.$nextTick(()=>{
+        this.getRoom();
     	})
     }
 
@@ -137,5 +223,15 @@
   }
   .rate>.selected{
     @include bg-image('../../../static/images/star-selected');
+  }
+  .mood-icon{
+    display: inline-block;
+    width: .42rem;
+    height: .42rem;
+    position: absolute;
+    right: .2rem;
+    top: .2rem;
+    z-index: 100;
+    @include bg-image('../../../static/images/sunny');
   }
 </style>

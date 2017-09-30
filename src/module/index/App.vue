@@ -148,7 +148,7 @@
               pageSize: 10
             }
             $.ajax({
-              url: `${baseAjax}/home/employeeListBySearch.jhtml`,
+              url: `${baseAjax}/home/listEmployeeBySearch.jhtml`,
               type: 'GET',
               dataType: 'json',
               data: params,
@@ -184,7 +184,7 @@
               pageSize: this.pageSize
             }
             $.ajax({
-              url: `${baseAjax}/home/employeeListByNew.jhtml`,
+              url: `${baseAjax}/home/listEmployeeByNew.jhtml`,
               type: 'GET',
               dataType: 'json',
               data: params,
@@ -209,7 +209,7 @@
               pageSize: this.pageSize
             }
             $.ajax({
-              url: `${baseAjax}/home/employeeListByType.jhtml`,
+              url: `${baseAjax}/home/listEmployeeBySearch.jhtml`,
               type: 'GET',
               dataType: 'json',
               data: params,

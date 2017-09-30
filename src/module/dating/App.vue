@@ -13,93 +13,20 @@
       </ul>
     </div>
     <ul class="container weui-updown">
-     <li class="con-list">
+      <li class="con-list" v-for='(item,index) in listdata' :key='index'>
         <dl>
-          <dt><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
+          <dt>
+            <a :href='"staffDetail.html?id="+item.user_id'>
+              <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+            </a>
+            <i class="mood-icon" v-if='item.mood===1'></i>
+            <div class="staff-mask" v-if='item.state===0'>
+              <span>已被预约</span>
+            </div>
+          </dt>
           <dd>
-            <div class="staff-info"><span>空空</span><em class="price">&yen;500</em></div>
-            <div class="staff-detail"><span>25岁</span><em>抽烟，喝酒</em></div>
-          </dd>
-        </dl>
-      </li>
-      <li class="con-list">
-        <dl>
-          <dt><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
-          <dd>
-            <div class="staff-info"><span>空空</span><em class="price">&yen;500</em></div>
-            <div class="staff-detail"><span>25岁</span><em>抽烟，喝酒</em></div>
-          </dd>
-        </dl>
-      </li>
-      <li class="con-list">
-        <dl>
-          <dt><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
-          <dd>
-            <div class="staff-info"><span>空空</span><em class="price">&yen;500</em></div>
-            <div class="staff-detail"><span>25岁</span><em>抽烟，喝酒</em></div>
-          </dd>
-        </dl>
-      </li>
-      <li class="con-list">
-        <dl>
-          <dt><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
-          <dd>
-            <div class="staff-info"><span>空空</span><em class="price">&yen;500</em></div>
-            <div class="staff-detail"><span>25岁</span><em>抽烟，喝酒</em></div>
-          </dd>
-        </dl>
-      </li>
-      <li class="con-list">
-        <dl>
-          <dt><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
-          <dd>
-            <div class="staff-info"><span>空空</span><em class="price">&yen;500</em></div>
-            <div class="staff-detail"><span>25岁</span><em>抽烟，喝酒</em></div>
-          </dd>
-        </dl>
-      </li>
-      <li class="con-list">
-        <dl>
-          <dt><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
-          <dd>
-            <div class="staff-info"><span>空空</span><em class="price">&yen;500</em></div>
-            <div class="staff-detail"><span>25岁</span><em>抽烟，喝酒</em></div>
-          </dd>
-        </dl>
-      </li>
-      <li class="con-list">
-        <dl>
-          <dt><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
-          <dd>
-            <div class="staff-info"><span>空空</span><em class="price">&yen;500</em></div>
-            <div class="staff-detail"><span>25岁</span><em>抽烟，喝酒</em></div>
-          </dd>
-        </dl>
-      </li>
-      <li class="con-list">
-        <dl>
-          <dt><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
-          <dd>
-            <div class="staff-info"><span>空空</span><em class="price">&yen;500</em></div>
-            <div class="staff-detail"><span>25岁</span><em>抽烟，喝酒</em></div>
-          </dd>
-        </dl>
-      </li>
-      <li class="con-list">
-        <dl>
-          <dt><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
-          <dd>
-            <div class="staff-info"><span>空空</span><em class="price">&yen;500</em></div>
-            <div class="staff-detail"><span>25岁</span><em>抽烟，喝酒</em></div>
-          </dd>
-        </dl>
-      </li>
-      <li class="con-list">
-        <dl>
-          <dt><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
-          <dd>
-            <div class="staff-info"><span>空空</span><em class="price">&yen;500</em></div>
-            <div class="staff-detail"><span>25岁</span><em>抽烟，喝酒</em></div>
+            <div class="staff-info"><span v-text='item.nick_name'></span><em class="price">&yen;{{item.price}}</em></div>
+            <div class="staff-detail"><span>{{item.birthday|age}}岁</span><em v-text='item.hobby'></em></div>
           </dd>
         </dl>
       </li>
@@ -114,11 +41,18 @@ import vFooter from '../../component/vFooter';
     name: 'app',
     data(){
       return{
-
+        listdata: [],
       }
     },
     components:{
       vFooter
     },
+    mounted(){
+      this.$nextTick(()=>{
+        TagNav('#tagnav',{
+            type: 'scrollToFirst',
+        });
+      })
+    }
   }
 </script>
