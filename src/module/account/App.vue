@@ -1,36 +1,58 @@
 <template>
-  <div id="app">
-    <header class="primary-header primary-bg">
-	    <i class="icon icon-109" id='back'></i>我的账户
-	</header>
-	<div class="account-top primary-bg">
-	    <div>账户余额(元)</div>
-	    <div>2000.00</div>
+  	<div id="app">
+    	<div class="account-box primary-bg">
+	      	<i class="icon icon-109" id='back'></i>
+	      	<dl class="account-info primary-bg">
+			    <dt>账户余额(元)</dt>
+			    <dd>{{userBean.balance?userBean.balance.toFixed(2):"0.00"}}</dd>
+			</dl>
+	   </div>
+	<div class="container">
+		<div class="row-container">
+		    <a href='accountDetail.html' class="row">
+		        <i class="row-icon history-icon"></i>
+		        <span class="row-title">历史明细</span>
+		        <i class="icon icon-108"></i>
+		    </a>
+		</div>
+		<div class="row-container"  style="margin-top:.3rem;">
+		    <a class="row border-bottom-1px" href='recharge.html'>
+		        <i class="row-icon recharge-icon"></i>
+		        <span class="row-title">充值</span>
+		        <i class="icon icon-108"></i>
+		    </a>
+		    <a class="row" href='withdraw.html'>
+		        <i class="row-icon withdraw-icon"></i>
+		        <span class="row-title">提现</span>
+		        <i class="icon icon-108"></i>
+		    </a>
+		</div>
 	</div>
-	<div class="row-container">
-	    <a class="row">
-	        <img class="row-icon">
-	        <span class="row-title">全部订单</span>
-	        <img class="row-arrow">
-	    </a>
-	</div>
-	<div class="row-container"  style="margin-top:.3rem;">
-	    <a class="row border-bottom-1px">
-	        <img class="row-icon">
-	        <span class="row-title">充值</span>
-	        <img class="row-arrow">
-	    </a>
-	    <a class="row">
-	        <img class="row-icon">
-	        <span class="row-title">提现</span>
-	        <img class="row-arrow">
-	    </a>
-	</div>
+	
   </div>
 </template>
 
-<script>
-  export default {
-    name: 'app',
-  }
+<script type="text/ecmascript-6">
+	import {getInfo}  from '../../../static/js/mixins';
+  	export default {
+    	name: 'app',
+    	mixins: [getInfo],
+    	mounted(){
+    		this.$nextTick(()=>{
+    			this.userInfo();
+    		})
+    	}
+  	}
 </script>
+<style type="text/css" lang='scss' scoped>
+	@import "../../../static/css/mixin";
+	.history-icon{
+	    @include bg-image('../../../static/images/history');
+	}
+	.recharge-icon{
+	    @include bg-image('../../../static/images/recharge');
+	}
+	.withdraw-icon{
+	    @include bg-image('../../../static/images/withdraw');
+	}
+</style>

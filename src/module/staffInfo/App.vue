@@ -2,137 +2,194 @@
   <div id="app">
     <div class="staff-info primary-bg">
       <i class="icon icon-109" id='back'></i>
-      <em id='edit'>编辑</em>
+      <a href="editInfo.html" class="edit">编辑</a>
       <dl class="info-box">
         <dt class="avater">
           <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
         </dt>
         <dd>
-          <div class="name ellipsis-1">林发可</div>
-          <div class="wxid ellipsis-1">13611012011(微信号)</div>
+          <div class="name ellipsis-1" v-text='userBean.wechat_name'></div>
+          <div class="wxid ellipsis-1">{{userBean.phone}}&nbsp;(微信号)</div>
         </dd>
-        <dd class="signin signin-bg" id='payment'>
-          签到
+        <dd class="signin" :class='[sign===0?"signin-bg":sign===2?"signed-bg":"signup-bg"]' @touchstart="signin">
+          {{sign===0?"签到":sign===2?"已签":"签退"}}
         </dd>
       </dl>
    </div>
    <div class="container">
       <div class="upload-avater">
         <div class="upload-limit color-9">
-          个人图册（上限10张）
+          个人图册
         </div>
         <div class="avater-list-wrap">
-            <div class="avater-list-box">
-              <ul class="weui_uploader_files" id='avater-list'></ul>
-              <div class="weui_uploader_input_wrp">
-                  <!-- <input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" onchange="previewImage(this)"/> -->
-              </div> 
-            </div>
-        </div>
+              <div class="avater-list-box" :style='{width: (index_image.length+1)*90+"px"}'>
+                <ul class="weui_uploader_files">
+                  <li v-for='(item,index) in index_image' :key='index' :style='{backgroundImage: `url(${item})`}' class="weui_uploader_file">
+                  </li>
+                </ul>
+              </div>
+          </div>
       </div>
       <ul class="base-info">
-          <li class="border-bottom-1px cell"><label class="cell-label">姓名</label><em>林发可</em></li>
-          <li class="border-bottom-1px cell"><label class="cell-label">花名</label><em>可可</em></li>
-          <li class="border-bottom-1px cell"><label class="cell-label">类别</label><em>骨感</em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">姓名</label><em v-text='userBean.real_name'></em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">花名</label><em v-text='userBean.nick_name'></em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">类别</label><em v-text='userTypeBean.utype_name'></em></li>
       </ul>
       <ul class="base-info">
-          <li class="border-bottom-1px cell"><label class="cell-label">身高(cm)</label><em>172</em></li>
-          <li class="border-bottom-1px cell"><label class="cell-label">体重(kg)</label><em>48</em></li>
-          <li class="border-bottom-1px cell"><label class="cell-label">籍贯</label><em>浙江温州</em></li>
-          <li class="border-bottom-1px cell"><label class="cell-label">出生日期</label><em>1999-01-01</em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">身高(cm)</label><em v-text='userBean.height'></em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">体重(kg)</label><em v-text='userBean.weight'></em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">籍贯</label><em>{{userBean.province}}{{userBean.city}}</em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">出生日期</label><em>{{userBean.birthday|birthFilter}}</em></li>
       </ul>
       <ul class="base-info">
-          <li class="border-bottom-1px cell"><label class="cell-label">兴趣爱好</label><em>抽烟，喝酒，烫头</em></li>
-          <li class="border-bottom-1px cell"><label class="cell-label">心情</label></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">兴趣爱好</label><em v-text='userBean.hobby'></em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">心情</label><span class="mood-icon"><i class='mood-sunny selected' v-if='userBean.mood===1'></i><i class="mood-unsunny selected"  v-else></i></span></li>
       </ul>
       <div class="tag">
         <h1>标签</h1>
-        <div class="labels">
-            <button class="weui_btn btn-checked border-1px color-9">小酒窝</button>
-            <button class="weui_btn btn-checked border-1px color-9">皮肤白皙</button>
-            <button class="weui_btn btn-checked border-1px color-9">鼻梁高</button>
-            <button class="weui_btn btn-checked border-1px color-9">标准身材</button>
-            <button class="weui_btn btn-checked border-1px color-9">A4腰</button>
-            <button class="weui_btn btn-checked border-1px color-9">眼睛水灵</button>
+        <div class="tags">
+          <button class="weui_btn  border-1px  btn-checkced" :class='{"btn-checkced":item.index===index}' v-for='(item,index) in tags' v-text='item'></button>
         </div>
       </div>
    </div>
-   <div class="op-btn primary-bg">
+    <div class="op-btn primary-bg" v-if='userBean.state === 1' @touchstart="toBusy">
       切换为忙碌状态
     </div>
-    <div class="mask" id='mask'></div>
-    <div class="pay-box">
-      <h1 class="border-bottom-1px">请选择支付方式</h1>
-      <ul>
-        <li class="border-bottom-1px" id='cash-pay'>
-          <i class="cash"></i>现金支付
-        </li>
-        <li class="border-bottom-1px" id='wx-pay'>
-          <i class="wx"></i>微信支付
-        </li>
-      </ul>
-      <div class="op-btn gray-bg" style='position: absolute;'>取消</div>
+    <div class="op-btn bg-c" v-if='userBean.state === 0'>
+      忙碌中...
     </div>
-    <div class="reward-box">
-        <ul>
-          <li class="reward-list">
-            <dl>
-              <dt></dt>
-              <dd>300</dd>
-            </dl>
-          </li>
-          <li class="reward-list">
-            <dl>
-              <dt></dt>
-              <dd>400</dd>
-            </dl>
-          </li>
-          <li class="reward-list">
-            <dl>
-              <dt></dt>
-              <dd>500</dd>
-            </dl>
-          </li>
-          <li class="reward-list">
-            <dl>
-              <dt></dt>
-              <dd>600</dd>
-            </dl>
-          </li>
-          <li class="reward-list">
-            <dl>
-              <dt></dt>
-              <dd>700</dd>
-            </dl>
-          </li>
-          <li class="reward-list">
-            <dl>
-              <dt></dt>
-              <dd>800</dd>
-            </dl>
-          </li>
-          <li class="reward-list">
-            <dl>
-              <dt></dt>
-              <dd>900</dd>
-            </dl>
-          </li>
-          <li class="reward-list">
-            <dl>
-              <dt></dt>
-              <dd>1000</dd>
-            </dl>
-          </li>
-        </ul>
-        <div class="op-btn primary-bg" id='ensure-reward' style='position: absolute;'>
-          购买
-        </div>
-    </div>
+    <signin ref='payfor' @payType='payfor'></signin>
   </div>
 </template>
 
 <script>
+  import {getInfo} from '../../../static/js/mixins';
+  import signin from  '../../component/signinPayfor';
   export default {
     name: 'app',
+    data(){
+      return {
+        index_image: []
+      }
+    },
+    mixins: [getInfo],
+    filters: {
+      birthFilter
+    },
+    components:{
+      signin
+    },
+    methods: {
+      signin(){
+        if (this.sign===0) {
+            this.payment();
+            return false;
+        }else if(this.sign === 2){
+          return false;
+        }
+        let params = {
+          token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh"
+        }
+        $.ajax({
+          url: `${baseAjax}/user/signout.jhtml`,
+          type: 'POST',
+          dataType: 'json',
+          data: params,
+          success: res=>{
+            let {code,data,desc} =res;
+            if (code===0) {
+              
+            }else{
+              error(desc)
+            }
+          }
+        });
+      },
+      payment(){
+        this.$refs.payfor.maskBol = true;
+      },
+      payfor(payParams){
+        let {order_amount,optype} =payParams;
+        let params ={
+          token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+          optype: optype,
+          order_amount: order_amount,
+          optarget: 4
+        }
+        $.ajax({
+          url: `${baseAjax}/pay/pay.jhtml`,
+          type: 'POST',
+          dataType: 'json',
+          data: params,
+          success: res=>{
+            let {code,data,desc} =res;
+            if (code===0) {
+              this.cash(data.payParams.pay_sn);
+            }else{
+              error(desc)
+            }
+          }
+        });
+      },
+      cash(pay_sn){
+        let params = {
+          token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+          pay_sn: pay_sn
+        }
+        $.ajax({
+          url: `${payforAjax}/web/cash.jhtml`,
+          type: 'POST',
+          dataType: 'json',
+          data: params,
+          success: res=>{
+            let {code,data,desc} =res;
+            if (code===0) {
+              this.userInfo();
+            }else{
+              error(desc)
+            }
+          }
+        });
+      },
+      toBusy(){
+        let params = {
+          token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh"
+        }
+        $.ajax({
+          url: `${baseAjax}/user/toBusy.jhtml`,
+          type: 'POST',
+          dataType: 'json',
+          data: params,
+          success: res=>{
+            let {code,data,desc} =res;
+            if (code===0) {
+              this.userInfo();
+            }else{
+              error(desc)
+            }
+          }
+        });
+      }
+    },
+    mounted(){
+      this.$nextTick(()=>{
+        this.userInfo();
+      })
+    } 
   }
 </script>
+<style type="text/css" lang='scss' scoped>
+  @import '../../../static/css/mixin.scss';
+  .mood-sunny{
+    @include bg-image('../../../static/images/sunny-unselected');
+  }
+  .mood-sunny.selected{
+    @include bg-image('../../../static/images/sunny');
+  }
+  .mood-unsunny{
+    @include bg-image('../../../static/images/unsunny-unselected');
+  }
+  .mood-unsunny.selected{
+    @include bg-image('../../../static/images/unsunny');
+  }
+</style>

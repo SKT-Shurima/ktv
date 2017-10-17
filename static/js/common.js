@@ -1,4 +1,5 @@
 let baseAjax = '/ktv/web';
+let payforAjax = '/ktv/payrefund/';
 
 const setCookie = (c_name,value,expTime)=>{  
 	var exdate = new Date();  
@@ -34,7 +35,7 @@ const trans = params => {
     }
     return ret ;
 }
-const GetRequest = ()=> {
+const getRequest = ()=> {
   	var url = location.search;
    	var theRequest = new Object();
    	if (url.indexOf("?") != -1) {
@@ -46,6 +47,48 @@ const GetRequest = ()=> {
    }
    return theRequest;
 }
+// 过滤器
+const transTime = (val)=>{
+    if (val < 10) {
+      val = "0" + val ;
+    }
+    return val ;
+};
+const countDownFilter = (time)=>{
+	let totalTime = 10*60000;
+	time = totalTime-time;
+	if(time>=0){
+		let m = parseInt(time / 60000) ,s = parseInt(time % 60000/1000);
+		m = transTime(m);
+    	s = transTime(s);
+		return `${m}:${s}`;
+	}else{
+		return "00:00";
+	}
+}
+const timeFilter = (time)=>{
+	time -= 0;
+    var newDate = new Date(time);
+    let {h,m}={h:newDate.getHours(),m:newDate.getMinutes()};
+    h = transTime(h);
+    m = transTime(m);
+    return `${h}:${m}`;
+}
+const birthFilter = (time)=>{
+	time*=1000;
+	var now = new Date().getFullYear();
+    var newDate = new Date(time).getFullYear();
+    return now-newDate;
+}
+const dateFilter  = time =>{
+    time-=0;
+    var newDate = new Date(time);
+    let {y,m,d}={y:newDate.getFullYear(),m:newDate.getMonth()+1,d:newDate.getDate()};
+    m = transTime(m);
+    d = transTime(d);
+    return y +'-' + m + "-" + d ;
+}
+
 const error = (msg)=>{
 	console.log(msg);
 }

@@ -12,7 +12,7 @@
             </slot>
             <div class="load-more">
                 <slot name="load-more">
-                    <span v-show="downFlag === false">加载更多</span>
+                    <span v-show="downFlag === false"></span>
                     <span v-show="downFlag === true">加载中……</span>
                     <span class="color-9" v-show='dataList.noFlag'>暂无更多数据</span>
                 </slot>

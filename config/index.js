@@ -23,8 +23,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/ktv': {
-            // target: 'http://120.26.90.70:8080',
-            target: 'http://192.168.31.36:8080/',
+            target: 'http://120.26.90.70:8080',
+            // target: 'http://192.168.31.36:8080/',
             changeOrigin: true,
             pathRewrite: {
                 '^/ktv': '/ktv'

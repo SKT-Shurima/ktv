@@ -1,58 +1,73 @@
 <template>
   <div id="app">
-     <div id="tagnav" class="weui-navigator weui-navigator-wrapper">
-      <ul class="weui-navigator-list" style="height: 10px;overflow:hidden;">
-        <li><a href="javascript:void(0);">推荐</a></li>
-        <li><a href="javascript:void(0);">新人</a></li>
-        <li><a href="javascript:void(0);">热门</a></li>
-        <li><a href="reward.html">打赏榜</a></li>
-        <li><a href="javascript:void(0);">高颜值</a></li>
-        <li><a href="javascript:void(0);">小清新</a></li>
-        <li><a href="javascript:void(0);">萌妹子</a></li>
-        <li><a href="javascript:void(0);">才艺</a></li>
+    <div id="tagnav" class="weui-navigator weui-navigator-wrapper">
+        <ul class="weui-navigator-list" style="height: 10px;overflow:hidden;">
+          <li @touchstart='typeList("")' :class="{'border-bottom-1px':tabIndex === 1}"><a href="javascript:void(0);" @touchstart='tabIndex=1'>推荐</a></li>
+          <li @touchstart='typeList("new")' :class="{'border-bottom-1px':tabIndex === 2}" ><a href="javascript:void(0);" @touchstart='tabIndex=2'>新人</a></li>
+          <li @touchstart='typeList("hot")' :class="{'border-bottom-1px':tabIndex === 3}"><a href="javascript:void(0);" @touchstart='tabIndex=3'>热门</a></li>
+          <li><a href="reward.html">打赏榜</a></li>
+          <li v-for="(item,index) in type" :key='index' @touchstart='typeList(item.utype_id)' :class="{'border-bottom-1px':tabIndex === index+5}"><a href="javascript:void(0);" v-text='item.utype_name' @touchstart='tabIndex=index+5;'></a></li>
+        </ul>
+      </div>
+    <load-more  :on-infinite="onInfinite" :dataList="scrollData">
+      
+      <ul class="container">
+        <li class="con-list" v-for='(item,index) in listdata' :key='index'>
+          <dl>
+            <dt>
+              <a :href='"staffDetail.html?id="+item.user_id'>
+                <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+              </a>
+              <i class="mood-icon" v-if='item.mood===1'></i>
+              <div class="staff-mask" v-if='item.state===0'>
+                <span>忙碌中</span>
+              </div>
+            </dt>
+            <dd>
+              <div class="staff-info"><span v-text='item.nick_name'></span><em class="price">&yen;{{item.price}}</em></div>
+              <div class="staff-detail ellipsis-1"><span>{{item.birthday|birthFilter}}岁</span><em v-text='item.hobby'></em></div>
+            </dd>
+          </dl>
+        </li>
       </ul>
-    </div>
-    <ul class="container weui-updown">
-      <li class="con-list" v-for='(item,index) in listdata' :key='index'>
-        <dl>
-          <dt>
-            <a :href='"staffDetail.html?id="+item.user_id'>
-              <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
-            </a>
-            <i class="mood-icon" v-if='item.mood===1'></i>
-            <div class="staff-mask" v-if='item.state===0'>
-              <span>已被预约</span>
-            </div>
-          </dt>
-          <dd>
-            <div class="staff-info"><span v-text='item.nick_name'></span><em class="price">&yen;{{item.price}}</em></div>
-            <div class="staff-detail"><span>{{item.birthday|age}}岁</span><em v-text='item.hobby'></em></div>
-          </dd>
-        </dl>
-      </li>
-    </ul>
+    </load-more>
     <v-footer></v-footer>
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 import vFooter from '../../component/vFooter';
+import loadMore from '../../component/loadMore';
+import {getList} from '../../../static/js/mixins';
   export default {
     name: 'app',
     data(){
       return{
-        listdata: [],
+        tabIndex: 1
       }
     },
+    filters:{
+      birthFilter
+    },
+    mixins: [getList],
     components:{
-      vFooter
+      vFooter,loadMore
+    },
+    methods: {
     },
     mounted(){
       this.$nextTick(()=>{
-        TagNav('#tagnav',{
-            type: 'scrollToFirst',
-        });
+        
+        this.typeList("");
       })
     }
   }
 </script>
+<style type="text/css" lang='scss' scoped>
+  .weui-navigator-list{
+    .border-bottom-1px::after {
+      height: 2px;
+      background-color: #f65287;
+    }
+  }
+</style>

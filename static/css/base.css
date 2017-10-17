@@ -79,6 +79,9 @@
 .primary-bg{
     background-color: #f65287;
 }
+.bg-c{
+    background-color: #ccc;
+}
 .price{
     color: #fec502;
 }
@@ -93,6 +96,12 @@
 }
 .color-green{
     color: #4ed8c8;
+}
+.no-container{
+    height: 1rem;
+    line-height: 1rem;
+    font-size: .28rem;
+    text-align: center;
 }
 /* 列表 */
 .container{
@@ -212,7 +221,7 @@
     position: fixed;
     bottom: 0px;
     left: 0px;
-    z-index: 10;
+    z-index: 100;
     width: 100%;
     height: 1rem;
     line-height: 1rem;
@@ -232,39 +241,28 @@
 }
 
 .row-container>.row{
-    display:block;
-    height:1.1rem;
+    display: block;
+    height: 1.1rem;
     line-height: .4rem;
-    padding:.4rem .2rem;
+    padding: .34rem .2rem;
     color:#000;
     box-sizing: border-box;
 }
-.row-container>.row>.icon{
+.row>.row-icon{
+    display: inline-block;
+    width: .42rem;
+    height: .42rem;
+    margin-right: .2rem;
+    vertical-align: bottom;
+}
+.row>.icon-108{
     float: right;
-    font-size: .26rem;
     color: #aaa;
 }
-.row-container .row-icon{
-    display: inline-block;
-    width: .4rem;
-    height: .4rem;
-    float: left;
-    margin-right:.28rem;
-}
-
 .row-container .row-title{
-    float: left;
     font-size: .3rem;
 }
 
-.row-container .row-content{
-    float: right;
-}
-
-.row-container .row-arrow{
-    float: right;
-    margin-left:.2rem;
-}
 /*按钮*/
 .labels{
     display: flex;
@@ -286,4 +284,36 @@
 }
 .labels>.btn-checkced.border-1px{
     color: #f65287;
+}
+.tags{
+    display: flex;
+    flex-wrap: wrap;
+    padding: .34rem 0px;
+    margin: 0px auto;
+}
+.tags>.weui_btn{
+    width: 1.38rem;
+    font-size: .2rem;
+    margin-bottom: .2rem;
+    margin-right: .26rem;
+    padding: .16rem .34rem;
+}
+.tags>.border-1px::after{
+    border-color: #ccc;
+    border-radius: .52rem;
+}
+.tags>.btn-checkced.border-1px::after{
+    border-color: #f65287;
+}
+.tags>.btn-checkced.border-1px{
+    color: #f65287;
+}
+ 
+// 倒计时图标
+.time-icon{
+    display: inline-block;
+    width: .24rem;
+    height: .24rem;
+    vertical-align: text-top;
+    margin-right: .2rem;
 }

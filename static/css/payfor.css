@@ -1,0 +1,78 @@
+.reward-box,.pay-box{
+    position: fixed;
+    left: 0px;
+    width: 100%;
+    font-size: .3rem;
+    background-color: #fff;
+    transition: all .3s;
+}
+.reward-box{
+    bottom: 0px;
+    bottom: -5rem;
+    z-index: 10000;
+}
+.reward-box>ul{
+    overflow: hidden;
+    margin:.3rem 0px 1rem;
+}
+.reward-list{
+    float: left;
+    width: 25%;
+    text-align: center;
+    font-size: .24rem;
+    margin: 0px 0px .3rem;
+}
+.reward-list>dl{
+    width: 1.2rem;
+    margin: 0px auto;
+}
+.reward-list>dl::after{
+    border-color: #f65287;
+}
+.reward-list dt{
+    width: .6rem;
+    height: .6rem;
+    margin: 0px auto;
+}
+.reward-list dd{
+    line-height: .6rem;
+}
+.pay-box{
+    padding-bottom: 2.2rem;
+    bottom: -5rem;
+    z-index: 9999;
+}
+.pay-box>h1{
+    font-size: .3rem;
+    padding: .35rem .4rem;
+}
+.pay-box li{
+    padding: .2rem .4rem;
+}
+.cash,.wx,.balance{
+    display: inline-block;
+    width: .52rem;
+    height: .52rem;
+    margin-right: .2rem;
+    vertical-align: middle;
+}
+.box-visible{
+    bottom: 0px;
+}
+.mask{
+	opacity: 0;
+    -webkit-transition-duration: .3s;
+    transition-duration: .3s;
+    z-index: 1000;
+    visibility: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .6);
+}
+.mask_visible{
+    opacity: 1;
+    visibility: visible;
+}

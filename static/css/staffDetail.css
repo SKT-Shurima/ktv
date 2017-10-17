@@ -61,6 +61,7 @@
 }
 .labels>.border-1px::after{
 	border-color: rgba(246, 82, 135,.5);
+	border-radius: .7rem;
 }
 .comments{
 	margin-top: .2rem;

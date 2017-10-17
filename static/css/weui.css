@@ -854,7 +854,8 @@ a {
 
 .weui_dialog_title {
     font-weight: 400;
-    font-size: 17px
+    font-size: 17px;
+    padding: 16px 10px;
 }
 
 .weui_dialog_bd {

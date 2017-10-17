@@ -1,49 +1,45 @@
-@import "mine.css";
-.account-top{
-    height:3.6rem;
-    color:#fff;
-    text-align:center;
+.account-box{
+    height: 3.6rem;
     overflow: hidden;
 }
-
-.account-top >div:first-child{
-    margin-top:1rem;
-    font-size:.3rem;
+.account-info{
+    width: 100%;
+    text-align: center;
+    color: #fff;
 }
-
-.account-top >div:last-child{
-    margin-top:.7rem;
-    font-size:.8rem;
+.account-info>dt{
+    margin: 1rem 0px .72rem;
+    font-size: .3rem;
+    line-height: .36rem;
 }
-
-.account_detail-row-container{
-    background-color:#fff;
-    overflow: hidden;
+.account-info>dd{
+    font-size: .78rem;
 }
-
-.account_detail-row-container .row{
-    display: block;
+.container{
+    padding: 0px;
+}
+.account-list{
     height:1.2rem;
     overflow: hidden;
-    padding:0 .3rem;
+    padding:0px .3rem;
 }
 
-.account_detail-row-container .row-1{
+.account-detail{
     margin-top:.24rem;
     font-size:.3rem;
     line-height:.3rem;
     overflow: hidden;
 }
 
-.account_detail-row-container .row-1 >span:first-child{
-    float:left;
+.account-detail >span{
+    float: left;
 }
 
-.account_detail-row-container .row-1 >span:last-child{
-    float:right;
+.account-detail >em{
+    float: right;
 }
 
-.account_detail-row-container .row-2{
-    margin-top:.16rem;
-    font-size:.22rem;
+.account-date{
+    margin-top: .16rem;
+    font-size: .22rem;
 }

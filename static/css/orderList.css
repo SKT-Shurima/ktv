@@ -28,7 +28,7 @@
 }
 .order-tab>.tab-checked{
 	color: #fff;
-	background-color: rgba(255,255,255,.3)
+	background-color: rgba(255,255,255,.7)
 }
 .container{
 	padding: .88rem .3rem;

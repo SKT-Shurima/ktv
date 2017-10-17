@@ -1,87 +1,167 @@
 <template>
-  	<div id="app">
-     	<div class="order-wrap">
-	      	<i class="icon icon-109" id='back'></i>
-	      	<dl class="staff-info">
-		        <dt>
-		          <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg">
-		        </dt>
-		        <dd>
-		          紫玫瑰
-		        </dd>
-	      	</dl>
-	      	<div class="weui-loadmore weui-loadmore-line">
-	        	<span class="weui-loadmore-tips">打赏她小费</span>
-	      	</div>
-	      	<div class="labels">
-		        <button class="weui_btn  border-1px color-6 btn-checkced">不赏</button>
-		        <button class="weui_btn  border-1px color-6">8.8元</button>
-		        <button class="weui_btn  border-1px color-6">18.8元</button>
-		        <button class="weui_btn  border-1px color-6">88.8元</button>
-	      	</div>
-	      	<div class="amount-box">
-	        	<label>其他金额：</label><input type="number" pattern="[0-9]*" onkeypress="return(/[\d]/.test(String.fromCharCode(event.keyCode)))" class="input-box"><span class="color-6">元</span>
-	      	</div>
-	     	<div class="weui-loadmore weui-loadmore-line">
-	        	<span class="weui-loadmore-tips">给她来个评价</span>
-	      	</div>
-		    <div class="rate">
-		        <i class="rate-icon" v-for='(item,index) in 5' :key='index' :class='{"seleted":index<rate}' @touchstart='rate=index+1'></i>
-		    </div>
-	     	<div class="com-labels">
-		        <button class="weui_btn  border-1px color-6">态度好</button>
-		        <button class="weui_btn  border-1px color-6">服务热情</button>
-		        <button class="weui_btn  border-1px color-6">温柔体贴</button>
-	    	</div>
-	    	<div class="note-box">
-		        <input type="text" placeholder="其他意见和建议" class="input-box" v-model='note'><i class="color-9"><span v-text='note.length'></span>/<span>40</span></i>
-		    </div>
-		    <div class="op-btn primary-bg" @touchstart='submit'>
-		      确认
-		    </div>
-		</div>
+  <div id="app">
+  	<staff-info></staff-info>
+    <div class="weui-flex nore-order op-btn" v-if='order.ostate_id===1'>
+      <div class="weui-flex-item order-time color-9"><i class="time-icon"></i>{{order.create_time|countDownFilter}}</div>
+      <div class="weui-flex-item reminder blue-bg"  @touchstart='feedback(3)'>催单</div>
+      <div class="weui-flex-item cancle-order gray-bg" @touchstart='cancelOrder'>取消预约</div>
+    </div>
+    <div class="weui-flex re-order op-btn" v-if='order.ostate_id===2'>
+      <div class="weui-flex-item order-time color-9"><i class="time-icon"></i>{{order.create_time|countDownFilter}}</div>
+      <div class="weui-flex-item reminder blue-bg" @touchstart='feedback(2)'>投诉</div>
+      <div class="weui-flex-item cancle-order gray-bg" @touchstart='cancelOrder'>取消预约</div>
+    </div>
+    <div class="op-btn gray-bg" v-if='order.ostate_id===4'>
+      已取消
+    </div>
+    <div class="weui-flex complete-order op-btn" v-if='order.ostate_id===3'>
+        <div class="weui-flex-item reminder blue-bg" @touchstart='payment'>立即支付</div>
+        <div class="weui-flex-item green-bg">
+          <a :href='"orderDetail.html?id="+item' style="color: #fff;">打赏</a>
+        </div>
+    </div>
+    <pay-for ref='payfor' @payType='payfor'></pay-for>
   </div>
 </template>
 
 <script>
+  import staffInfo  from '../../component/staffInfo';
+  import payFor from '../../component/payfor';
   export default {
     name: 'app',
     data(){
-    	return{
-    		rate: 0,
-    		note: ''
+    	return {
+        nowTime: 0,
+        order: {}
     	}
     },
-    watch:{
-    	note:{
-    		handler(newVal,oldVal){
-    			if (newVal.length>=40) {
-    				this.note = newVal.slice(0,40);
-    			}
-    		}
-    	}
+    filters:{
+      countDownFilter
     },
-    methods:{
-    	submit(){
-
-    	}
+    components:{
+      payFor,staffInfo
+    },
+    methods: {
+      orderDetail(){
+        let params = {
+          token: getCookie('token'),
+          order_id: this.query.id 
+        }
+        $.ajax({
+          url: `${baseAjax}/order/orderDetail.jhtml`,
+          type: 'GET',
+          dataType: 'json',
+          data: params,
+          success: res=>{
+            let {code,data,desc} =res;
+            if (code===0) {
+              this.order=data;
+            }else{
+              error(desc)
+            }
+          }
+        });
+      },
+      payment(){
+        this.$refs.payfor.maskBol = true;
+      },
+      payfor(payParams){
+        let {order_amount,optype} =payParams;
+        let params ={
+          token: getCookie('token'),
+          optype: optype,
+          order_amount: order_amount,
+          optarget: 1
+        }
+        $.ajax({
+          url: `${baseAjax}/pay/pay.jhtml`,
+          type: 'POST',
+          dataType: 'json',
+          data: params,
+          success: res=>{
+            let {code,data,desc} =res;
+            if (code===0) {
+              console.log(data);
+            }else{
+              error(desc)
+            }
+          }
+        });
+      },
+      cancelOrder(){
+        $.confirm('', '确认取消预约？', ()=>{
+          let params = {
+              token: getCookie('token'),
+              order_id: this.order.order_id
+          }
+          $.ajax({
+              url: `${baseAjax}/order/cancelOrder.jhtml`,
+              type: 'POST',
+              dataType: 'json',
+              data: params,
+              success: res=>{
+                  let {code,data,desc} =res;
+                  if (code===0) {
+                    this.orderDetail();
+                  }else{
+                    error(desc)
+                  }
+              }
+          });
+        }, ()=>{
+            return false;
+        });
+      },
+      feedback(feedback_type){
+        let params = {
+            token: getCookie('token'),
+            order_id: this.order.order_id,
+            comment: feedback_type==2?"投诉":"催单",
+            feedback_type: feedback_type
+        }
+        $.ajax({
+            url: `${baseAjax}/order/feedback.jhtml`,
+            type: 'POST',
+            dataType: 'json',
+            data: params,
+            success: res=>{
+                let {code,data,desc} =res;
+                if (code===0) {
+                    if (feedback_type==2) {
+                        $.alert('',"投诉成功");
+                    }else{
+                        $.alert('',"系统已帮您催单，请耐心等待，谢谢！");
+                    }
+                }else{
+                  error(desc)
+                }
+            }
+        });
+      } 
+    },
+    created(){
+      this.query = getRequest();
     },
     mounted(){
-    	this.$nextTick(()=>{
-    		
-    	})
+        this.$nextTick(()=>{
+          this.orderDetail();
+          setInterval(() => {
+              this.nowTime = new Date().getTime();
+          }, 1000);
+        })
     }
   }
 </script>
 <style type="text/css" lang='scss' scoped>
-	@import '../../../static/css/mixin.scss';
-	.rate-icon{
-		display: inline-block;
-		width: .46rem;
-		height: .46rem;
-		@include bg-image('../../../static/images/star');
-	}
-	.rate-icon.seleted{
-		@include bg-image('../../../static/images/star-selected');
-	}
+@import "../../../static/css/mixin";
+  .mood-icon{
+    display: inline-block;
+    width: .42rem;
+    height: .42rem;
+    position: absolute;
+    right: .2rem;
+    top: .2rem;
+    z-index: 100;
+    @include bg-image('../../../static/images/sunny');
+  }
 </style>

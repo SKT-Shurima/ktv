@@ -7,7 +7,7 @@
           </div>
           <ul>
               <li v-for='(item,index) in 5' :key='index'>
-                  <img src="http://7xr193.com1.z0.glb.clouddn.com/1.jpg" data-src="http://7xr193.com1.z0.glb.clouddn.com/1.jpg" alt="">
+                  <img src="http://static.strongmall.net/upload/goods/2017_07_27/d5f9e34789d2ada6be12baaa0825bf512f876861.png?imageView2/2/w/750/h/750" data-src="http://static.strongmall.net/upload/goods/2017_07_27/d5f9e34789d2ada6be12baaa0825bf512f876861.png?imageView2/2/w/750/h/750" alt="">
               </li>
           </ul>
           <div class="dot">
@@ -68,7 +68,7 @@
               </dt>
               <dd>
                 <div class="staff-info"><span v-text='item.nick_name'></span><em class="price">&yen;{{item.price}}</em></div>
-                <div class="staff-detail"><span>{{item.birthday|age}}岁</span><em v-text='item.hobby'></em></div>
+                <div class="staff-detail"><span>{{item.birthday|birthFilter}}岁</span><em v-text='item.hobby'></em></div>
               </dd>
             </dl>
           </li>
@@ -78,28 +78,22 @@
   </div>
 </template>
  <script type="text/ecmascript-6">
- import loadMore from '../../component/loadMore'
- import vFooter from '../../component/vFooter';
+  import loadMore from '../../component/loadMore';
+  import vFooter from '../../component/vFooter';
+  import {getList} from '../../../static/js/mixins';
     export default {
         data() {
-            return {
-                banner: [],
-                type: [],
-                page: 1, 
-                pageSize: 10,
-                totalPage: 1, 
-                pageStart: 0, // 开始页数
-                pageEnd: 0, // 结束页数
-                listdata: [], // 下拉更新数据存放数组
-                scrollData: {
-                    noFlag: false //暂无更多数据显示
-                },
-                preType: '',
-            }
+          return {
+            banner: []
+          }
+        },
+        filters:{
+          birthFilter
         },
         components: {
           loadMore,vFooter
         },
+        mixins: [getList],
         methods: {
           getBanner(){
             let params = {
@@ -115,25 +109,6 @@
                 let {code,data,desc} =res;
                 if (code===0) {
                   this.banner = data.bannerList;
-                }else{
-                  error(desc)
-                }
-              }
-            });
-          },
-          getType(){
-            let params ={
-              token: getCookie('token')
-            };
-            $.ajax({
-              url: `${baseAjax}/user/userTypeList.jhtml`,
-              type: 'GET',
-              dataType: 'json',
-              data: params,
-              success: res=>{
-                let {code,data,desc} =res;
-                if (code===0) {
-                  this.type = data.userTypeList;
                 }else{
                   error(desc)
                 }
@@ -162,98 +137,6 @@
               }
             });
           },
-          typeList(mask){
-            switch(mask){
-              case 'new':
-                this.getNewList(mask);
-                break;
-              case 'hot':
-                this.getHotList(mask);
-                break;
-              default:
-                this.getTypeList(mask);
-                break;
-            };
-            this.preType = mask;
-          },
-          getNewList(mask){
-            let more = this.$el.querySelector('.load-more');
-            let params ={
-              token: getCookie('token'),
-              page: this.page,
-              pageSize: this.pageSize
-            }
-            $.ajax({
-              url: `${baseAjax}/home/listEmployeeByNew.jhtml`,
-              type: 'GET',
-              dataType: 'json',
-              data: params,
-              success: res=>{
-                let {code,data,desc} =res;
-                if (code===0) {
-                  let dataList = data.userList.data;
-                  this.listdata = mask===this.preType?dataList:this.listdata.concat(this.listdata,dataList);
-                  more.style.display = 'none';
-                }else{
-                  error(desc)
-                }
-              }
-            });
-          },
-          getTypeList(mask){
-            let more = this.$el.querySelector('.load-more');
-            let params ={
-              token: getCookie('token'),
-              utype_id: mask,
-              page: this.page,
-              pageSize: this.pageSize
-            }
-            $.ajax({
-              url: `${baseAjax}/home/listEmployeeBySearch.jhtml`,
-              type: 'GET',
-              dataType: 'json',
-              data: params,
-              success: res=>{
-                let {code,data,desc} =res;
-                if (code===0) {
-                  let dataList = data.userList.data;
-                  this.listdata = mask===this.preType?dataList:this.listdata.concat(this.listdata,dataList);
-                  more.style.display = 'none';
-                }else{
-                  error(desc)
-                }
-              }
-            });
-          },
-          getHotList() {
-              
-          },
-          onInfinite(done) {
-            let more = this.$el.querySelector('.load-more');
-            if (this.page>=this.totalPage) {
-              more.style.display = 'none';
-              this.scrollData.noFlag = true;
-            }else{
-              this.page = this.page < this.totalPage?++this.page:1;
-              let mask = this.preType;
-              switch(this.preType){
-                case 'new':
-                  this.getNewList(mask);
-                  break;
-                case 'hot':
-                  this.getHotList(mask);
-                  break;
-                default:
-                  this.getTypeList(mask);
-                  break;
-              };
-              more.style.display = 'none';
-            }
-            done();
-          },
-          staffDetail(id){
-
-          },
         },
         mounted(){
           this.$nextTick(()=>{
@@ -270,8 +153,7 @@
             //     if (code===0) {
             //       let userInfo = JSON.stringify(data.user);
             //       sessionStorage.userInfo = userInfo;
-            //       setCookie("token",data.token,10);
-                  
+            //       setCookie("token",data.token,100);
             //     }else{
             //       error(desc)
             //     }
@@ -279,7 +161,6 @@
             // });
             this.getBanner();
             this.search();
-            this.getType();
           })
         }
     }
