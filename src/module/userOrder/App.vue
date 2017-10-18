@@ -43,7 +43,7 @@
                                     <button class="weui_btn border-1px color-9  cancle-pre" @touchstart='cancelOrder(item.order_id)'>取消预约</button>
                                 </dd>
                                 <dd v-if='item.orderDetail.ostate_id===3'>
-                                    <button class="weui_btn border-1px color-blue payment" @touchstart='payment'>立即支付</button>
+                                    <button class="weui_btn border-1px color-blue payment" @touchstart='payment' v-if='item.orderDetail.online_pay===1'>立即支付</button>
                                     <button class="weui_btn border-1px color-green reward" @touchstart='reward(item.orderDetail.employee_id)'>打赏</button>
                                 </dd>
                             </dl>

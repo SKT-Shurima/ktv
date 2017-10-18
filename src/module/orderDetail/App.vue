@@ -15,7 +15,7 @@
       已取消
     </div>
     <div class="weui-flex complete-order op-btn" v-if='order.ostate_id===3'>
-        <div class="weui-flex-item reminder blue-bg" @touchstart='payment'>立即支付</div>
+        <div class="weui-flex-item reminder blue-bg" @touchstart='payment' v-if='order.online_pay===1'>立即支付</div>
         <div class="weui-flex-item green-bg">
           <a :href='"orderDetail.html?id="+item' style="color: #fff;">打赏</a>
         </div>

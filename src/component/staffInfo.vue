@@ -1,5 +1,5 @@
 <template>
-	<div id='app'>
+	<div>
 		<load-more  :on-infinite="onInfinite" :dataList="scrollData">
       <div class="slide" id="slide">
         <i class="icon icon-109" id='back'></i>
