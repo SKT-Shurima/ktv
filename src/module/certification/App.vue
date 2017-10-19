@@ -343,14 +343,20 @@
 	    	},
 	    	chooseArea(){
 	    		this.cityPicker.show();
+	    		let update;
 	    		this.cityPicker.on('picker.change', (e,index)=> {
 				    if (e===0) {
-				    	this.initcityArr(index);
+				    	update = false;
+			    		this.initcityArr(index);
 				    	this.cityPicker.refillColumn(1, this.cityArr);
 				    	this.cityPicker.scrollColumn(1, 0);
+				    	update = true;
 				    }
 				});
 				this.cityPicker.on('picker.select', (val, index)=> {
+					if (!update) {
+						return false;
+					}
 					this.province_id = val[0];
 					this.city_id = val[1];
 					this.province = this.provinceArr[index[0]].text;
