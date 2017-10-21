@@ -145,8 +145,11 @@ export const getInfo = {
   },
   methods: {
     userInfo(){
+        // let params ={
+        //   token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+        // }
         let params ={
-          token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+          token: getCookie('token'),
         }
         $.ajax({
           url: `${baseAjax}/user/info.jhtml`,
@@ -159,7 +162,10 @@ export const getInfo = {
               this.sign = data.sign ;
               this.userBean = data.user.userBean;
               this.userTypeBean = data.user.userTypeBean;
-              this.tags = data.user.userBean.tags.split(",");
+              this.tags = data.user.userBean.tags?data.user.userBean.tags.split(","):"";
+              if (this.editBol) {
+                this.initData();
+              }
             }else{
               error(desc)
             }

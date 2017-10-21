@@ -2,11 +2,14 @@
   <div id="app">
     <div id="tagnav" class="weui-navigator weui-navigator-wrapper">
         <ul class="weui-navigator-list" style="height: 10px;overflow:hidden;">
-          <li @touchstart='typeList("")' :class="{'border-bottom-1px':tabIndex === 1}"><a href="javascript:void(0);" @touchstart='tabIndex=1'>推荐</a></li>
-          <li @touchstart='typeList("new")' :class="{'border-bottom-1px':tabIndex === 2}" ><a href="javascript:void(0);" @touchstart='tabIndex=2'>新人</a></li>
-          <li @touchstart='typeList("hot")' :class="{'border-bottom-1px':tabIndex === 3}"><a href="javascript:void(0);" @touchstart='tabIndex=3'>热门</a></li>
+          <li @touchstart='typeList("")'><a href="javascript:void(0);">推荐</a></li>
+          <li @touchstart='typeList("new")'><a href="javascript:void(0);">新人</a></li>
+          <li @touchstart='typeList("hot")'><a href="javascript:void(0);">热门</a></li>
           <li><a href="reward.html">打赏榜</a></li>
-          <li v-for="(item,index) in type" :key='index' @touchstart='typeList(item.utype_id)' :class="{'border-bottom-1px':tabIndex === index+5}"><a href="javascript:void(0);" v-text='item.utype_name' @touchstart='tabIndex=index+5;'></a></li>
+          <li @touchstart='typeList(1)'><a href="javascript:void(0);">高颜值</a></li>
+          <li @touchstart='typeList(2)'><a href="javascript:void(0);">小清新</a></li>
+          <li @touchstart='typeList(3)'><a href="javascript:void(0);">才艺</a></li>
+          <li @touchstart='typeList(4)'><a href="javascript:void(0);">萌妹子</a></li>
         </ul>
       </div>
     <load-more  :on-infinite="onInfinite" :dataList="scrollData">
@@ -57,7 +60,9 @@ import {getList} from '../../../static/js/mixins';
     },
     mounted(){
       this.$nextTick(()=>{
-        
+        TagNav('#tagnav',{
+          type: 'scrollToFirst',
+        });
         this.typeList("");
       })
     }

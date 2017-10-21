@@ -18,19 +18,19 @@
           <ul class="weui-flex">
             <li class="nav-item weui-flex-item">
               <dl @touchstart='typeList("")'>
-                <dt class="nav-img-box"><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
+                <dt class="nav-img-box"><i class="nav-icon alls-icon"></i></dt>
                 <dd>全部</dd>
               </dl>
             </li>
             <li class="nav-item weui-flex-item">
               <dl @touchstart='typeList("new")'>
-                <dt class="nav-img-box"><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
+                <dt class="nav-img-box"><i class="nav-icon newper-icon"></i></dt>
                 <dd>新人</dd>
               </dl>
             </li>
             <li class="nav-item weui-flex-item">
               <dl @touchstart='typeList("hot")'>
-                <dt class="nav-img-box"><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
+                <dt class="nav-img-box"><i class="nav-icon hot-icon"></i></dt>
                 <dd>热门</dd>
               </dl>
             </li>
@@ -38,7 +38,7 @@
               <dl>
                 <dt class="nav-img-box">
                   <a href="ranking.html">
-                      <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg">
+                      <i class="nav-icon reward-icon"></i>
                   </a>
                   </dt>
                 <dd>排行榜</dd>
@@ -46,10 +46,28 @@
             </li>
           </ul>
           <ul class='weui-flex'>
-            <li class="nav-item weui-flex-item" v-for='(item,index) in type' :key='index'>
-              <dl @touchstart='typeList(item.utype_id)'>
-                <dt class="nav-img-box"><img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt=""></dt>
-                <dd v-text='item.utype_name'></dd>
+            <li class="nav-item weui-flex-item">
+              <dl @touchstart='typeList(1)'>
+                <dt class="nav-img-box"><i class="nav-icon beau-icon"></i></dt>
+                <dd>高颜值</dd>
+              </dl>
+            </li>
+            <li class="nav-item weui-flex-item">
+              <dl @touchstart='typeList(2)'>
+                <dt class="nav-img-box"><i class="nav-icon fresh-icon"></i></dt>
+                <dd>小清新</dd>
+              </dl>
+            </li>
+            <li class="nav-item weui-flex-item">
+              <dl @touchstart='typeList(3)'>
+                <dt class="nav-img-box"><i class="nav-icon talent-icon"></i></dt>
+                <dd>才艺</dd>
+              </dl>
+            </li>
+            <li class="nav-item weui-flex-item">
+              <dl @touchstart='typeList(4)'>
+                <dt class="nav-img-box"><i class="nav-icon bud-icon"></i></dt>
+                <dd>萌妹子</dd>
               </dl>
             </li>
           </ul>
@@ -179,5 +197,34 @@
     right: .2rem;
     top: .2rem;
     @include bg-image('../../../static/images/sunny');
+  }
+  .nav-icon{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+  }
+  .alls-icon{
+    @include bg-image('../../../static/images/alls');
+  }
+  .newper-icon{
+    @include bg-image('../../../static/images/newper');
+  }
+  .hot-icon{
+    @include bg-image('../../../static/images/hot');
+  }
+  .reward-icon{
+    @include bg-image('../../../static/images/reward');
+  }
+  .beau-icon{
+    @include bg-image('../../../static/images/beau');
+  }
+  .fresh-icon{
+    @include bg-image('../../../static/images/fresh');
+  }
+  .talent-icon{
+    @include bg-image('../../../static/images/talent');
+  }
+  .bud-icon{
+    @include bg-image('../../../static/images/bud');
   }
 </style>

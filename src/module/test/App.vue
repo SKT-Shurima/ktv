@@ -16,11 +16,12 @@ export default {
 	methods: {
 
 		   PreviewImage(event){
-                var addr = 'http://opf2ucy0n.bkt.clouddn.com/'
+                var addr = 'http://oxqmde0yk.bkt.clouddn.com/'
                 var file = event.target.files[0];
                 var formData = new FormData();
                 formData.append('file', file);
-                formData.append('token', "tJ3hqsL7aUoZuxOofP7QRlRkDPiNXfmS2ZAfdRuA:0m3hp9M6tuWlUi18wfRNPGWGrUI=:eyJzY29wZSI6Imhka3R2IiwiZGVhZGxpbmUiOjE1MDgxMjY4MjJ9");
+               let QnToken = getCookie('QnToken');
+                formData.append('token', QnToken);
                 $.ajax({
                     url: 'http://up.qiniup.com',
                     type: 'POST',

@@ -92,6 +92,8 @@ const dateFilter  = time =>{
 const error = (msg)=>{
 	console.log(msg);
 }
+
+
 $(function(){
 	$('#back').on('touchstart',function(){
     	window.history.go(-1);

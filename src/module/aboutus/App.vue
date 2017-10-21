@@ -11,19 +11,19 @@
       </li> -->
     </ul>
     <div style="width: 300px;height: 300px;">
-     <vueCropper
-  ref="cropper2"
-  :img="example2.img"
-  :outputSize="example2.size"
-  :outputType="example2.outputType"
-  :info="example2.info"
-  :canScale="example2.canScale"
-  :autoCrop="example2.autoCrop"
-  :autoCropWidth="example2.width"
-  :autoCropHeight="example2.height"
-  :fixed="example2.fixed"
-  :fixedNumber="example2.fixedNumber"
-></vueCropper>
+      <vueCropper
+        ref="cropper2"
+        :img="example2.img"
+        :outputSize="example2.size"
+        :outputType="example2.outputType"
+        :info="example2.info"
+        :canScale="example2.canScale"
+        :autoCrop="example2.autoCrop"
+        :autoCropWidth="example2.width"
+        :autoCropHeight="example2.height"
+        :fixed="example2.fixed"
+        :fixedNumber="example2.fixedNumber"
+      ></vueCropper>
     </div>
     
 </div>

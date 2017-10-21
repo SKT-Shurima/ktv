@@ -1,0 +1,496 @@
+<template>
+  <div>
+       <div class="staff-info primary-bg">
+	      <i class="icon icon-109" id='back'></i>
+	      <dl class="info-box">
+	        <dt class="avater">
+	          <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+	        </dt>
+	        <dd>
+	          <div class="name ellipsis-1" v-text='userBean.wechat_name'></div>
+	          <div class="wxid ellipsis-1">{{userBean.phone}}&nbsp;(微信号)</div>
+	        </dd>
+	      </dl>
+	   </div>
+	   <div class="container">
+	      <div class="upload-avater">
+	        <div class="upload-limit color-9">
+	          个人图册（上限10张）
+	        </div>
+	        <div class="avater-list-wrap">
+	            <div class="avater-list-box" :style='{width: (images.length+1)*90+"px"}'>
+	              <ul class="weui_uploader_files">
+	              	<li v-for='(item,index) in images' :key='index' class="weui_uploader_file">
+	              		<img :src="item.urls">
+	              		<i class="icon icon-95" @touchstart='delImg(index)'></i>
+	              	</li>
+	              </ul>
+	              <div class="weui_uploader_input_wrp">
+	              	<input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" @change="previewImage($event)"/>
+	              </div> 
+	            </div>
+	        </div>
+	      </div>
+	      <ul class="base-info">
+	          <li class="border-bottom-1px cell"><label class="cell-label">姓名</label><input type="text" placeholder="请输入真实姓名" :disabled="editBol" class="cell-input" v-model='real_name' /></li>
+	          <li class="border-bottom-1px cell"><label class="cell-label">花名</label><input type="text" placeholder="请输入花名" :disabled="editBol" class="cell-input" v-model='nick_name' /></li>
+	          <li class="border-bottom-1px cell" @touchstart='chooseType'><label class="cell-label">类别</label><input type="text" placeholder="点击选择类别" class="cell-input" disabled style="padding-right: .3rem;" v-model='utype' /><i class="icon icon-108"></i></li>
+	      </ul>
+	      <ul class="base-info">
+	          <li class="border-bottom-1px cell"><label class="cell-label">身高(cm)</label><input type="number" pattern="[0-9]*" onkeypress="return(/[\d]/.test(String.fromCharCode(event.keyCode)))" placeholder="请输入身高" class="cell-input" v-model='height' /></li>
+	          <li class="border-bottom-1px cell"><label class="cell-label">体重(kg)</label><input type="number" pattern="[0-9]*" onkeypress="return(/[\d]/.test(String.fromCharCode(event.keyCode)))" placeholder="请输入体重" class="cell-input" v-model='weight'/></li>
+	          <li class="border-bottom-1px cell"><label class="cell-label">籍贯</label><input type="text" placeholder="点击选择籍贯" class="cell-input" disabled style="padding-right: .3rem;" v-model='area' @touchend='chooseArea' /><i class="icon icon-108"></i></li>
+	          <li class="border-bottom-1px cell"><label class="cell-label">出生日期</label><input type="text" placeholder="点击选择出生日期" class="cell-input" disabled  style="padding-right: .3rem;" v-model='birDate' @touchend='chooseDate'/><i class="icon icon-108"></i></li>
+	      </ul>
+	      	<ul class="base-info">
+		          <li class="border-bottom-1px cell"><label class="cell-label">兴趣爱好</label><input type="text" placeholder="请输入兴趣爱好" class="cell-input" v-model='hobby' /></li>
+		          <li class="border-bottom-1px cell"><label class="cell-label">心情</label><span class="mood-icon"><i @touchstart='mood=1' class='mood-sunny' :class='{"selected":mood===1}'></i><i @touchstart='mood=2' class="mood-unsunny" :class='{"selected":mood===2}'></i></span></li>
+	     	</ul>
+	      	<div class="tag">
+		        <h1>标签</h1>
+		        <div class="labels">
+		            <button class="weui_btn  border-1px color-9" :class='{"btn-checkced":item.checkBol}' v-for='(item,index) in labels' v-text='item.text' @touchstart='item.checkBol=!item.checkBol'></button>
+		        </div>
+	      	</div>
+	   	</div>
+	   	<div class="mask" v-show='chooseBol'>
+	   		<vueCropper
+			  ref="cropper"
+			  :img="cropper.img"
+			  :outputSize="cropper.size"
+			  :outputType="cropper.outputType"
+			  :info="cropper.info"
+			  :prevent-white-space="false"
+			  :canScale="cropper.canScale"
+			  :autoCrop="cropper.autoCrop"
+			  :autoCropWidth="cropper.width"
+			  :autoCropHeight="cropper.height"
+			  :fixed="cropper.fixed"
+			  :fixedNumber="cropper.fixedNumber"
+			  style='background: rgba(0,0,0,.9);'
+			></vueCropper>
+			<div class="choose-op">
+				<span @touchstart='chooseBol=false;'>取消</span>
+				<span @touchstart='finish'>选取</span>
+			</div>
+	   	</div>
+	   	<div class="op-btn primary-bg" :class='{"op-btn-disable":!(real_name&&nick_name&&utype_id!==""&&height&&weight&&province_id!==""&&city_id!==""&&birthday!==""&&hobby&&tags.length&&images.length)}' @touchstart='auth'>
+	      保存
+	    </div>
+  	</div>
+</template>
+
+<script type="text/ecmascript-6">
+	import {getInfo} from '../../static/js/mixins';
+	import VueCropper from "vue-cropper"  
+  	export default {
+	    name: 'editInfo',
+	    data(){
+	    	return{
+	    		chooseBol: false,
+	    		cropper: {
+		          	img: '',
+		          	info: true,
+		          	size: 1,
+		          	outputType: 'jpeg',
+		          	canScale: true,
+		          	autoCrop: true,
+		          	// 只有自动截图开启 宽度高度才生效
+		          	autoCropWidth: 200,
+		          	autoCropHeight: 200,
+		          	// 开启宽度和高度比例
+		          	fixed: true,
+		          	fixedNumber: [1, 1]
+		        },
+		        qnUrl: "http://oxqmde0yk.bkt.clouddn.com/",
+	    		typePicker:'',
+	    		typeList: '',
+	    		cityPicker: '',
+	    		provinceArr: [],
+	    		cityArr: [],
+	    		area: '',
+	    		datePicker: '',
+	    		dateY: [],
+	    		dateM: [],
+	    		dateD: [],
+	    		birDate: '',
+	    		token: '',
+				real_name: '',
+				nick_name: '',
+				utype_id: '',
+				utype: '',
+				height: '',
+				weight: '',
+				province_id: '',
+				province: '',
+				city_id: '',
+				city: '',
+				birthday: '',
+				hobby: '',
+				mood: 1,
+				images: [],
+				labels: [{
+					text: '小酒窝',
+					checkBol: false
+				},{
+					text: '皮肤白皙',
+					checkBol: false
+				},{
+					text: '鼻梁高',
+					checkBol: false
+				},{
+					text: '标准身材',
+					checkBol: false
+				},{
+					text: 'A4腰',
+					checkBol: false
+				},{
+					text: '眼睛水灵',
+					checkBol: false
+				}]
+	    	}
+	    },
+	    props: ["editBol"],
+	    mixins: [getInfo],
+	    components:{
+	      	VueCropper
+	    },
+	    watch:{
+	    	labels:{
+	    		handler(newVal,oldVal){
+	    			let tags = [];
+		    		for(let j=0;j<newVal.length;j++){
+		    			if (newVal[j].checkBol) {
+		    				tags.push(newVal[j].text);
+		    			}
+		    		}
+		    		this.tags = tags;
+	    		},
+	    		deep: true
+	    	}
+	    },
+	    methods:{
+	    	initData(){
+	    		this.real_name = this.userBean.real_name;
+	    		this.nick_name = this.userBean.nick_name;
+	    		this.height = this.userBean.height;
+	    		this.weight = this.userBean.weight;
+	    		this.province_id = this.userBean.province_id;
+	    		this.province = this.userBean.province;
+	    		this.city_id = this.userBean.city_id;
+	    		this.city = this.userBean.city;
+	    		this.hobby = this.userBean.hobby;
+	    		this.mood =  this.userBean.mood;
+	    		this.birthday  = this.userBean.birthday;
+	    		this.utype_id = this.userTypeBean.utype_id;
+	    		this.utype = this.userTypeBean.utype_name;
+	    		let tags = this.tags,labels=this.labels;
+	    		for(let m=0;m<tags.length;m++){
+	    			for (let n=0;n<labels.length;n++) {
+	    				if (tags[m]==labels[n].text) {
+	    					labels.checkBol=true;
+	    				}
+	    			}
+	    		}
+	    		this.labels = labels;
+
+	    	},
+	    	getType(){
+	            let params ={
+	              	token: getCookie('token')
+	            };
+	            $.ajax({
+	              	url: `${baseAjax}/user/listUserType.jhtml`,
+	              	type: 'GET',
+	              	dataType: 'json',
+	              	data: params,
+	              	success: res=>{
+	                	let {code,data,desc} =res;
+	                	if (code===0) {
+	                		let type = [];
+	                		for(let i = 0;i<data.userTypeList.length;i++){
+	                			let item = {
+	                				text: data.userTypeList[i].utype_name,
+	                				value: data.userTypeList[i].utype_id
+	                			};
+	                			type.push(item);
+	                		};
+	                  		this.typePicker = new Picker({
+						    	data: [type],
+						    	title: ''
+							});
+							this.typeList = type;
+	                	}else{
+	                  		error(desc)
+	               		}
+	              	}
+	            });
+	        },
+	        initArea(){
+	        	var provinceArr = [];
+				for (let i = 0; i < cities.length; i++) {
+					var proItem = {
+						text: cities[i].name,
+						value: cities[i].id
+					};
+					provinceArr.push(proItem);
+				}
+				this.provinceArr = provinceArr;
+				this.initcityArr(0);
+				this.cityPicker = new Picker({
+				    data: [this.provinceArr,this.cityArr],
+				    title: '',
+				    selectedIndex: [0,0]
+				});
+	        },
+	        initcityArr(index){
+	        	var nextAddresses = cities[index].nextAddresses;
+				var cityArr = [];
+				for (var j = 0; j < nextAddresses.length; j++) {
+					var cityArrItem = {
+						text: nextAddresses[j].name,
+						value: nextAddresses[j].id
+					};
+					cityArr.push(cityArrItem);
+				}
+				this.cityArr = cityArr;
+	        },
+	        initDate(){
+	        	var dateY = [],dateM=[];
+	        	var year = new Date().getFullYear();
+				for (var y = 1970; y < year; y++) {
+					var yItem = {
+						text: y+'年',
+						value: y
+					};
+					dateY.push(yItem);
+				}
+				this.dateY = dateY;
+				for (var m = 1; m < 13; m++) {
+					var mItem = {
+						text: m+'月',
+						value: m
+					}
+					dateM.push(mItem);
+				}
+				this.dateM = dateM;
+				this.initDays(30);
+				this.datePicker = new Picker({
+				    data: [this.dateY,this.dateM,this.dateD],
+				    title: '',
+				    selectedIndex: [0,0,0]
+				});
+	        },
+	        initDays(days){
+	        	var  dateD =[];
+				for(var d = 1 ;d<=days;d++){
+					var dItem = {
+						text: d+'日',
+						value: d
+					};
+					dateD.push(dItem);
+				}
+				this.dateD = dateD;
+	        },	
+	    	getQnToken(){
+	    		let params = {
+	    			token: getCookie("token")
+	    		}
+	    		$.ajax({
+	    			url: `${baseAjax}/home/getQNToken.jhtml`,
+	    			type: 'GET',
+	    			dataType: 'json',
+	    			data: params,
+	    			success: res=>{
+		            let {code,data,desc} =res;
+		            if (code===0) {
+		              setCookie("QnToken",data.QNToken,.1);
+		            }else{
+		              error(desc)
+		            }
+		          }
+	    		});
+	    	},
+	    	previewImage(e){
+	    		var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
+	    		console.log(e.target.files)
+			    for (var i = 0, len = files.length; i < len; ++i) {
+	                var file = files[i];
+	                if (url) {
+	                    src = url.createObjectURL(file);
+	                } else {
+	                    src = e.target.result;
+	                }
+	            }
+	            if (!files.length) {
+	            	return false;
+	            }
+	            if (this.images.length>=10) {
+	            	$.alert("","最多选取十张图片");
+	            	return false;
+	            }
+	            this.chooseBol=true;
+	            this.cropper.img=src;
+	    	},
+	    	finish(){
+	    		this.$refs.cropper.getCropData((data) => {
+					this.uploadImg(data);
+					this.chooseBol=false;
+				})
+	    	},
+	    	uploadImg(file){
+	    		var addr = 'http://oxqmde0yk.bkt.clouddn.com/';
+                var formData = new FormData();
+                formData.append('file', file);
+                let QnToken = getCookie('QnToken');
+                if (!QnToken) {
+                	this.getQnToken();
+                	QnToken = getCookie('QnToken');
+                }
+                formData.append('token', QnToken);
+                $.ajax({
+                    url: 'http://up.qiniup.com/',
+                    type: 'POST',
+                    dataType: 'json',
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success:(res)=>{
+                    	let key = res.key,imageUrl= addr+key;
+                    	$.ajax({
+			    			url: imageUrl,
+			    			type: 'GET',
+			    			dataType: 'text',
+			    			data: '',
+			    			success: res=>{
+			    				let objItem = {
+			    					urls: res,
+			    					key: key 
+			    				}
+				            	this.images.push(objItem);
+				            }
+			    		});     	 
+                    }
+                });
+	    	},
+	    	delImg(index){
+	    		setTimeout(()=>{
+	    			this.images.splice(index,1);
+	    		},300);
+	    	},
+	    	chooseType(){
+	    		this.typePicker.show();
+				this.typePicker.on('picker.select',(val, index)=> {
+				    this.utype_id = val[0];
+				    this.utype = this.typeList[index].text;
+				});
+	    	},
+	    	chooseArea(){
+	    		this.cityPicker.show();
+	    		let update;
+	    		this.cityPicker.on('picker.change', (e,index)=> {
+				    if (e===0) {
+				    	update = false;
+			    		this.initcityArr(index);
+				    	this.cityPicker.refillColumn(1, this.cityArr);
+				    	this.cityPicker.scrollColumn(1, 0);
+				    	update = true;
+				    }
+				});
+				this.cityPicker.on('picker.select', (val, index)=> {
+					if (!update) {
+						return false;
+					}
+					this.province_id = val[0];
+					this.city_id = val[1];
+					this.province = this.provinceArr[index[0]].text;
+					this.city = this.cityArr[index[1]].text;
+					this.area = this.provinceArr[index[0]].text +' '+ this.cityArr[index[1]].text;
+				});
+	    	},
+	    	chooseDate(){
+	    		this.datePicker.show();
+	    		this.datePicker.on('picker.change',(e,index)=> {
+				    if (e===1) {
+				    	var selectedIndex = this.datePicker.selectedIndex;
+				    	var days = new Date(this.dateY[selectedIndex[0]].value,this.dateM[selectedIndex[1]].value,0).getDate();
+				    	this.initDays(days);
+				    	this.datePicker.refillColumn(2, this.dateD);
+				    	this.datePicker.scrollColumn(2, 0);
+				    }
+				});
+				this.datePicker.on('picker.select',(val, index)=> {
+					setTimeout(()=>{
+						this.birDate = this.dateY[index[0]].value +'-'+this.dateM[index[1]].value+'-'+this.dateD[index[2]].value;
+						this.birthday = new Date(val[0],val[1]-1,val[2]).getTime();
+					},300);
+				});
+	    	},
+	    	auth(){
+	    		let index_image=[],images=this.images;
+	    		for(let i=0;i<images.length;i++){
+	    			index_image.push(images[i].key);
+	    		}
+	    		let params = {
+	    			token: getCookie('token'),
+					real_name: this.real_name,
+					nick_name: this.nick_name,
+					utype_id: this.utype_id,
+					height: this.height,
+					weight: this.weight,
+					province_id: this.province_id,
+					province: this.province,
+					city_id: this.city_id,
+					city: this.city,
+					birthday: this.birthday,
+					hobby: this.hobby,
+					mood: this.mood,
+					index_image: index_image.join(","),
+					tags: this.tags
+	    		}
+	    		$.ajax({
+	    			url: `${baseAjax}/user/auth.jhtml`,
+	    			type: 'POST',
+	    			dataType: 'json',
+	    			data: params,
+	    			success: res=>{
+			            let {code,desc} =res;
+			            if (code===0) {
+			              window.location.href = 'mine.html';
+			            }else{
+			              error(desc)
+			            }
+			        }
+	    		});
+	    	},
+	    },
+	    mounted(){
+	    	this.$nextTick(()=>{
+	    		this.userInfo();
+	    		this.getType();
+	    		this.initArea();
+	    		this.initDate();
+	    		let QnToken = getCookie("QnToken");
+	    		if (!QnToken) {
+	    			this.getQnToken();
+	    		}
+	    	})
+	    }
+  	}
+</script>
+<style type="text/css" lang='scss' scoped>
+	@import '../../static/css/mixin.scss';
+	.mood-sunny{
+		@include bg-image('../../static/images/sunny-unselected');
+	}
+	.mood-sunny.selected{
+		@include bg-image('../../static/images/sunny');
+	}
+	.mood-unsunny{
+		@include bg-image('../../static/images/unsunny-unselected');
+	}
+	.mood-unsunny.selected{
+		@include bg-image('../../static/images/unsunny');
+	}
+</style>
