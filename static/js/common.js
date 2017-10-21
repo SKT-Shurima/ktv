@@ -75,10 +75,9 @@ const timeFilter = (time)=>{
     return `${h}:${m}`;
 }
 const birthFilter = (time)=>{
-	time*=1000;
 	var now = new Date().getFullYear();
-    var newDate = new Date(time).getFullYear();
-    return now-newDate;
+  var newDate = new Date(time).getFullYear();
+  return now-newDate;
 }
 const dateFilter  = time =>{
     time-=0;

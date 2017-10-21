@@ -137,8 +137,9 @@ export const getInfo = {
       sign: "2",
       userBean: {
         state: "",
-        index_image: []
       },
+      qnhost: 'http://oxqmde0yk.bkt.clouddn.com/',
+      index_image: [],
       userTypeBean: {},
       tags: []
     }
@@ -163,6 +164,9 @@ export const getInfo = {
               this.userBean = data.user.userBean;
               this.userTypeBean = data.user.userTypeBean;
               this.tags = data.user.userBean.tags?data.user.userBean.tags.split(","):"";
+              if (data.user.userBean.index_image) {
+                this.index_image = data.user.userBean.index_image.split(',');
+              }
               if (this.editBol) {
                 this.initData();
               }

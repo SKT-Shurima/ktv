@@ -914,7 +914,7 @@ weui-box*/
   left: 0px;
   right: 0px;
   top: 30%;
-  z-index: 1001;
+  z-index: 10002;
 }
 .weui_dialog .weui_btn_dialog + .weui_btn_dialog,
 .weui_toast .weui_btn_dialog + .weui_btn_dialog {
@@ -970,7 +970,7 @@ weui-box*/
   -webkit-transition-duration: .3s;
           transition-duration: .3s;
   visibility: hidden;
-  z-index: 1000;
+  z-index: 10001;
 }
 .weui_mask.weui_mask_visible {
   opacity: 1;

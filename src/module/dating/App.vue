@@ -13,12 +13,11 @@
         </ul>
       </div>
     <load-more  :on-infinite="onInfinite" :dataList="scrollData">
-      
       <ul class="container">
         <li class="con-list" v-for='(item,index) in listdata' :key='index'>
           <dl>
             <dt>
-              <a :href='"staffDetail.html?id="+item.user_id'>
+              <a :href='"predate.html?id="+item.user_id'>
                 <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
               </a>
               <i class="mood-icon" v-if='item.mood===1'></i>

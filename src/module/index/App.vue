@@ -27,6 +27,7 @@
                 <dt class="nav-img-box"><i class="nav-icon newper-icon"></i></dt>
                 <dd>新人</dd>
               </dl>
+              
             </li>
             <li class="nav-item weui-flex-item">
               <dl @touchstart='typeList("hot")'>
@@ -76,7 +77,7 @@
           <li class="con-list" v-for='(item,index) in listdata' :key='index'>
             <dl>
               <dt>
-                <a :href='"staffDetail.html?id="+item.user_id'>
+                <a :href="`predate.html?employee_id=${item.user_id}`">
                   <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
                 </a>
                 <i class="mood-icon" v-if='item.mood===1'></i>
@@ -86,7 +87,7 @@
               </dt>
               <dd>
                 <div class="staff-info"><span v-text='item.nick_name'></span><em class="price">&yen;{{item.price}}</em></div>
-                <div class="staff-detail"><span>{{item.birthday|birthFilter}}岁</span><em v-text='item.hobby'></em></div>
+                <div class="staff-detail ellipsis-1"><span>{{item.birthday|birthFilter}}岁</span><em v-text='item.hobby'></em></div>
               </dd>
             </dl>
           </li>
@@ -95,14 +96,15 @@
     <v-footer></v-footer>
   </div>
 </template>
- <script type="text/ecmascript-6">
+
+<script type="text/ecmascript-6">
   import loadMore from '../../component/loadMore';
   import vFooter from '../../component/vFooter';
   import {getList} from '../../../static/js/mixins';
     export default {
         data() {
           return {
-            banner: []
+            banner: [],
           }
         },
         filters:{

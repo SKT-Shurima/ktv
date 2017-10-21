@@ -20,6 +20,12 @@
           <a :href='"orderDetail.html?id="+item' style="color: #fff;">打赏</a>
         </div>
     </div>
+    <div class="op-btn gray-bg" v-if='order.ostate_id===5'>
+      已付款,待评价
+    </div>
+    <div class="op-btn gray-bg" v-if='order.ostate_id===4'>
+      已完成
+    </div>
     <pay-for ref='payfor' @payType='payfor'></pay-for>
   </div>
 </template>
@@ -32,6 +38,7 @@
     data(){
     	return {
         nowTime: 0,
+        query: {},
         order: {}
     	}
     },
@@ -45,7 +52,7 @@
       orderDetail(){
         let params = {
           token: getCookie('token'),
-          order_id: this.query.id 
+          order_id: this.query.order_id 
         }
         $.ajax({
           url: `${baseAjax}/order/orderDetail.jhtml`,
@@ -104,7 +111,7 @@
                   if (code===0) {
                     this.orderDetail();
                   }else{
-                    error(desc)
+                    $.alert('',desc);
                   }
               }
           });

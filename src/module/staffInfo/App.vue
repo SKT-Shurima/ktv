@@ -24,7 +24,7 @@
         <div class="avater-list-wrap">
               <div class="avater-list-box" :style='{width: (index_image.length+1)*90+"px"}'>
                 <ul class="weui_uploader_files">
-                  <li v-for='(item,index) in index_image' :key='index' :style='{backgroundImage: `url(${item})`}' class="weui_uploader_file">
+                  <li v-for='(item,index) in index_image' :key='index' :style='{backgroundImage: `url(${qnhost}${item})`}' class="weui_uploader_file">
                   </li>
                 </ul>
               </div>
@@ -69,7 +69,6 @@
     name: 'app',
     data(){
       return {
-        index_image: []
       }
     },
     mixins: [getInfo],
@@ -88,7 +87,7 @@
           return false;
         }
         let params = {
-          token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh"
+          token: getCookie('token')
         }
         $.ajax({
           url: `${baseAjax}/user/signout.jhtml`,
@@ -111,7 +110,7 @@
       payfor(payParams){
         let {order_amount,optype} =payParams;
         let params ={
-          token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+          token: getCookie('token'),
           optype: optype,
           order_amount: order_amount,
           optarget: 4
@@ -133,7 +132,7 @@
       },
       cash(pay_sn){
         let params = {
-          token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+          token: getCookie('token'),
           pay_sn: pay_sn
         }
         $.ajax({
@@ -153,7 +152,7 @@
       },
       toBusy(){
         let params = {
-          token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh"
+          token: getCookie('token')
         }
         $.ajax({
           url: `${baseAjax}/user/toBusy.jhtml`,

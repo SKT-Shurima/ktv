@@ -12,7 +12,9 @@
                 <ul v-if='tabIndex===1'>
                     <li class="border-bottom-1px" v-for='(item,index) in waitList' :key='index'>
                         <div class="p">
-                            <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+                            <a :href="`orderDetail.html?employee_id=${item.employeer.user_id}&order_id=${item.order_id}`">
+                                <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+                            </a>
                         </div>
                         <div class="i">
                             <div class="name">

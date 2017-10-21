@@ -300,11 +300,11 @@
     font-size: .2rem;
     margin-bottom: .2rem;
     margin-right: .26rem;
-    padding: .16rem .34rem;
+    padding: .16rem .2rem;
 }
 .tags>.border-1px::after{
     border-color: #ccc;
-    border-radius: .52rem;
+    border-radius: .62rem;
 }
 .tags>.btn-checkced.border-1px::after{
     border-color: #f65287;

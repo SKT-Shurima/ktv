@@ -30,7 +30,7 @@
     			return false;
     		}
     		let params = {
-    			token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+    			token: getCookie('token'),
     			optype: 1,
 				optarget: 3,
 				order_amount: this.order_amount

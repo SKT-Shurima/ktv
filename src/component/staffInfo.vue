@@ -37,12 +37,12 @@
       <div class="container">
         <div class="staff-info">
           <ul class="info-box">
-              <li class="border-bottom-1px"><span><i class="info-icon-special"></i><strong>特长</strong></span><em id="info-special" v-text='userTypeBean.utype_name'></em></li>
-              <li class="border-bottom-1px"><span><i class="info-icon-age"></i><strong>年龄</strong></span><em id="info-age">{{userBean.birthday|birthFilter}}</em></li>
-              <li class="border-bottom-1px"><span><i class="info-icon-h"></i><strong>身高</strong></span><em id="info-h">{{userBean.height}}cm</em></li>
-              <li class="border-bottom-1px"><span><i class="info-icon-w"></i><strong>体重</strong></span><em id="info-w">{{userBean.weight}}kg</em></li>
-              <li class="border-bottom-1px"><span><i class="info-icon-area"></i><strong>籍贯</strong></span><em id="info-area">{{userBean.province}}{{userBean.city}}</em></li>
-              <li class="border-bottom-1px"><span><i class="info-icon-love"></i><strong>兴趣爱好</strong></span><em id="info-love" v-text='userBean.hobby'></em></li>
+              <li class="border-bottom-1px"><span><i class="info-icon special-icon"></i><strong>特长</strong></span><em v-text='userTypeBean.utype_name'></em></li>
+              <li class="border-bottom-1px"><span><i class="info-icon age-icon"></i><strong>年龄</strong></span><em>{{userBean.birthday|birthFilter}}</em></li>
+              <li class="border-bottom-1px"><span><i class="info-icon heigh-icon"></i><strong>身高</strong></span><em id="info-h">{{userBean.height}}cm</em></li>
+              <li class="border-bottom-1px"><span><i class="info-icon weight-icon"></i><strong>体重</strong></span><em id="info-w">{{userBean.weight}}kg</em></li>
+              <li class="border-bottom-1px"><span><i class="info-icon area-icon"></i><strong>籍贯</strong></span><em id="info-area">{{userBean.province}}{{userBean.city}}</em></li>
+              <li class="border-bottom-1px"><span><i class="info-icon hobby-icon"></i><strong>兴趣爱好</strong></span><em id="info-love" v-text='userBean.hobby'></em></li>
           </ul>
           <div class="tags">
               <button class="weui_btn weui_btn_primary btn-checkced border-1px" v-for="(item,index) in tags" v-text="item"></button>
@@ -72,12 +72,6 @@
           </div>
       </div>
     </load-more>
-    <!-- <div class="op-btn primary-bg" @touchstart='predate' v-if='userBean.state===1'>
-      立即预约
-    </div>
-    <div class="op-btn bg-c" v-if='userBean.state===0'>
-      忙碌中
-    </div> -->
 	</div>
 </template>
 <script type="text/ecmascript-6">
@@ -100,6 +94,7 @@
 		        feedbckList: [],
 	    	}
     	},
+    	props: ["getState"],
     	filters: {birthFilter,dateFilter,timeFilter},
 	    components:{
 	      	loadMore
@@ -107,7 +102,7 @@
 	    methods: {
 	      onInfinite(done) {
 	        let more = this.$el.querySelector('.load-more');
-	        if (this.page>=this.totalPage) {
+	        if (this.page>=this.total_page) {
 	            more.style.display = 'none';
 	            this.scrollData.noFlag = true;
 	        }else{
@@ -120,7 +115,7 @@
 	      getDetail(){
 	        let params = {
 	          token: getCookie('token'),
-	          employee_id: this.query.id
+	          employee_id: this.query.employee_id
 	        }
 	        $.ajax({
 	          url: `${baseAjax}/user/getEmployeeDetail.jhtml`,
@@ -134,6 +129,9 @@
 	              this.tags = data.employee.userBean.tags.split(",");
 	              this.userTypeBean = data.employee.userTypeBean;
 	              this.receviewOrder_num = data.employee.receviewOrder_num;
+	              if (this.getState) {
+	              	this.$emit('sendState',this.userBean.state);
+	              }
 	            }else{
 	              error(desc)
 	            }
@@ -143,7 +141,7 @@
 	      getComment(){
 	        let params = {
 	          token: getCookie('token'),
-	          employee_id: this.query.id,
+	          employee_id: this.query.employee_id,
 	          page: this.page,
 	          pageSize: this.pageSize
 	        }
@@ -155,65 +153,8 @@
 	          success: res=>{
 	            let {code,data,desc} =res;
 	            if (code===0) {
+	            	this.total_page = data.feedbckList.total_page;
 	              this.feedbckList = this.feedbckList.concat(data.feedbckList.data);
-	            }else{
-	              error(desc)
-	            }
-	          }
-	        });
-	      },
-	      getRoom(){
-	        let params ={
-	          token: getCookie('token')
-	        }
-	        $.ajax({
-	          url: `${baseAjax}/order/listAllRoom.jhtml`,
-	          type: 'GET',
-	          dataType: 'json',
-	          data: params,
-	          success: res=>{
-	            let {code,data,desc} =res;
-	            if (code===0) {
-	              let room = data.roomList;
-	              let roomList  = [];
-	              for (let i = 0; i < room.length; i++) {
-	                  let item = {
-	                    text: room[i].room_name,
-	                    value: room[i].room_id
-	                  };
-	                  roomList.push(item);
-	              }
-	              this.roomPicker = new Picker({
-	                data: [roomList],
-	                title: ""
-	              });
-	            }else{
-	              error(desc)
-	            }
-	          }
-	        });
-	      },
-	      predate(){
-	        this.roomPicker.show();
-	        this.roomPicker.on('picker.select',(val, index)=> {
-	          this.createOrder(val[0]);
-	        });
-	      },
-	      createOrder(id){
-	        let params ={
-	          token: getCookie('token'),
-	          employee_id: this.query.id,
-	          room_id: id
-	        }
-	        $.ajax({
-	          url: `${baseAjax}/order/createOrder.jhtml`,
-	          type: 'POST',
-	          dataType: 'json',
-	          data: params,
-	          success: res=>{
-	            let {code,data,desc} =res;
-	            if (code===0) {
-	              
 	            }else{
 	              error(desc)
 	            }
@@ -226,7 +167,6 @@
 	    },
 	    mounted(){
 	    	this.$nextTick(()=>{
-		        this.getRoom();
 		        this.getDetail();
 		        this.getComment();
 	    	})
@@ -254,5 +194,30 @@
 	    top: .2rem;
 	    z-index: 100;
 	    @include bg-image('../../static/images/sunny');
+	}
+	.info-icon{
+		display: inline-block;
+	    width: .42rem;
+	    height: .42rem;
+	    vertical-align: -.1rem;
+	    margin-right: .2rem;
+	}
+	.special-icon{
+		@include bg-image('../../static/images/special');
+	}
+	.age-icon{
+		@include bg-image('../../static/images/age');
+	}
+	.heigh-icon{
+		@include bg-image('../../static/images/heigh');
+	}
+	.weight-icon{
+		@include bg-image('../../static/images/weight');
+	}
+	.area-icon{
+		@include bg-image('../../static/images/area');
+	}
+	.hobby-icon{
+		@include bg-image('../../static/images/hobby');
 	}
   </style>

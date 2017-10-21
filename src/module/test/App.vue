@@ -4,6 +4,7 @@
             <input type="file" class="inputstyle" name="file" @change="PreviewImage"  />
             <img :src="imageUrl" alt="" class="fileImg">
         </div>
+
     </div>
 </template>
 <script type="text/javascript">
@@ -31,7 +32,7 @@ export default {
                     processData: false,
                     contentType: false,
                     success:(res)=>{
-                    	this.imageUrl= addr+res.key;
+                    	this.imageUrl= addr+res.key;   
                     	console.log(res);
                     }
                 });

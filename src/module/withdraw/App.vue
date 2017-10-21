@@ -32,7 +32,7 @@
     			return false;
     		}
     		let params = {
-	    		token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+	    		token: getCookie('token'),
 	    		amount: this.amount
 	    	}
 	    	$.ajax({

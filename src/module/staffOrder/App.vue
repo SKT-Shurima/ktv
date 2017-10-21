@@ -111,7 +111,7 @@
                     this.page++; 
                 }
                 let params =  {
-                    token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+                    token: getCookie('token'),
                     page: this.page,
                     pageSize: this.pageSize
                 }
@@ -134,7 +134,7 @@
             // 接单
             receiveOrder(id){
                 let params =  {
-                    token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+                    token: getCookie('token'),
                     order_id: id
                 }
                 $.ajax({
@@ -155,7 +155,7 @@
             // 确认
             confirmOrder(id){
                 let params =  {
-                    token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+                    token: getCookie('token'),
                     order_id: id
                 }
                 $.ajax({
@@ -177,7 +177,7 @@
             cancelOrder(id){
                 $.confirm('', '确认取消预约？', ()=>{
                     let params = {
-                        token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+                        token: getCookie('token'),
                         order_id: id
                     }
                     $.ajax({
@@ -210,7 +210,7 @@
                     this.page++; 
                 }
                 let params =  {
-                    token: "MDBmMTQ5ZGEtYWFkMS00YWZhLTk4YmItOTJhNTlmOGZhZGNh",
+                    token: getCookie('token'),
                     page: this.page,
                     pageSize: this.pageSize
                 }

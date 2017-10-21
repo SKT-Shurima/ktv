@@ -20,8 +20,7 @@
 	        <div class="avater-list-wrap">
 	            <div class="avater-list-box" :style='{width: (images.length+1)*90+"px"}'>
 	              <ul class="weui_uploader_files">
-	              	<li v-for='(item,index) in images' :key='index' class="weui_uploader_file">
-	              		<img :src="item.urls">
+	              	<li v-for='(item,index) in images' :key='index' :style='{backgroundImage: `url(${item.urls})`}' class="weui_uploader_file">
 	              		<i class="icon icon-95" @touchstart='delImg(index)'></i>
 	              	</li>
 	              </ul>
@@ -147,7 +146,8 @@
 				},{
 					text: '眼睛水灵',
 					checkBol: false
-				}]
+				}],
+				size: 0
 	    	}
 	    },
 	    props: ["editBol"],
@@ -313,7 +313,6 @@
 	    	},
 	    	previewImage(e){
 	    		var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
-	    		console.log(e.target.files)
 			    for (var i = 0, len = files.length; i < len; ++i) {
 	                var file = files[i];
 	                if (url) {
@@ -334,46 +333,35 @@
 	    	},
 	    	finish(){
 	    		this.$refs.cropper.getCropData((data) => {
+	    			var i = data.indexOf(',');
+	    			data = data.slice(i+1);
 					this.uploadImg(data);
-					this.chooseBol=false;
-				})
+				});
 	    	},
-	    	uploadImg(file){
-	    		var addr = 'http://oxqmde0yk.bkt.clouddn.com/';
-                var formData = new FormData();
-                formData.append('file', file);
-                let QnToken = getCookie('QnToken');
-                if (!QnToken) {
-                	this.getQnToken();
-                	QnToken = getCookie('QnToken');
-                }
-                formData.append('token', QnToken);
-                $.ajax({
-                    url: 'http://up.qiniup.com/',
+	    	uploadImg(pic){
+			 	$.ajax({
+                    url: 'http://up.qiniup.com/putb64/-1',
                     type: 'POST',
                     dataType: 'json',
                     cache: false,
-                    data: formData,
+                    data: pic,
                     processData: false,
                     contentType: false,
+                    headers:{
+                    	"Content-Type": "application/octet-stream",
+                    	"Authorization": "UpToken "+ getCookie('QnToken')
+                    },
                     success:(res)=>{
-                    	let key = res.key,imageUrl= addr+key;
-                    	$.ajax({
-			    			url: imageUrl,
-			    			type: 'GET',
-			    			dataType: 'text',
-			    			data: '',
-			    			success: res=>{
-			    				let objItem = {
-			    					urls: res,
-			    					key: key 
-			    				}
-				            	this.images.push(objItem);
-				            }
-			    		});     	 
+                    	let key = res.key;
+                    	let objItem = {
+	    					urls: `${this.qnhost}${key}`,
+	    					key: key 
+			    		}
+				        this.images.push(objItem);
+				        this.chooseBol=false;  	 
                     }
                 });
-	    	},
+            },
 	    	delImg(index){
 	    		setTimeout(()=>{
 	    			this.images.splice(index,1);
@@ -447,7 +435,7 @@
 					hobby: this.hobby,
 					mood: this.mood,
 					index_image: index_image.join(","),
-					tags: this.tags
+					tags: this.tags.join(',')
 	    		}
 	    		$.ajax({
 	    			url: `${baseAjax}/user/auth.jhtml`,
@@ -459,7 +447,7 @@
 			            if (code===0) {
 			              window.location.href = 'mine.html';
 			            }else{
-			              error(desc)
+			              $.alert(desc);
 			            }
 			        }
 	    		});

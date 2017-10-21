@@ -26,7 +26,7 @@
 	       	<i class="icon icon-108"></i>
 	        <span class="primary" style="float: right;">¥{{userBean.balance.toFixed(2)}}&nbsp;</span>
 	    </a>
-	    <a class="row border-bottom-1px" href='certification.html' v-if='userBean.employee_is===1'>
+	    <a class="row border-bottom-1px" href='staffInfo.html' v-if='userBean.employee_is===1'>
 	        <i class="row-icon icon-cer"></i>
 	        <span class="row-title">员工签到</span>
 	        <i class="icon icon-108"></i>
