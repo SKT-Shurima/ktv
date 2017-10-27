@@ -108,37 +108,37 @@
 	}
 </script>
 <style type="text/css" scoped lang='scss'>
-@import '../../static/css/mixin';
-@import '../../static/css/payfor';
+@import '../common/css/mixin';
+@import '../common/css/payfor';
 .reward-icon-300{
-	@include bg-image('../../static/images/pay300');
+	@include bg-image('../common/img/pay300');
 }
 .reward-icon-400{
-	@include bg-image('../../static/images/pay400');
+	@include bg-image('../common/img/pay400');
 }
 .reward-icon-500{
-	@include bg-image('../../static/images/pay500');
+	@include bg-image('../common/img/pay500');
 }
 .reward-icon-600{
-	@include bg-image('../../static/images/pay600');
+	@include bg-image('../common/img/pay600');
 }
 .reward-icon-700{
-	@include bg-image('../../static/images/pay700');
+	@include bg-image('../common/img/pay700');
 }
 .reward-icon-800{
-	@include bg-image('../../static/images/pay800');
+	@include bg-image('../common/img/pay800');
 }
 .reward-icon-900{
-	@include bg-image('../../static/images/pay900');
+	@include bg-image('../common/img/pay900');
 }
 .reward-icon-1000{
-	@include bg-image('../../static/images/pay1000');
+	@include bg-image('../common/img/pay1000');
 }
 .cash{
-	 @include bg-image('../../static/images/cash');
+	 @include bg-image('../common/img/cash');
 }
 .wx{
-	 @include bg-image('../../static/images/wx');
+	 @include bg-image('../common/img/wx');
 }
 
 </style>

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div id='app'>
          <div class="imgBox">
             <input type="file" class="inputstyle" name="file" @change="PreviewImage"  />
@@ -39,4 +39,18 @@ export default {
             },
 	}
 }
+</script> -->
+
+<template>
+    <div>
+        <swiper></swiper>
+    </div>
+</template>
+<script type="text/javascript">
+    import swiper from '../../component/swiper.vue'
+    export default {
+        components:{
+            swiper
+        }
+    }
 </script>

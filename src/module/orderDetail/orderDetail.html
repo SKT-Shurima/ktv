@@ -8,34 +8,19 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="full-screen" content="yes">
     <title>约单</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="../../static/css/base.css">
-    <link rel="stylesheet" type="text/css" href="../../static/css/weui.css">
-    <link rel="stylesheet" type="text/css" href="../../static/css/weuix.css">
-    <link rel="stylesheet" type="text/css" href="../../static/css/staffDetail.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/weui.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/weuix.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/staffDetail.css">
     <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script type="text/javascript" src='../../static/js/rem.js'></script>
-    <script type="text/javascript" src='../../static/js/zepto.min.js'></script>
-    <script type="text/javascript" src='../../static/js/picker.js'></script>
-    <script type="text/javascript" src='../../static/js/swipe.js'></script>
-    <script type="text/javascript" src='../../static/js/common.js'></script>
-    <script>
-      $(function(){
-            $('#slide').swipeSlide({
-            autoSwipe:true,//自动切换默认是
-            speed:3000,//速度默认4000
-            continuousScroll:true,//默认否
-            transitionType:'cubic-bezier(0.22, 0.69, 0.72, 0.88)',//过渡动画linear/ease/ease-in/ease-out/ease-in-out/cubic-bezier
-            lazyLoad:true,//懒加载默认否
-            firstCallback : function(i,sum,me){
-            me.find('.dot').children().first().addClass('cur');
-          },
-          callback : function(i,sum,me){
-            me.find('.dot').children().eq(i).addClass('cur').siblings().removeClass('cur');
-          }
-            });
-        });    
-    </script>
+    <script type="text/javascript" src='../static/js/sha1.js'></script>
+    <script type="text/javascript" src='../static/js/rem.js'></script>
+    <script type="text/javascript" src="../static/js/vue.min.js"></script>
+    <script type="text/javascript" src='../static/js/zepto.min.js'></script>
+    <script type="text/javascript" src='../static/js/picker.js'></script>
+    <script type="text/javascript" src='../static/js/common.js'></script>
+    
 </head>
 <body ontouchstart>
 <div id="app"></div>

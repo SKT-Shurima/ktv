@@ -6,9 +6,9 @@
 	  <div class="container">
       关于我们
       <ul>
-      <!-- <li v-for='item in icons'>
+      <li v-for='item in icons'>
          <i class="icon" :class='item'></i>
-      </li> -->
+      </li>
     </ul>
     <div style="width: 300px;height: 300px;">
       <vueCropper
@@ -31,7 +31,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import VueCropper from "vue-cropper"  
   export default {
     name: 'app',

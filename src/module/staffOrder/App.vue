@@ -12,7 +12,7 @@
                 <ul v-show='tabIndex===1'>
                     <li class="border-bottom-1px" v-for='(item,index) in waitDealList' :key='index'>
                         <div class="p">
-                            <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+                           <img :src="item.customer.wechat_portrait" @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
                         </div>
                         <div class="i">
                             <dl class="con">
@@ -42,7 +42,7 @@
                 <ul v-show='tabIndex===2'>
                      <li class="border-bottom-1px" v-for='(item,index) in completeList' :key='index'>
                         <div class="p">
-                            <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+                            <img :src="item.customer.wechat_portrait" @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
                         </div>
                         <div class="i">
                             <dl class="con">
@@ -63,7 +63,7 @@
     </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
     import loadMore from '../../component/loadMore';
     export default {
         name: 'app',
@@ -126,7 +126,7 @@
                             this.waitDealList = this.waitDealList.concat(data.orderList.data);
                             this.totalPage = data.orderList.total_page;
                         }else{
-                          error(desc)
+                          error(code,desc)
                         }
                     }
                 });
@@ -225,7 +225,7 @@
                             this.completeList = this.completeList.concat(data.orderList.data);
                             this.totalPage = data.orderList.total_page;
                         }else{
-                          error(desc)
+                          error(code,desc)
                         }
                     }
                 });
@@ -243,8 +243,11 @@
     }
 </script>
 <style type="text/css" lang='scss' scoped>
-    @import '../../../static/css/mixin.scss';
+    @import '../../common/css/mixin';
+    .default-avater{
+        @include bg-image('../../common/img/default-avater');
+    }
     .time-icon{
-        @include bg-image('../../../static/images/time');
+        @include bg-image('../../common/img/time');
     }
 </style>

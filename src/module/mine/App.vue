@@ -3,14 +3,13 @@
 	<div class="mine-top primary-bg">
       	<dl>
 	        <dt>
-	          <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg">
+	          <img :src="user.wechat_portrait"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
 	        </dt>
-	        <dd class="name ellipsis-1" v-text='userBean.wechat_name'></dd>
-	        <dd class="wxid ellipsis-1">{{userBean.phone}}&nbsp;(微信号)</dd>
+	        <dd class="name ellipsis-1" v-text='user.wechat_name'></dd>
      	 </dl>
 	</div>
 	<div class="row-container">
-	    <a class="row border-bottom-1px" href='staffOrder.html' v-if='userBean.employee_is===1'>
+	    <a class="row border-bottom-1px" href='staffOrder.html' v-if='user.employee_is===1'>
 	        <i class="row-icon icon-order"></i>
 	        <span class="row-title">全部订单</span>
 	        <i class="icon icon-108"></i>
@@ -20,13 +19,13 @@
 	        <span class="row-title">全部订单</span>
 	        <i class="icon icon-108"></i>
 	    </a>
-	    <a class="row border-bottom-1px" v-if='userBean.employee_is===1'>
+	    <a class="row border-bottom-1px" href='account.html' v-if='user.employee_is===1'>
 	        <i class="row-icon icon-account"></i>
 	        <span class="row-title">我的账户</span>
 	       	<i class="icon icon-108"></i>
-	        <span class="primary" style="float: right;">¥{{userBean.balance.toFixed(2)}}&nbsp;</span>
+	        <span class="primary" style="float: right;">¥{{user.balance.toFixed(2)}}&nbsp;</span>
 	    </a>
-	    <a class="row border-bottom-1px" href='staffInfo.html' v-if='userBean.employee_is===1'>
+	    <a class="row border-bottom-1px" href='staffInfo.html' v-if='user.employee_is===1'>
 	        <i class="row-icon icon-cer"></i>
 	        <span class="row-title">员工签到</span>
 	        <i class="icon icon-108"></i>
@@ -52,7 +51,7 @@
 </template>
 <script type="text/ecmascript-6">
 	import vFooter from '../../component/vFooter';
-	import {getInfo} from '../../../static/js/mixins';
+	import {getInfo} from '../../common/js/mixins';
   	export default {
     	name: 'app',
 	   	data(){
@@ -71,20 +70,23 @@
   	}
 </script>
 <style type="text/css" lang='scss' scoped>
-@import '../../../static/css/mixin';
+@import '../../common/css/mixin';
+.default-avater{
+	@include bg-image('../../common/img/default-avater');
+}
 .icon-order{
-	@include bg-image('../../../static/images/ordericon');
+	@include bg-image('../../common/img/ordericon');
 }
 .icon-account{
-	@include bg-image('../../../static/images/account');
+	@include bg-image('../../common/img/account');
 }
 .icon-cer{
-	@include bg-image('../../../static/images/cer');
+	@include bg-image('../../common/img/cer');
 }
 .icon-protocol{
-	@include bg-image('../../../static/images/protocol');
+	@include bg-image('../../common/img/protocol');
 }
 .icon-aboutus{
-	@include bg-image('../../../static/images/aboutus');
+	@include bg-image('../../common/img/aboutus');
 }
 </style>

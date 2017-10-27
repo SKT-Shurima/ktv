@@ -4,9 +4,9 @@
 	      	<i class="icon icon-109" id='back'></i>
 	      	<dl class="staff-info">
 		        <dt>
-		          <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg">
+		          <img :src="user.wechat_portrait"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
 		        </dt>
-		        <dd v-text='userBean.nick_name'></dd>
+		        <dd v-text='user.nick_name'></dd>
 	      	</dl>
 	      	<div class="weui-loadmore weui-loadmore-line">
 	        	<span class="weui-loadmore-tips">打赏她小费</span>
@@ -39,14 +39,14 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   export default {
     name: 'app',
     data(){
     	return{
     		rate: 0,
     		note: '',
-    		userBean: {},
+    		user: {},
     		query: {},
     		order_amount: '',
     		comLabels: [{
@@ -97,9 +97,9 @@
 	          	success: res=>{
 		            let {code,data,desc} =res;
 		            if (code===0) {
-		              this.userBean = data.employee.userBean;
+		              this.user = data.employee.user;
 		            }else{
-		              error(desc)
+		              error(code,desc)
 		            }
 	          	}
 	        });
@@ -121,7 +121,7 @@
                     let {code,data,desc} =res;
                     if (code===0) {
                     }else{
-                      error(desc)
+                      error(code,desc)
                     }
                 }
             });
@@ -135,14 +135,25 @@
 				order_amount: this.order_amount
     		}
     		$.ajax({
-	         	url: `${baseAjax}/pay/pay.jhtml`,
+	         	url: `${baseAjax}/pay/pay.jhtml;`,
 	          	type: 'POST',
 	          	dataType: 'json',
 	          	data: params,
 	          	success: res=>{
 	            	let {code,desc} =res;
 	            	if (code===0) {
-	            		window.location.href = 'userOrder.html';
+                        WeixinJSBridge.invoke('getBrandWCPayRequest',{
+                          "appId":data.payParams.appid,
+                          "nonceStr":data.payParams.nonceStr,
+                          "package":data.payParams.prepayid,
+                          "signType":"MD5",
+                          "timeStamp":data.payParams.timestamp,
+                          "paySign":data.payParams.sign
+                        }, function(res){
+                          // WeixinJSBridge.log(res.err_msg);
+                          // alert(res.err_code+res.err_desc+res.err_msg);
+                          window.location.href = 'userOrder.html';
+                        });
 	            	}else{
 	              		$.alert('',desc);
 	            	}
@@ -172,14 +183,17 @@
   }
 </script>
 <style type="text/css" lang='scss' scoped>
-	@import '../../../static/css/mixin.scss';
+	@import '../../common/css/mixin';
+    .default-avater{
+        @include bg-image('../../common/img/default-avater');
+    }
 	.rate-icon{
 		display: inline-block;
 		width: .46rem;
 		height: .46rem;
-		@include bg-image('../../../static/images/star');
+		@include bg-image('../../common/img/star');
 	}
 	.rate-icon.seleted{
-		@include bg-image('../../../static/images/star-selected');
+		@include bg-image('../../common/img/star-selected');
 	}
 </style>

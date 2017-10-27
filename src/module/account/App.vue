@@ -4,7 +4,7 @@
 	      	<i class="icon icon-109" id='back'></i>
 	      	<dl class="account-info primary-bg">
 			    <dt>账户余额(元)</dt>
-			    <dd>{{userBean.balance?userBean.balance.toFixed(2):"0.00"}}</dd>
+			    <dd>{{user.balance?user.balance.toFixed(2):"0.00"}}</dd>
 			</dl>
 	   </div>
 	<div class="container">
@@ -33,7 +33,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import {getInfo}  from '../../../static/js/mixins';
+	import {getInfo}  from '../../common/js/mixins';
   	export default {
     	name: 'app',
     	mixins: [getInfo],
@@ -45,14 +45,14 @@
   	}
 </script>
 <style type="text/css" lang='scss' scoped>
-	@import "../../../static/css/mixin";
+	@import "../../common/css/mixin";
 	.history-icon{
-	    @include bg-image('../../../static/images/history');
+	    @include bg-image('../../common/img/history');
 	}
 	.recharge-icon{
-	    @include bg-image('../../../static/images/recharge');
+	    @include bg-image('../../common/img/recharge');
 	}
 	.withdraw-icon{
-	    @include bg-image('../../../static/images/withdraw');
+	    @include bg-image('../../common/img/withdraw');
 	}
 </style>

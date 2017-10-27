@@ -54,7 +54,7 @@
                 title: ""
               });
             }else{
-              error(desc)
+              error(code,desc)
             }
           }
         });

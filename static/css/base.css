@@ -313,11 +313,15 @@
     color: #f65287;
 }
  
-// 倒计时图标
+/* 倒计时图标*/
 .time-icon{
     display: inline-block;
     width: .24rem;
     height: .24rem;
     vertical-align: text-top;
     margin-right: .2rem;
+}
+/* 轮播图 */
+.slide{
+    position: relative;
 }

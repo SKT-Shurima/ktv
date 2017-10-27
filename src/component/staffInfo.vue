@@ -1,48 +1,27 @@
 <template>
 	<div>
 		<load-more  :on-infinite="onInfinite" :dataList="scrollData">
-      <div class="slide" id="slide">
+      <div class="slide">
         <i class="icon icon-109" id='back'></i>
-        <i class="mood-icon" v-if='userBean.mood===1'></i>
-        <ul>
-            <li>
-                <a href="#">
-                  <img src="http://7xr193.com1.z0.glb.clouddn.com/1.jpg" data-src="http://7xr193.com1.z0.glb.clouddn.com/1.jpg" alt="">
-              </a>
-            </li>
-            <li>
-                <a href="#">
-                  <img src="http://7xr193.com1.z0.glb.clouddn.com/2.jpg" data-src="http://7xr193.com1.z0.glb.clouddn.com/2.jpg" alt="">
-              </a>
-            </li>
-            <li>
-                <a href="#">
-                  <img src="http://7xr193.com1.z0.glb.clouddn.com/3.jpg" data-src="http://7xr193.com1.z0.glb.clouddn.com/3.jpg" alt="">
-              </a>
-            </li>
-        </ul>
-        <div class="dot">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <i class="mood-icon" v-if='employee.mood===1'></i>
+        <swiper :slider-list='index_image'></swiper>
         <dl class="price-mask">
-            <dt class='staff-name' v-text='userBean.nick_name'></dt>
+            <dt class='staff-name' v-text='employee.nick_name'></dt>
             <dd>
-                <div class="staff-price price">&yen;{{userBean.price}}</div>
-                <div>已接单：{{receviewOrder_num}}</div>
+                <div class="staff-price price">&yen;{{employee.price}}</div>
+                <div>已接单：{{employee.receiveOrder_num}}</div>
             </dd>
         </dl>
       </div>
       <div class="container">
         <div class="staff-info">
           <ul class="info-box">
-              <li class="border-bottom-1px"><span><i class="info-icon special-icon"></i><strong>特长</strong></span><em v-text='userTypeBean.utype_name'></em></li>
-              <li class="border-bottom-1px"><span><i class="info-icon age-icon"></i><strong>年龄</strong></span><em>{{userBean.birthday|birthFilter}}</em></li>
-              <li class="border-bottom-1px"><span><i class="info-icon heigh-icon"></i><strong>身高</strong></span><em id="info-h">{{userBean.height}}cm</em></li>
-              <li class="border-bottom-1px"><span><i class="info-icon weight-icon"></i><strong>体重</strong></span><em id="info-w">{{userBean.weight}}kg</em></li>
-              <li class="border-bottom-1px"><span><i class="info-icon area-icon"></i><strong>籍贯</strong></span><em id="info-area">{{userBean.province}}{{userBean.city}}</em></li>
-              <li class="border-bottom-1px"><span><i class="info-icon hobby-icon"></i><strong>兴趣爱好</strong></span><em id="info-love" v-text='userBean.hobby'></em></li>
+              <li class="border-bottom-1px"><span><i class="info-icon special-icon"></i><strong>特长</strong></span><em v-text='employee.utype_name'></em></li>
+              <li class="border-bottom-1px"><span><i class="info-icon age-icon"></i><strong>年龄</strong></span><em>{{employee.birthday|birthFilter}}</em></li>
+              <li class="border-bottom-1px"><span><i class="info-icon heigh-icon"></i><strong>身高</strong></span><em>{{employee.height}}cm</em></li>
+              <li class="border-bottom-1px"><span><i class="info-icon weight-icon"></i><strong>体重</strong></span><em>{{employee.weight}}kg</em></li>
+              <li class="border-bottom-1px"><span><i class="info-icon area-icon"></i><strong>籍贯</strong></span><em>{{employee.province}}{{employee.city}}</em></li>
+              <li class="border-bottom-1px"><span><i class="info-icon hobby-icon"></i><strong>兴趣爱好</strong></span><em v-text='employee.hobby'></em></li>
           </ul>
           <div class="tags">
               <button class="weui_btn weui_btn_primary btn-checkced border-1px" v-for="(item,index) in tags" v-text="item"></button>
@@ -54,7 +33,7 @@
                 <li class="comments-list" v-for='(item,index) in feedbckList' :key='index'>
                     <dl>
                         <dt class="avater">
-                            <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg">
+                            <img :src="item.customer.wechat_portrait"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
                         </dt>
                         <dd class="border-bottom-1px">
                             <div class="name">
@@ -76,6 +55,7 @@
 </template>
 <script type="text/ecmascript-6">
 	import loadMore from '../component/loadMore';
+	import swiper from './swiper';
   	export default {
     	name: 'staffInfo',
     	data(){
@@ -87,17 +67,17 @@
 		        pageSize: 10,
 		        total_page: 0,
 		        query: {},
-		        userBean: {},
-		        userTypeBean: {},
-		        receviewOrder_num: '',
+		        employee: {},
 		        tags: [],
+		        index_image: [],
 		        feedbckList: [],
+		        qnhost: qnhost
 	    	}
     	},
     	props: ["getState"],
     	filters: {birthFilter,dateFilter,timeFilter},
 	    components:{
-	      	loadMore
+	      	swiper,loadMore
 	    },
 	    methods: {
 	      onInfinite(done) {
@@ -125,15 +105,21 @@
 	          success: res=>{
 	            let {code,data,desc} =res;
 	            if (code===0) {
-	              this.userBean = data.employee.userBean;
-	              this.tags = data.employee.userBean.tags.split(",");
-	              this.userTypeBean = data.employee.userTypeBean;
-	              this.receviewOrder_num = data.employee.receviewOrder_num;
-	              if (this.getState) {
-	              	this.$emit('sendState',this.userBean.state);
-	              }
+	                this.employee = data.employee;
+	                this.tags = data.employee.tags.split(",");
+	               	let index_image = data.employee.index_image.split(",");
+	                for(let i = 0;i<index_image.length;i++){
+	                	index_image[i]={
+	                		name: data.employee.nick_name,
+	                		image: index_image[i]
+	                	}
+	                }
+	                this.index_image = index_image;
+	              	if (this.getState) {
+	              		this.$emit('sendState',this.employee.state);
+	              	}
 	            }else{
-	              error(desc)
+	              error(code,desc)
 	            }
 	          }
 	        });
@@ -154,9 +140,9 @@
 	            let {code,data,desc} =res;
 	            if (code===0) {
 	            	this.total_page = data.feedbckList.total_page;
-	              this.feedbckList = this.feedbckList.concat(data.feedbckList.data);
+	              	this.feedbckList = this.feedbckList.concat(data.feedbckList.data);
 	            }else{
-	              error(desc)
+	              error(code,desc)
 	            }
 	          }
 	        });
@@ -174,16 +160,16 @@
   	}
 </script>
 <style type="text/css" lang='scss' scoped>
-@import "../../static/css/mixin";
+@import "../common/css/mixin";
   .rate>i{
     display: inline-block;
     width: .24rem;
     height: .24rem;
     margin-left: .06rem;
-    @include bg-image('../../static/images/star');
+    @include bg-image('../common/img/star');
   }
   .rate>.selected{
-    @include bg-image('../../static/images/star-selected');
+    @include bg-image('../common/img/star-selected');
   }
    .mood-icon{
 	    display: inline-block;
@@ -193,7 +179,7 @@
 	    right: .2rem;
 	    top: .2rem;
 	    z-index: 100;
-	    @include bg-image('../../static/images/sunny');
+	    @include bg-image('../common/img/sunny');
 	}
 	.info-icon{
 		display: inline-block;
@@ -203,21 +189,21 @@
 	    margin-right: .2rem;
 	}
 	.special-icon{
-		@include bg-image('../../static/images/special');
+		@include bg-image('../common/img/special');
 	}
 	.age-icon{
-		@include bg-image('../../static/images/age');
+		@include bg-image('../common/img/age');
 	}
 	.heigh-icon{
-		@include bg-image('../../static/images/heigh');
+		@include bg-image('../common/img/heigh');
 	}
 	.weight-icon{
-		@include bg-image('../../static/images/weight');
+		@include bg-image('../common/img/weight');
 	}
 	.area-icon{
-		@include bg-image('../../static/images/area');
+		@include bg-image('../common/img/area');
 	}
 	.hobby-icon{
-		@include bg-image('../../static/images/hobby');
+		@include bg-image('../common/img/hobby');
 	}
   </style>

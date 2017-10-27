@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   export default {
     name: 'app',
     data(){
@@ -43,7 +43,22 @@
 	          	success: res=>{
 	            	let {code,desc} =res;
 	            	if (code===0) {
-	            		console.log(desc);
+	            		if (code===0) {
+			                WeixinJSBridge.invoke('getBrandWCPayRequest',{
+			                  "appId":data.payParams.appid,
+			                  "nonceStr":data.payParams.nonceStr,
+			                  "package":data.payParams.prepayid,
+			                  "signType":"MD5",
+			                  "timeStamp":data.payParams.timestamp,
+			                  "paySign":data.payParams.sign
+			                }, function(res){
+			                  // WeixinJSBridge.log(res.err_msg);
+			                  // alert(res.err_code+res.err_desc+res.err_msg);
+			                  window.location.href = 'mine.html';
+			                });
+			            }else{
+			              error(code,desc)
+			            }
 	            	}else{
 	              		$.alert('',desc);
 	            	}

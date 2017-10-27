@@ -11,62 +11,23 @@
 	          <i class="wx"></i>微信支付
 	        </li>
 	      </ul>
-	      <div class="op-btn gray-bg" style='position: absolute;' @touchstart='payBol=false;maskBol=false;'>取消</div>
+	      <div class="op-btn bg-c" style='position: absolute;z-index:10006;' @touchstart='payBol=false;maskBol=false;'>取消</div>
 	    </div>
-	    <div class="reward-box" :class='{"box-visible":rewardBol}'>
-	        <ul>
-	          <li class="reward-list">
-	            <dl :class="{'border-1px':order_amount===3}" @touchstart='order_amount=3;'>
-	              <dt class="reward-icon-300"></dt>
-	              <dd>300</dd>
-	            </dl>
-	          </li>
-	          <li class="reward-list">
-	            <dl :class="{'border-1px':order_amount===4}" @touchstart='order_amount=4;'>
-	              <dt class="reward-icon-400"></dt>
-	              <dd>400</dd>
-	            </dl>
-	          </li>
-	          <li class="reward-list">
-	            <dl :class="{'border-1px':order_amount===5}" @touchstart='order_amount=5;'>
-	              <dt class="reward-icon-500"></dt>
-	              <dd>500</dd>
-	            </dl>
-	          </li>
-	          <li class="reward-list">
-	            <dl :class="{'border-1px':order_amount===6}" @touchstart='order_amount=6;'>
-	              <dt class="reward-icon-600"></dt>
-	              <dd>600</dd>
-	            </dl>
-	          </li>
-	          <li class="reward-list">
-	            <dl :class="{'border-1px':order_amount===7}" @touchstart='order_amount=7;'>
-	              <dt class="reward-icon-700"></dt>
-	              <dd>700</dd>
-	            </dl>
-	          </li>
-	          <li class="reward-list">
-	            <dl :class="{'border-1px':order_amount===8}" @touchstart='order_amount=8;'>
-	              <dt class="reward-icon-800"></dt>
-	              <dd>800</dd>
-	            </dl>
-	          </li>
-	          <li class="reward-list">
-	            <dl :class="{'border-1px':order_amount===9}" @touchstart='order_amount=9;'>
-	              <dt class="reward-icon-900"></dt>
-	              <dd>900</dd>
-	            </dl>
-	          </li>
-	          <li class="reward-list">
-	            <dl :class="{'border-1px':order_amount===10}" @touchstart='order_amount=10;'>
-	              <dt class="reward-icon-1000"></dt>
-	              <dd>1000</dd>
-	            </dl>
-	          </li>
-	        </ul>
-	        <div class="op-btn primary-bg" @touchstart='ensureReward' style='position: absolute;'>
-	          购买
-	        </div>
+	    <div class="sign-amount-wrap" v-show='rewardBol'>
+	    	<ul class="sign-amount-box border-bottom-1px">
+	    		<li class="sign-amount-list" v-for='(item,index) in signList' :key='index'>
+	    			<dl>
+	    				<dt>
+	    					<span v-text='item.name'></span>
+	    					<em>{{item.amount}}元</em>
+	    				</dt>
+	    				<dd @touchstart='order_amount=item.amount'><i class="icon primary" :class='order_amount===item.amount?"icon-70":"icon-19"'></i></dd>
+	    			</dl>
+	    		</li>
+	    	</ul>
+	    	<div class="ensure-sign primary" @touchstart='ensureReward'>
+	    		确认签到
+	    	</div>
 	    </div>
 	</div>
 </template>
@@ -78,9 +39,21 @@
 				maskBol: false,
 				payBol: false,
 				rewardBol: false,
-				order_amount: '',
-				listPayType: [],
-				optype: ''
+				order_amount: 50,
+				optype: '',
+				signList: [{
+					name: '一级签到',
+					amount: 50
+				},{
+					name: '二级签到',
+					amount: 100
+				},{
+					name: '三级签到',
+					amount: 150
+				},{
+					name: '四级签到',
+					amount: 200
+				}]
 			}
 		},
 		watch:{
@@ -88,6 +61,9 @@
 				handler(newVal,oldVal){
 					if (newVal) {
 						this.payBol=true;
+					}else{
+						this.payBol=false;
+						this.rewardBol=false;
 					}
 				}
 			}
@@ -101,67 +77,63 @@
 				this.$emit('payType',payObj);
 				this.rewardBol = false;
 				this.maskBol=false;
-				this.order_amount ='';
-			},
-			getPayType(){
-				let params ={
-	              token: getCookie('token')
-	            }
-	            $.ajax({
-	              	url: `${baseAjax}/pay/listPayType.jhtml.jhtml`,
-	              	type: 'GET',
-	              	dataType: 'json',
-	              	data: params,
-	              	success: res=>{
-	                	let {code,data,desc} =res;
-	                	if (code===0) {
-	                		this.listPayType = data.listPayType;
-	                	}else{
-	                  		error(desc)
-	                	}
-	              	}
-	            });
+				this.order_amount = 50;
 			}
-		},
-		mounted(){
-			this.$nextTick(()=>{
-				// this.getPayType();
-			})
 		}
 	}
 </script>
 <style type="text/css" scoped lang='scss'>
-@import '../../static/css/mixin';
-@import '../../static/css/payfor';
-.reward-icon-300{
-	@include bg-image('../../static/images/pay300');
-}
-.reward-icon-400{
-	@include bg-image('../../static/images/pay400');
-}
-.reward-icon-500{
-	@include bg-image('../../static/images/pay500');
-}
-.reward-icon-600{
-	@include bg-image('../../static/images/pay600');
-}
-.reward-icon-700{
-	@include bg-image('../../static/images/pay700');
-}
-.reward-icon-800{
-	@include bg-image('../../static/images/pay800');
-}
-.reward-icon-900{
-	@include bg-image('../../static/images/pay900');
-}
-.reward-icon-1000{
-	@include bg-image('../../static/images/pay1000');
-}
+@import '../common/css/mixin';
+@import '../common/css/payfor';
 .balance{
-	 @include bg-image('../../static/images/balance');
+	 @include bg-image('../common/img/balance');
 }
 .wx{
-	 @include bg-image('../../static/images/wx');
+	 @include bg-image('../common/img/wx');
 }
-
+.sign-amount-wrap{
+	position: absolute;
+	top: 25%;
+	left: 0px;
+	right: 0px;
+	z-index: 10006;
+	margin: auto;
+	width: 5.6rem;
+	padding: .2rem 0px;
+	font-size: .26rem;
+	border-radius: 5px;
+	background-color: #fff;
+	transition: all .3s;
+}
+.sign-amount-box{
+	padding: 0px .6rem;
+}
+.sign-amount-list{
+	dl{
+		overflow: hidden;
+		height: .7rem;
+		line-height: .7rem;
+	}
+	dt{
+		float: left;
+		width: 3.44rem;
+		overflow: hidden;
+		span{
+			float: left;
+		}
+		em{
+			float: right;
+			text-align: right;
+		}
+	}
+	dd{
+		float: right;
+	}
+}
+.ensure-sign{
+	height: .7rem;
+	line-height: .7rem;
+	font-size: .3rem;
+	text-align: center;
+}
 </style>

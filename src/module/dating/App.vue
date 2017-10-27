@@ -2,7 +2,7 @@
   <div id="app">
     <div id="tagnav" class="weui-navigator weui-navigator-wrapper">
         <ul class="weui-navigator-list" style="height: 10px;overflow:hidden;">
-          <li @touchstart='typeList("")'><a href="javascript:void(0);">推荐</a></li>
+          <li @touchstart='typeList("all")'><a href="javascript:void(0);">推荐</a></li>
           <li @touchstart='typeList("new")'><a href="javascript:void(0);">新人</a></li>
           <li @touchstart='typeList("hot")'><a href="javascript:void(0);">热门</a></li>
           <li><a href="reward.html">打赏榜</a></li>
@@ -17,8 +17,8 @@
         <li class="con-list" v-for='(item,index) in listdata' :key='index'>
           <dl>
             <dt>
-              <a :href='"predate.html?id="+item.user_id'>
-                <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+              <a :href='"predate.html?employee_id="+item.user_id'>
+                <img :src="`${qnhost}${item.index_image}`"  @error='errorLoadImg'>
               </a>
               <i class="mood-icon" v-if='item.mood===1'></i>
               <div class="staff-mask" v-if='item.state===0'>
@@ -40,12 +40,13 @@
 <script type="text/ecmascript-6">
 import vFooter from '../../component/vFooter';
 import loadMore from '../../component/loadMore';
-import {getList} from '../../../static/js/mixins';
+import {getList} from '../../common/js/mixins';
   export default {
     name: 'app',
     data(){
       return{
-        tabIndex: 1
+        tabIndex: 1,
+        qnhost: qnhost
       }
     },
     filters:{
@@ -62,12 +63,12 @@ import {getList} from '../../../static/js/mixins';
         TagNav('#tagnav',{
           type: 'scrollToFirst',
         });
-        this.typeList("");
       })
     }
   }
 </script>
 <style type="text/css" lang='scss' scoped>
+@import '../../common/css/mixin';
   .weui-navigator-list{
     .border-bottom-1px::after {
       height: 2px;

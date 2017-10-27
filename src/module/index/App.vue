@@ -1,23 +1,16 @@
 <template>
   <div id="app">
       <load-more  :on-infinite="onInfinite" :dataList="scrollData">
-        <div class="slide" id="slide">
+        <div class="slide">
           <div class="search">
-            <span class="primary"><i class="icon icon-4"></i><input type="text" placeholder='搜索员工' class="search-input" @keyup.enter='search' ></span>
+            <span class="primary"><i class="icon icon-4"></i><input type="text" placeholder='搜索员工' class="search-input" v-model='message'  @keyup.enter='searchList' ></span>
           </div>
-          <ul>
-              <li v-for='(item,index) in 5' :key='index'>
-                  <img src="http://static.strongmall.net/upload/goods/2017_07_27/d5f9e34789d2ada6be12baaa0825bf512f876861.png?imageView2/2/w/750/h/750" data-src="http://static.strongmall.net/upload/goods/2017_07_27/d5f9e34789d2ada6be12baaa0825bf512f876861.png?imageView2/2/w/750/h/750" alt="">
-              </li>
-          </ul>
-          <div class="dot">
-              <span v-for='item in 5'></span>
-          </div>
+          <swiper :slider-list='banner'></swiper>
         </div>
         <nav class="nav">
           <ul class="weui-flex">
             <li class="nav-item weui-flex-item">
-              <dl @touchstart='typeList("")'>
+              <dl @touchstart='typeList("all")'>
                 <dt class="nav-img-box"><i class="nav-icon alls-icon"></i></dt>
                 <dd>全部</dd>
               </dl>
@@ -78,7 +71,7 @@
             <dl>
               <dt>
                 <a :href="`predate.html?employee_id=${item.user_id}`">
-                  <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+                  <img :src="`${qnhost}${item.index_image}`"  @error='errorLoadImg'>
                 </a>
                 <i class="mood-icon" v-if='item.mood===1'></i>
                 <div class="staff-mask" v-if='item.state===0'>
@@ -98,20 +91,26 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import swiper from '../../component/swiper';
   import loadMore from '../../component/loadMore';
   import vFooter from '../../component/vFooter';
-  import {getList} from '../../../static/js/mixins';
+  import {getList} from '../../common/js/mixins';
     export default {
         data() {
           return {
             banner: [],
+            qnhost: qnhost,
+            slide: '',
+            preMsg: '',
+            message: '',
+            qnhost: qnhost
           }
         },
         filters:{
           birthFilter
         },
         components: {
-          loadMore,vFooter
+          swiper,loadMore,vFooter
         },
         mixins: [getList],
         methods: {
@@ -130,63 +129,21 @@
                 if (code===0) {
                   this.banner = data.bannerList;
                 }else{
-                  error(desc)
+                  error(code,desc)
                 }
               }
             });
-          },
-          search(){
-            let params ={
-              token: getCookie('token'),
-              messsage: '',
-              page: this.page,
-              pageSize: 10
-            }
-            $.ajax({
-              url: `${baseAjax}/home/listEmployeeBySearch.jhtml`,
-              type: 'GET',
-              dataType: 'json',
-              data: params,
-              success: res=>{
-                let {code,data,desc} =res;
-                if (code===0) {
-                  this.listdata = data.userList.data;
-                }else{
-                  error(desc)
-                }
-              }
-            });
-          },
+          }
         },
         mounted(){
           this.$nextTick(()=>{
-            let params  ={
-              code: '123456'
-            }
-            // $.ajax({
-            //   url: `${baseAjax}/login/login.jhtml`,
-            //   type: 'POST',
-            //   dataType: 'json',
-            //   data: params,
-            //   success: res=>{
-            //     let {code,data,desc} =res;
-            //     if (code===0) {
-            //       let userInfo = JSON.stringify(data.user);
-            //       sessionStorage.userInfo = userInfo;
-            //       setCookie("token",data.token,100);
-            //     }else{
-            //       error(desc)
-            //     }
-            //   }
-            // });
             this.getBanner();
-            this.search();
           })
         }
     }
 </script>
 <style type="text/css" lang='scss' scoped>
-  @import '../../../static/css/mixin.scss';
+  @import '../../common/css/mixin';
   #app{
     position: relative;
     height: 100vh;
@@ -198,35 +155,36 @@
     position: absolute;
     right: .2rem;
     top: .2rem;
-    @include bg-image('../../../static/images/sunny');
+    @include bg-image('../../common/img/sunny');
   }
   .nav-icon{
     display: inline-block;
     width: 100%;
     height: 100%;
   }
+
   .alls-icon{
-    @include bg-image('../../../static/images/alls');
+    @include bg-image('../../common/img/alls');
   }
   .newper-icon{
-    @include bg-image('../../../static/images/newper');
+    @include bg-image('../../common/img/newper');
   }
   .hot-icon{
-    @include bg-image('../../../static/images/hot');
+    @include bg-image('../../common/img/hot');
   }
   .reward-icon{
-    @include bg-image('../../../static/images/reward');
+    @include bg-image('../../common/img/reward');
   }
   .beau-icon{
-    @include bg-image('../../../static/images/beau');
+    @include bg-image('../../common/img/beau');
   }
   .fresh-icon{
-    @include bg-image('../../../static/images/fresh');
+    @include bg-image('../../common/img/fresh');
   }
   .talent-icon{
-    @include bg-image('../../../static/images/talent');
+    @include bg-image('../../common/img/talent');
   }
   .bud-icon{
-    @include bg-image('../../../static/images/bud');
+    @include bg-image('../../common/img/bud');
   }
 </style>

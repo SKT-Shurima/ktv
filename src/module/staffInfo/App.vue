@@ -5,12 +5,9 @@
       <a href="editInfo.html" class="edit">编辑</a>
       <dl class="info-box">
         <dt class="avater">
-          <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+          <img :src="user.wechat_portrait"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
         </dt>
-        <dd>
-          <div class="name ellipsis-1" v-text='userBean.wechat_name'></div>
-          <div class="wxid ellipsis-1">{{userBean.phone}}&nbsp;(微信号)</div>
-        </dd>
+        <dd class="name ellipsis-1" v-text='user.wechat_name'>
         <dd class="signin" :class='[sign===0?"signin-bg":sign===2?"signed-bg":"signup-bg"]' @touchstart="signin">
           {{sign===0?"签到":sign===2?"已签":"签退"}}
         </dd>
@@ -31,19 +28,19 @@
           </div>
       </div>
       <ul class="base-info">
-          <li class="border-bottom-1px cell"><label class="cell-label">姓名</label><em v-text='userBean.real_name'></em></li>
-          <li class="border-bottom-1px cell"><label class="cell-label">花名</label><em v-text='userBean.nick_name'></em></li>
-          <li class="border-bottom-1px cell"><label class="cell-label">类别</label><em v-text='userTypeBean.utype_name'></em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">姓名</label><em v-text='user.real_name'></em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">花名</label><em v-text='user.nick_name'></em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">类别</label><em v-text='user.utype_name'></em></li>
       </ul>
       <ul class="base-info">
-          <li class="border-bottom-1px cell"><label class="cell-label">身高(cm)</label><em v-text='userBean.height'></em></li>
-          <li class="border-bottom-1px cell"><label class="cell-label">体重(kg)</label><em v-text='userBean.weight'></em></li>
-          <li class="border-bottom-1px cell"><label class="cell-label">籍贯</label><em>{{userBean.province}}{{userBean.city}}</em></li>
-          <li class="border-bottom-1px cell"><label class="cell-label">出生日期</label><em>{{userBean.birthday|birthFilter}}</em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">身高(cm)</label><em v-text='user.height'></em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">体重(kg)</label><em v-text='user.weight'></em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">籍贯</label><em>{{user.province}}{{user.city}}</em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">出生日期</label><em>{{user.birthday|birthFilter}}</em></li>
       </ul>
       <ul class="base-info">
-          <li class="border-bottom-1px cell"><label class="cell-label">兴趣爱好</label><em v-text='userBean.hobby'></em></li>
-          <li class="border-bottom-1px cell"><label class="cell-label">心情</label><span class="mood-icon"><i class='mood-sunny selected' v-if='userBean.mood===1'></i><i class="mood-unsunny selected"  v-else></i></span></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">兴趣爱好</label><em v-text='user.hobby'></em></li>
+          <li class="border-bottom-1px cell"><label class="cell-label">心情</label><span class="mood-icon"><i class='mood-sunny selected' v-if='user.mood===1'></i><i class="mood-unsunny selected"  v-else></i></span></li>
       </ul>
       <div class="tag">
         <h1>标签</h1>
@@ -52,18 +49,18 @@
         </div>
       </div>
    </div>
-    <div class="op-btn primary-bg" v-if='userBean.state === 1' @touchstart="toBusy">
+    <div class="op-btn primary-bg" v-if='user.state === 1' @touchstart="toBusy">
       切换为忙碌状态
     </div>
-    <div class="op-btn bg-c" v-if='userBean.state === 0'>
+    <div class="op-btn bg-c" v-if='user.state === 0'>
       忙碌中...
     </div>
     <signin ref='payfor' @payType='payfor'></signin>
   </div>
 </template>
 
-<script>
-  import {getInfo} from '../../../static/js/mixins';
+<script type="text/ecmascript-6">
+  import {getInfo} from '../../common/js/mixins';
   import signin from  '../../component/signinPayfor';
   export default {
     name: 'app',
@@ -97,9 +94,9 @@
           success: res=>{
             let {code,data,desc} =res;
             if (code===0) {
-              
+              this.userInfo();
             }else{
-              error(desc)
+              error(code,desc)
             }
           }
         });
@@ -123,29 +120,24 @@
           success: res=>{
             let {code,data,desc} =res;
             if (code===0) {
-              this.cash(data.payParams.pay_sn);
+              if (optype==1) {
+                WeixinJSBridge.invoke('getBrandWCPayRequest',{
+                  "appId":data.payParams.appid,
+                  "nonceStr":data.payParams.nonceStr,
+                  "package":data.payParams.prepayid,
+                  "signType":"MD5",
+                  "timeStamp":data.payParams.timestamp,
+                  "paySign":data.payParams.sign
+                }, function(res){
+                  // WeixinJSBridge.log(res.err_msg);
+                  // alert(res.err_code+res.err_desc+res.err_msg);
+                  window.location.href = 'mine.html';
+                });
+              }else{
+                window.location.href = 'mine.html';
+              }
             }else{
-              error(desc)
-            }
-          }
-        });
-      },
-      cash(pay_sn){
-        let params = {
-          token: getCookie('token'),
-          pay_sn: pay_sn
-        }
-        $.ajax({
-          url: `${payforAjax}/web/cash.jhtml`,
-          type: 'POST',
-          dataType: 'json',
-          data: params,
-          success: res=>{
-            let {code,data,desc} =res;
-            if (code===0) {
-              this.userInfo();
-            }else{
-              error(desc)
+              error(code,desc)
             }
           }
         });
@@ -164,7 +156,7 @@
             if (code===0) {
               this.userInfo();
             }else{
-              error(desc)
+              error(code,desc)
             }
           }
         });
@@ -178,17 +170,20 @@
   }
 </script>
 <style type="text/css" lang='scss' scoped>
-  @import '../../../static/css/mixin.scss';
+  @import '../../common/css/mixin';
+  .default-avater{
+    @include bg-image('../../common/img/default-avater');
+  }
   .mood-sunny{
-    @include bg-image('../../../static/images/sunny-unselected');
+    @include bg-image('../../common/img/sunny-unselected');
   }
   .mood-sunny.selected{
-    @include bg-image('../../../static/images/sunny');
+    @include bg-image('../../common/img/sunny');
   }
   .mood-unsunny{
-    @include bg-image('../../../static/images/unsunny-unselected');
+    @include bg-image('../../common/img/unsunny-unselected');
   }
   .mood-unsunny.selected{
-    @include bg-image('../../../static/images/unsunny');
+    @include bg-image('../../common/img/unsunny');
   }
 </style>

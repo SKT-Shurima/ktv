@@ -22,7 +22,7 @@
   	</div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 	import loadMore from '../../component/loadMore';
   	export default {
     	name: 'app',
@@ -73,7 +73,7 @@
                             this.financeList = this.financeList.concat(data.financeList.data);
                             this.totalPage = data.financeList.total_page;
                         }else{
-                          error(desc)
+                          error(code,desc)
                         }
                     }
                 });
@@ -87,3 +87,10 @@
         }
   	}
 </script>
+<style type="text/css" lang='scss' scoped>
+    .container{
+        position: relative;
+        top: .88rem;
+        background-color: #fff;
+    }
+</style>

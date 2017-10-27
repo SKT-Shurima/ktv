@@ -13,7 +13,7 @@
                     <li class="border-bottom-1px" v-for='(item,index) in waitList' :key='index'>
                         <div class="p">
                             <a :href="`orderDetail.html?employee_id=${item.employeer.user_id}&order_id=${item.order_id}`">
-                                <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+                                <img :src="`${qnhost}${item.employeer.index_image}`" @error='errorLoadImg'>
                             </a>
                         </div>
                         <div class="i">
@@ -55,7 +55,7 @@
                 <ul v-if='tabIndex===2'>
                     <li class="border-bottom-1px" v-for='(item,index) in cancelList' :key='index'>
                         <div class="p">
-                            <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+                            <img :src="`${qnhost}${item.employeer.index_image}`" @error='errorLoadImg'>
                         </div>
                         <div class="i">
                             <div class="name">
@@ -82,7 +82,7 @@
     </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import payFor from '../../component/payfor';
   import loadMore from '../../component/loadMore';
   export default {
@@ -90,8 +90,8 @@
     data(){
         return {
             scrollData: {
-                    noFlag: false //暂无更多数据显示
-                },
+                noFlag: false //暂无更多数据显示
+            },
             tabIndex: 1,
             page: 0,
             pageSize: 10,
@@ -138,9 +138,24 @@
               success: res=>{
                 let {code,data,desc} =res;
                 if (code===0) {
-                  this.cash(data.payParams.pay_sn);
+                  if (optype==1) {
+                    WeixinJSBridge.invoke('getBrandWCPayRequest',{
+                      "appId":data.payParams.appid,
+                      "nonceStr":data.payParams.nonceStr,
+                      "package":data.payParams.prepayid,
+                      "signType":"MD5",
+                      "timeStamp":data.payParams.timestamp,
+                      "paySign":data.payParams.sign
+                    }, function(res){
+                      // WeixinJSBridge.log(res.err_msg);
+                      // alert(res.err_code+res.err_desc+res.err_msg);
+                      window.location.href = 'mine.html';
+                    });
+                  }else{
+                    window.location.href = 'mine.html';
+                  }
                 }else{
-                  error(desc)
+                  error(code,desc)
                 }
               }
             });
@@ -172,7 +187,7 @@
                         this.waitList = this.waitList.concat(data.orderList.data);
                         this.totalPage = data.orderList.total_page;
                     }else{
-                      error(desc)
+                      error(code,desc)
                     }
                 }
             });
@@ -194,7 +209,7 @@
                             this.page = 1 ;
                             this.getWaitList();
                         }else{
-                          error(desc)
+                          error(code,desc)
                         }
                     }
                 });
@@ -229,7 +244,7 @@
                         this.cancelList = this.cancelList.concat(data.orderList.data);
                         this.totalPage = data.orderList.total_page;
                     }else{
-                      error(desc)
+                      error(code,desc)
                     }
                 }
             });
@@ -258,7 +273,7 @@
                             $.alert('',"系统已帮您催单，请耐心等待，谢谢！");
                         }
                     }else{
-                      error(desc)
+                      error(code,desc)
                     }
                 }
             });
@@ -275,8 +290,8 @@
   }
 </script>
 <style type="text/css" lang='scss' scoped>
-    @import '../../../static/css/mixin.scss';
+    @import '../../common/css/mixin.scss';
     .time-icon{
-        @include bg-image('../../../static/images/time');
+        @include bg-image('../../common/img/time');
     }
 </style>

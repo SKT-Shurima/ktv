@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import staffInfo  from '../../component/staffInfo';
   import payFor from '../../component/payfor';
   export default {
@@ -64,7 +64,7 @@
             if (code===0) {
               this.order=data;
             }else{
-              error(desc)
+              error(code,desc)
             }
           }
         });
@@ -88,9 +88,24 @@
           success: res=>{
             let {code,data,desc} =res;
             if (code===0) {
-              console.log(data);
+              if (optype==1) {
+                WeixinJSBridge.invoke('getBrandWCPayRequest',{
+                  "appId":data.payParams.appid,
+                  "nonceStr":data.payParams.nonceStr,
+                  "package":data.payParams.prepayid,
+                  "signType":"MD5",
+                  "timeStamp":data.payParams.timestamp,
+                  "paySign":data.payParams.sign
+                }, function(res){
+                  // WeixinJSBridge.log(res.err_msg);
+                  // alert(res.err_code+res.err_desc+res.err_msg);
+                  window.location.href = 'userOrder.html';
+                });
+              }else{
+                window.location.href = 'userOrder.html';
+              }
             }else{
-              error(desc)
+              error(code,desc)
             }
           }
         });
@@ -140,7 +155,7 @@
                         $.alert('',"系统已帮您催单，请耐心等待，谢谢！");
                     }
                 }else{
-                  error(desc)
+                  error(code,desc)
                 }
             }
         });
@@ -160,7 +175,7 @@
   }
 </script>
 <style type="text/css" lang='scss' scoped>
-@import "../../../static/css/mixin";
+@import "../../common/css/mixin";
   .mood-icon{
     display: inline-block;
     width: .42rem;
@@ -169,6 +184,6 @@
     right: .2rem;
     top: .2rem;
     z-index: 100;
-    @include bg-image('../../../static/images/sunny');
+    @include bg-image('../../common/img/sunny');
   }
 </style>

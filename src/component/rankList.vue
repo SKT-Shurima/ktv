@@ -6,7 +6,7 @@
 	                <dl class="ranking-box">
 	                    <dt class="ranking-s-icon">
 	                        <div>
-	                            <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg">
+	                            <img :src="`${qnhost}${s.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
 	                        </div>
 	                    </dt>
 	                    <dd>
@@ -19,7 +19,7 @@
 	                <dl>
 	                    <dt class="ranking-f-icon">
 	                        <div>
-	                            <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg">
+	                            <img :src="`${qnhost}${f.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
 	                        </div>
 	                    </dt>
 	                    <dd>
@@ -32,7 +32,7 @@
 	                <dl class="ranking-box">
 	                    <dt class="ranking-t-icon">
 	                        <div>
-	                            <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg">
+	                            <img :src="`${qnhost}${t.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
 	                        </div>
 	                    </dt>
 	                    <dd>
@@ -45,7 +45,7 @@
 	        <ul class="ranking-box weui-updown">
 	            <li class="ranking-item border-bottom-1px" v-for="(item,index) in list" :key='index'>
 	                <i>{{index+3}}</i>
-	                <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+	                <img :src="`${qnhost}${item.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
 	                <strong v-text='item.nick_name'></strong>
 	                <span class="primary">&yen;{{item.total_award}}</span>
 	            </li>
@@ -66,7 +66,8 @@
   			s: {},
   			t: {},
   			list: [],
-  			hasCon: false
+  			hasCon: false,
+        qnhost: qnhost
   		}
   	},
   	methods:{
@@ -91,7 +92,7 @@
                 		this.list = list.slice(3);
                 	}
                 }else{
-                  error(desc)
+                  error(code,desc)
                 }
               }
             });
@@ -105,7 +106,7 @@
   }
 </script>
 <style type="text/css" lang='scss' scoped>
-    @import '../../static/css/mixin.scss';
+    @import '../common/css/mixin';
     .ranking-box{
         padding-top: .47rem;
     }
@@ -163,13 +164,16 @@
             }
         }
     }
+    .default-avater{
+      @include bg-image('../common/img/default-avater');
+    }
     .ranking-f-icon{
-        @include bg-image('../../static/images/No1');
+        @include bg-image('../common/img/No1');
     }
     .ranking-s-icon{
-        @include bg-image('../../static/images/No2');
+        @include bg-image('../common/img/No2');
     }
     .ranking-t-icon{
-        @include bg-image('../../static/images/No3');
+        @include bg-image('../common/img/No3');
     }
 </style>

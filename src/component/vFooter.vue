@@ -29,7 +29,7 @@
 	}
 </script>
 <style type="text/css" scoped lang='scss'>
-@import '../../static/css/mixin.scss';
+@import '../common/css/mixin';
 #footer{
     width: 100%;
     height: 1rem;   
@@ -59,22 +59,22 @@
     height: .66rem;
 }
 .home{
-    @include bg-image('../../static/images/home-unselected');
+    @include bg-image('../common/img/home-unselected');
 }
 .home.selected{
-    @include bg-image('../../static/images/home-selected');
+    @include bg-image('../common/img/home-selected');
 }
 .dating{
-    @include bg-image('../../static/images/dating-unselected')
+    @include bg-image('../common/img/dating-unselected')
 }
 .dating.selected{
-    @include bg-image('../../static/images/dating-selected');
+    @include bg-image('../common/img/dating-selected');
 }
 .mine{
-    @include bg-image('../../static/images/mine-unselected');
+    @include bg-image('../common/img/mine-unselected');
 }
 .mine.selected{
-    @include bg-image('../../static/images/mine-selected');
+    @include bg-image('../common/img/mine-selected');
 }
 
 </style>

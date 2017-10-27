@@ -4,11 +4,9 @@
 	      <i class="icon icon-109" id='back'></i>
 	      <dl class="info-box">
 	        <dt class="avater">
-	          <img src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg"  data-src="http://gw2.alicdn.com/bao/uploaded/i4/392314057/TB2kNLbjrBkpuFjy1zkXXbSpFXa_!!392314057.png_250x250.jpg" alt="">
+	        	<img :src="user.wechat_portrait"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
 	        </dt>
-	        <dd>
-	          <div class="name ellipsis-1" v-text='userBean.wechat_name'></div>
-	          <div class="wxid ellipsis-1">{{userBean.phone}}&nbsp;(微信号)</div>
+	        <dd class="name ellipsis-1" v-text='user.wechat_name'>
 	        </dd>
 	      </dl>
 	   </div>
@@ -18,14 +16,14 @@
 	          个人图册（上限10张）
 	        </div>
 	        <div class="avater-list-wrap">
-	            <div class="avater-list-box" :style='{width: (images.length+1)*90+"px"}'>
+	            <div class="avater-list-box" :style='{width: (images.length+1)*92+"px"}'>
 	              <ul class="weui_uploader_files">
 	              	<li v-for='(item,index) in images' :key='index' :style='{backgroundImage: `url(${item.urls})`}' class="weui_uploader_file">
 	              		<i class="icon icon-95" @touchstart='delImg(index)'></i>
 	              	</li>
 	              </ul>
 	              <div class="weui_uploader_input_wrp">
-	              	<input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" @change="previewImage($event)"/>
+	              	<div class="weui_uploader_input" @touchstart="previewImage"></div>
 	              </div> 
 	            </div>
 	        </div>
@@ -80,7 +78,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import {getInfo} from '../../static/js/mixins';
+	import {getInfo} from '../common/js/mixins';
 	import VueCropper from "vue-cropper"  
   	export default {
 	    name: 'editInfo',
@@ -95,13 +93,12 @@
 		          	canScale: true,
 		          	autoCrop: true,
 		          	// 只有自动截图开启 宽度高度才生效
-		          	autoCropWidth: 200,
-		          	autoCropHeight: 200,
+		          	autoCropWidth: 300,
+		          	autoCropHeight: 400,
 		          	// 开启宽度和高度比例
 		          	fixed: true,
-		          	fixedNumber: [1, 1]
+		          	fixedNumber: [3, 4]
 		        },
-		        qnUrl: "http://oxqmde0yk.bkt.clouddn.com/",
 	    		typePicker:'',
 	    		typeList: '',
 	    		cityPicker: '',
@@ -171,29 +168,35 @@
 	    },
 	    methods:{
 	    	initData(){
-	    		this.real_name = this.userBean.real_name;
-	    		this.nick_name = this.userBean.nick_name;
-	    		this.height = this.userBean.height;
-	    		this.weight = this.userBean.weight;
-	    		this.province_id = this.userBean.province_id;
-	    		this.province = this.userBean.province;
-	    		this.city_id = this.userBean.city_id;
-	    		this.city = this.userBean.city;
-	    		this.hobby = this.userBean.hobby;
-	    		this.mood =  this.userBean.mood;
-	    		this.birthday  = this.userBean.birthday;
-	    		this.utype_id = this.userTypeBean.utype_id;
-	    		this.utype = this.userTypeBean.utype_name;
-	    		let tags = this.tags,labels=this.labels;
-	    		for(let m=0;m<tags.length;m++){
-	    			for (let n=0;n<labels.length;n++) {
-	    				if (tags[m]==labels[n].text) {
-	    					labels.checkBol=true;
-	    				}
-	    			}
+	    		this.real_name = this.user.real_name;
+	    		this.nick_name = this.user.nick_name;
+	    		this.height = this.user.height;
+	    		this.weight = this.user.weight;
+	    		this.province_id = this.user.province_id;
+	    		this.province = this.user.province;
+	    		this.city_id = this.user.city_id;
+	    		this.city = this.user.city;
+	    		this.area = this.province+this.city;
+	    		this.hobby = this.user.hobby;
+	    		this.mood =  this.user.mood;
+	    		this.birthday  = this.user.birthday;
+	    		this.birDate = dateFilter(this.birthday);
+	    		this.utype_id = this.user.utype_id;
+	    		this.utype = this.user.utype_name;
+	    		let images = this.user.index_image.split(',');
+	    		for(let i=0;i<images.length;i++){
+	    			let objItem = {
+    					urls: `${this.qnhost}${images[i]}`,
+    					key: images[i] 
+		    		}
+		    		images[i] = objItem;
 	    		}
-	    		this.labels = labels;
-
+	    		this.images = images;
+	    		let tags = this.tags,labels=this.labels;
+	    		let temp = {};
+	    		tags.forEach(item=>temp[item]=true);
+	    		labels.forEach((item,index)=>temp[item.text]?labels[index].checkBol=true:"");
+	    		temp = null;
 	    	},
 	    	getType(){
 	            let params ={
@@ -221,7 +224,7 @@
 							});
 							this.typeList = type;
 	                	}else{
-	                  		error(desc)
+	                  		error(code,desc)
 	               		}
 	              	}
 	            });
@@ -306,30 +309,25 @@
 		            if (code===0) {
 		              setCookie("QnToken",data.QNToken,.1);
 		            }else{
-		              error(desc)
+		              error(code,desc)
 		            }
 		          }
 	    		});
 	    	},
 	    	previewImage(e){
-	    		var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
-			    for (var i = 0, len = files.length; i < len; ++i) {
-	                var file = files[i];
-	                if (url) {
-	                    src = url.createObjectURL(file);
-	                } else {
-	                    src = e.target.result;
-	                }
-	            }
-	            if (!files.length) {
-	            	return false;
-	            }
 	            if (this.images.length>=10) {
 	            	$.alert("","最多选取十张图片");
 	            	return false;
 	            }
-	            this.chooseBol=true;
-	            this.cropper.img=src;
+	            wx.chooseImage({
+				    count: 1, 
+				    sizeType: ['original', 'compressed'],
+				    sourceType: ['album', 'camera'],
+				    success: (res)=> {
+				    	this.chooseBol=true;
+				        this.cropper.img = res.localIds;
+				    }
+				});
 	    	},
 	    	finish(){
 	    		this.$refs.cropper.getCropData((data) => {
@@ -468,17 +466,20 @@
   	}
 </script>
 <style type="text/css" lang='scss' scoped>
-	@import '../../static/css/mixin.scss';
+	@import '../common/css/mixin';
+	.default-avater{
+		@include bg-image('../common/img/default-avater');
+	}
 	.mood-sunny{
-		@include bg-image('../../static/images/sunny-unselected');
+		@include bg-image('../common/img/sunny-unselected');
 	}
 	.mood-sunny.selected{
-		@include bg-image('../../static/images/sunny');
+		@include bg-image('../common/img/sunny');
 	}
 	.mood-unsunny{
-		@include bg-image('../../static/images/unsunny-unselected');
+		@include bg-image('../common/img/unsunny-unselected');
 	}
 	.mood-unsunny.selected{
-		@include bg-image('../../static/images/unsunny');
+		@include bg-image('../common/img/unsunny');
 	}
 </style>

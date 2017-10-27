@@ -8,7 +8,7 @@
 }
 .reward-box{
     bottom: 0px;
-    bottom: -5rem;
+    bottom: -6rem;
     z-index: 10000;
 }
 .reward-box>ul{
@@ -40,7 +40,7 @@
 .pay-box{
     padding-bottom: 2.2rem;
     bottom: -5rem;
-    z-index: 9999;
+    z-index: 10005;
 }
 .pay-box>h1{
     font-size: .3rem;
@@ -63,7 +63,7 @@
 	opacity: 0;
     -webkit-transition-duration: .3s;
     transition-duration: .3s;
-    z-index: 1000;
+    z-index: 10003;
     visibility: hidden;
     position: fixed;
     width: 100%;
