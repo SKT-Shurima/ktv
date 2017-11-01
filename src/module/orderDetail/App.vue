@@ -1,29 +1,29 @@
 <template>
   <div id="app">
   	<staff-info></staff-info>
-    <div class="weui-flex nore-order op-btn" v-if='order.ostate_id===1'>
+    <div class="weui-flex nore-order op-btn" v-if='order.ostate_id===1' style="z-index: 10010;">
       <div class="weui-flex-item order-time color-9"><i class="time-icon"></i>{{order.create_time|countDownFilter}}</div>
       <div class="weui-flex-item reminder blue-bg"  @touchstart='feedback(3)'>催单</div>
       <div class="weui-flex-item cancle-order gray-bg" @touchstart='cancelOrder'>取消预约</div>
     </div>
-    <div class="weui-flex re-order op-btn" v-if='order.ostate_id===2'>
+    <div class="weui-flex re-order op-btn" v-if='order.ostate_id===2' style="z-index: 10010;">
       <div class="weui-flex-item order-time color-9"><i class="time-icon"></i>{{order.create_time|countDownFilter}}</div>
       <div class="weui-flex-item reminder blue-bg" @touchstart='feedback(2)'>投诉</div>
       <div class="weui-flex-item cancle-order gray-bg" @touchstart='cancelOrder'>取消预约</div>
     </div>
-    <div class="op-btn gray-bg" v-if='order.ostate_id===4'>
+    <div class="op-btn gray-bg" v-if='order.ostate_id===4' style="z-index: 10010;">
       已取消
     </div>
-    <div class="weui-flex complete-order op-btn" v-if='order.ostate_id===3'>
+    <div class="weui-flex complete-order op-btn" v-if='order.ostate_id===3' style="z-index: 10010;">
         <div class="weui-flex-item reminder blue-bg" @touchstart='payment' v-if='order.online_pay===1'>立即支付</div>
         <div class="weui-flex-item green-bg">
           <a :href='"orderDetail.html?id="+item' style="color: #fff;">打赏</a>
         </div>
     </div>
-    <div class="op-btn gray-bg" v-if='order.ostate_id===5'>
+    <div class="op-btn gray-bg" v-if='order.ostate_id===5'> style="z-index: 10010;"
       已付款,待评价
     </div>
-    <div class="op-btn gray-bg" v-if='order.ostate_id===4'>
+    <div class="op-btn gray-bg" v-if='order.ostate_id===4' style="z-index: 10010;">
       已完成
     </div>
     <pay-for ref='payfor' @payType='payfor'></pay-for>

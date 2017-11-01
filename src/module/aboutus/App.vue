@@ -3,78 +3,21 @@
     <header class="primary-header primary-bg">
 	    <i class="icon icon-109" id='back'></i>关于我们
 	  </header>
-	  <div class="container">
-      关于我们
-      <ul>
-      <li v-for='item in icons'>
-         <i class="icon" :class='item'></i>
-      </li>
-    </ul>
-    <div style="width: 300px;height: 300px;">
-      <vueCropper
-        ref="cropper2"
-        :img="example2.img"
-        :outputSize="example2.size"
-        :outputType="example2.outputType"
-        :info="example2.info"
-        :canScale="example2.canScale"
-        :autoCrop="example2.autoCrop"
-        :autoCropWidth="example2.width"
-        :autoCropHeight="example2.height"
-        :fixed="example2.fixed"
-        :fixedNumber="example2.fixedNumber"
-      ></vueCropper>
+	  <div class="text-container">
+      <p>
+        约唱是一款利用LBS位置服务的功能性陌生交友工具，隶属于杭州乐娱帮网络科技有限公司旗下产品。约唱产品将改变KTV行业传统的营销方式，开发出专用于KTV行业的陌生交友、实时约歌等线上服务，达到连接优质客群，发掘潜在用户，盘活存量，扩展增量，增加包房使用效率的目的。
+      </p>
     </div>
-    
-</div>
-	  
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import VueCropper from "vue-cropper"  
   export default {
     name: 'app',
-    data(){
-    	return{
-    		icons: [],
-        example2: {
-          img: 'http://ofyaji162.bkt.clouddn.com/bg1.jpg',
-          info: true,
-          size: 1,
-          outputType: 'jpeg',
-          canScale: false,
-          autoCrop: true,
-          // 只有自动截图开启 宽度高度才生效
-          autoCropWidth: 300,
-          autoCropHeight: 250,
-          // 开启宽度和高度比例
-          fixed: true,
-          fixedNumber: [4, 3]
-        }
-      }
-    },
-    components:{
-      VueCropper
-    },
-    mounted(){
-        this.$nextTick(()=>{
-        	var icons = [];
-            for(let i = 1; i <125;i++){
-               var item = `icon-${i}`;
-               icons.push(item);
-            }
-            this.icons = icons;
-        });
-    }
   }
 </script>
 <style type="text/css" lang='scss' scoped>
   #app{
     font-size: .5rem;
-  }
-  .container{
-    position: fixed;
-    top: 1rem;
   }
 </style>

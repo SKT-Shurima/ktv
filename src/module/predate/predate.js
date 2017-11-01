@@ -13,6 +13,9 @@ Vue.prototype.errorLoadAvater = function(event) {
     event.target.src = '';
     event.target.classList.add("default-avater");;
 };
+Vue.prototype.errorLoadImg = function(event) {
+    event.target.src = '../../../static/img/default-img.png';
+};
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -1,5 +1,34 @@
-.weui-navigator{
+.nav-wrap{
+	position: fixed;
+	z-index: 1200;
 	font-size: .3rem;
+	background-color: #fff;
+}
+.nav-box{
+	height: .8rem;
+    white-space: nowrap;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+    overflow-x: auto;
+}
+.nav-box .border-bottom-1px::after{
+	height: 3px;
+	background-color: transparent;
+}
+.nav-box .nav-active.border-bottom-1px::after{
+	background-color: #f65287;
+}
+.nav-box>li{
+	display: inline-block;
+    white-space: normal;
+    text-align: center;
+	line-height: .8rem;
+	padding: 0px .3rem;
+}
+.nav-box a{
+	display: inline-block;
+	color: #000;
 }
 .container{
 	padding-top: 40px;

@@ -2,28 +2,27 @@
 export const getList = {
 	data() {
 		return {
-      page: 1, 
-      pageSize: 2,
+      navIndex: 'all',
+      page: 0, 
+      pageSize: 10,
       total_page: 1,
       listdata: [], // 下拉更新数据存放数组
-      scrollData: {
-          noFlag: false //暂无更多数据显示
-      },
-      preType: '', 
+      preType: 'all', 
+      loadState: ''
 		}
 	},	
 	methods: {
-        onInfinite(done) {
-            let more = this.$el.querySelector('.load-more');
+        infiniteHandler($state) {
+          this.loadState = $state;
+          setTimeout(() => {
             if (this.page>=this.total_page) {
-              more.style.display = 'none';
-              this.scrollData.noFlag = true;
+              $state.loaded();
+              return false;       
             }else{
               this.page = this.page < this.total_page?++this.page:1;
               this.typeList(this.preType);
-              more.style.display = 'none';
             }
-            done();
+          }, 1000);
         },
         searchList(){
           this.preMsg = this.message;
@@ -63,6 +62,7 @@ export const getList = {
                 params.utype_id = 4;
                 break;
             };
+            this.navIndex=mask;
             this.getTypeList(mask,params);
         },
         getTypeList(mask,params){
@@ -79,7 +79,7 @@ export const getList = {
                   this.listdata = mask!==this.preType?dataList:this.listdata.concat(dataList);
                   this.total_page = data.userList.total_page;
                   this.preType = mask;
-                  more.style.display = 'none';
+                  this.loadState.loaded();  
                 }else{
                   error(desc)
                 }
@@ -87,11 +87,6 @@ export const getList = {
             });
         }
 	    },
-      mounted(){
-          this.$nextTick(()=>{
-            this.typeList('');
-          })
-        }
 }
 
 //  获取用户/员工信息

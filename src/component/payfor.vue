@@ -16,7 +16,7 @@
 	    <div class="reward-box" :class='{"box-visible":rewardBol}'>
 	        <ul>
 	          <li class="reward-list">
-	            <dl :class="{'border-1px':order_amount===300}" @touchstart='order_amount=300;'>
+	            <dl :class="{'border-1px':order_amount===0.01}" @touchstart='order_amount=0.01;'>
 	              <dt class="reward-icon-300"></dt>
 	              <dd>300</dd>
 	            </dl>

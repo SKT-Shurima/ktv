@@ -13,8 +13,9 @@ body {
     min-width: 320px;
     max-width: 640px;
     height: 100vh;
-    overflow-y: auto;
+    overflow-y: scroll;
     -webkit-overflow-scrolling : touch;
+    overflow-scrolling: touch;
     margin: 0px auto;
 }
 ul,li {

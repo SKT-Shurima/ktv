@@ -1,17 +1,5 @@
 <template>
   <div id="app">
-    <div class="nav-wrap">
-        <ul class="nav-box">
-          <li @click='typeList("all")'><a href="javascript:void(0)" :class='{"nav-active":navIndex==="all"}' class="border-bottom-1px">推荐</a></li>
-          <li @click='typeList("new")'><a href="javascript:void(0)" :class='{"nav-active":navIndex==="new"}' class="border-bottom-1px">新人</a></li>
-          <li @click='typeList("hot")'><a href="javascript:void(0)" :class='{"nav-active":navIndex==="hot"}' class="border-bottom-1px">热门</a></li>
-          <li><a href="reward.html" class="border-bottom-1px">打赏榜</a></li>
-          <li @click='typeList(1)'><a href="javascript:void(0)" :class='{"nav-active":navIndex===1}' class="border-bottom-1px">高颜值</a></li>
-          <li @click='typeList(2)'><a href="javascript:void(0)" :class='{"nav-active":navIndex===2}' class="border-bottom-1px">小清新</a></li>
-          <li @click='typeList(3)'><a href="javascript:void(0)" :class='{"nav-active":navIndex===3}' class="border-bottom-1px">才艺</a></li>
-          <li @click='typeList(4)'><a href="javascript:void(0)" :class='{"nav-active":navIndex===4}' class="border-bottom-1px">萌妹子</a></li>
-        </ul>
-      </div>
       <ul class="container">
         <li class="con-list" v-for='(item,index) in listdata' :key='index'>
           <dl>
@@ -43,7 +31,8 @@ import {getList} from '../../common/js/mixins';
     name: 'app',
     data(){
       return{
-        qnhost: qnhost
+        qnhost: qnhost,
+        query: {}
       }
     },
     filters:{
@@ -55,11 +44,12 @@ import {getList} from '../../common/js/mixins';
     },
     methods: {
     },
+    created(){
+      this.query = getRequest();
+    },
     mounted(){
       this.$nextTick(()=>{
-        // TagNav('#tagnav',{
-        //   type: 'scrollToFirst',
-        // });
+
       })
     }
   }

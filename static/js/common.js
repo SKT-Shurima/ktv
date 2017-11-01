@@ -7,7 +7,7 @@
 let baseAjax = 'http://120.26.90.70:8080/ktv/web', payforAjax = 'http://120.26.90.70:8080/ktv/payrefund/',qnhost='http://oxqmde0yk.bkt.clouddn.com/';
   
 
-const setCookie = (c_name,value,expTime)=>{  
+const setCookie = (c_name,value,expTime)=>{ 
 	var exdate = new Date();  
 	exdate.setTime(exdate.getTime() + expTime *3600 * 1000);  
 	document.cookie= c_name + "=" + escape(value)+((expTime==null) ? "" : ";expires="+exdate.toGMTString());  
@@ -120,19 +120,43 @@ var jsapi_ticket = getCookie('ticket'),auth_nonceStr = randomString(32),auth_tim
 var auth_url=location.href.split('#')[0];
 var auth_signature=`jsapi_ticket=${jsapi_ticket}&noncestr=${auth_nonceStr}&timestamp=${auth_timestamp}&url=${auth_url}`;
 auth_signature = decodeURIComponent(auth_signature);
-console.log(jsapi_ticket,auth_nonceStr,auth_timestamp,auth_url,auth_signature,hex_sha1(auth_signature))
   wx.config({
-      debug: true, 
+      debug: false, 
       appId: 'wxcdb40d3dfe411dab',
       timestamp: auth_timestamp,
       nonceStr: auth_nonceStr ,
       signature: hex_sha1(auth_signature),
-      jsApiList: ["openLocation","chooseImage"]
+      jsApiList: ["openLocation","chooseImage",'uploadImage']
   });
+wx.error(res=>{
+  $.alert('132',JSON.stringify(res))
+  if (res.errcode==40001) {
+    setCookie("ticket",data.ticket,.5);
+    let  ticketParmas = {
+        reflush: true
+    } 
+    $.ajax({
+        url: `${baseAjax}/login/getWechatTicket.jhtml`,
+        type: 'GET',
+        dataType: 'json',
+        data: ticketParmas,
+        success: res=>{
+          let {code,data,desc} = res;
+          if (res.code===0) {
+              setCookie("ticket",data.ticket,.5);
+              getUserInfo();
+          }else{
+              error(code,desc)
+          }
+        }
+    });
+  }
+});
+
 
 // 获取地理位置信息
 let posInfo = getCookie('posInfo');
-if (!posInfo) {
+if (!posInfo&&false) {
   wx.getLocation({
       type: 'wgs84',
       success: function (res) {
@@ -175,3 +199,4 @@ $(function(){
     	window.history.go(-1);
     });
 });
+

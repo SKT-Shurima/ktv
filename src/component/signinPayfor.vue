@@ -43,16 +43,16 @@
 				optype: '',
 				signList: [{
 					name: '一级签到',
-					amount: 50
+					amount: ''
 				},{
 					name: '二级签到',
-					amount: 100
+					amount: ''
 				},{
 					name: '三级签到',
-					amount: 150
+					amount: ''
 				},{
 					name: '四级签到',
-					amount: 200
+					amount: ''
 				}]
 			}
 		},
@@ -79,6 +79,32 @@
 				this.maskBol=false;
 				this.order_amount = 50;
 			}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				let params = {
+	    			token: getCookie("token")
+	    		}
+	    		$.ajax({
+	    			url: `${baseAjax}user/signParam.jhtml`,
+	    			type: 'GET',
+	    			dataType: 'json',
+	    			data: params,
+	    			success: res=>{
+		            let {code,data,desc} =res;
+		            if (code===0) {
+		            	let arr = this.signList,signParam=data.signParam,i=0;
+						for(var item in signParam){
+							arr[i].amount = signParam[item];
+							++i;
+						}
+						this.signList = arr;
+		            }else{
+		              error(code,desc)
+		            }
+		          }
+	    		});
+			})
 		}
 	}
 </script>

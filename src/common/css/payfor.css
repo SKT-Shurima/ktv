@@ -1,6 +1,7 @@
 .reward-box,.pay-box{
     position: fixed;
     left: 0px;
+    bottom: -6rem;
     width: 100%;
     font-size: .3rem;
     background-color: #fff;
@@ -8,7 +9,6 @@
 }
 .reward-box{
     bottom: 0px;
-    bottom: -6rem;
     z-index: 10000;
 }
 .reward-box>ul{

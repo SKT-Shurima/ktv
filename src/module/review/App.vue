@@ -87,7 +87,7 @@
     	getDetail(){
 	        let params = {
 	          	token: getCookie('token'),
-	          	employee_id: this.query.id
+	          	employee_id: this.query.employee_id
 	        }
 	        $.ajax({
 	          	url: `${baseAjax}/user/getEmployeeDetail.jhtml`,

@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<load-more  :on-infinite="onInfinite" :dataList="scrollData">
       <div class="slide">
         <i class="icon icon-109" id='back'></i>
         <i class="mood-icon" v-if='employee.mood===1'></i>
@@ -48,22 +47,19 @@
                     </dl>
                 </li>
             </ul>
-          </div>
+        </div>
+        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
       </div>
-    </load-more>
 	</div>
 </template>
 <script type="text/ecmascript-6">
-	import loadMore from '../component/loadMore';
 	import swiper from './swiper';
   	export default {
     	name: 'staffInfo',
     	data(){
     		return {
-	        	scrollData: {
-		          noFlag: false //暂无更多数据显示
-		        },
-		        page: 1,
+	        	loadState:'',
+		        page: 0,
 		        pageSize: 10,
 		        total_page: 0,
 		        query: {},
@@ -77,18 +73,17 @@
     	props: ["getState"],
     	filters: {birthFilter,dateFilter,timeFilter},
 	    components:{
-	      	swiper,loadMore
+	      	swiper
 	    },
 	    methods: {
-	      onInfinite(done) {
-	        let more = this.$el.querySelector('.load-more');
+	      infiniteHandler($state) {
+	      	this.loadState = $state;
 	        if (this.page>=this.total_page) {
-	            more.style.display = 'none';
-	            this.scrollData.noFlag = true;
+	            $state.loaded();
+                return false; ;
 	        }else{
 	            this.page++;
 	            this.getComment();
-	            more.style.display = 'none';
 	        }
 	        done();
 	      },
@@ -118,6 +113,7 @@
 	              	if (this.getState) {
 	              		this.$emit('sendState',this.employee.state);
 	              	}
+	              	this.loadState.loaded();
 	            }else{
 	              error(code,desc)
 	            }
@@ -154,7 +150,6 @@
 	    mounted(){
 	    	this.$nextTick(()=>{
 		        this.getDetail();
-		        this.getComment();
 	    	})
 	    }
   	}

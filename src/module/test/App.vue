@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
     <div id='app'>
          <div class="imgBox">
             <input type="file" class="inputstyle" name="file" @change="PreviewImage"  />
@@ -17,40 +17,28 @@ export default {
 	methods: {
 
 		   PreviewImage(event){
-                var addr = 'http://oxqmde0yk.bkt.clouddn.com/'
                 var file = event.target.files[0];
                 var formData = new FormData();
                 formData.append('file', file);
                let QnToken = getCookie('QnToken');
                 formData.append('token', QnToken);
                 $.ajax({
-                    url: 'http://up.qiniup.com',
+                    url: 'http://up.qiniup.com/',
                     type: 'POST',
                     dataType: 'json',
                     cache: false,
-                    data: formData,
+                    data: files,
                     processData: false,
                     contentType: false,
+                    headers:{
+                        "Content-Type": "application/octet-stream",
+                        "Authorization": "UpToken "+ getCookie('QnToken')
+                    },
                     success:(res)=>{
-                    	this.imageUrl= addr+res.key;   
-                    	console.log(res);
+                        let key = res.key;
+                        alert(key)
                     }
                 });
             },
 	}
 }
-</script> -->
-
-<template>
-    <div>
-        <swiper></swiper>
-    </div>
-</template>
-<script type="text/javascript">
-    import swiper from '../../component/swiper.vue'
-    export default {
-        components:{
-            swiper
-        }
-    }
-</script>

@@ -2,54 +2,54 @@
 	<div>
 		<div v-if='hasCon'>
 			<div class="ranking-num weui-flex">
-	            <div class="weui-flex-item" v-if='s.user_id'>
-	                <dl class="ranking-box">
-	                    <dt class="ranking-s-icon">
-	                        <div>
-	                            <img :src="`${qnhost}${s.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
-	                        </div>
-	                    </dt>
-	                    <dd>
-	                        <div class="ranking-s ranking-s-name" v-text='s.nick_name'></div>
-	                        <div class="ranking-s ranking-price">&yen;{{s.total_award}}</div>
-	                    </dd>
-	                </dl>
-	            </div>
-	            <div class="weui-flex-item" v-if='f.user_id'>
-	                <dl>
-	                    <dt class="ranking-f-icon">
-	                        <div>
-	                            <img :src="`${qnhost}${f.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
-	                        </div>
-	                    </dt>
-	                    <dd>
-	                        <div class="ranking-f ranking-f-name" v-text='f.nick_name'></div>
-	                        <div class="ranking-f ranking-price">&yen;{{f.total_award}}</div>
-	                    </dd>
-	                </dl>
-	            </div>
-	            <div class="weui-flex-item" v-if='t.user_id'>
-	                <dl class="ranking-box">
-	                    <dt class="ranking-t-icon">
-	                        <div>
-	                            <img :src="`${qnhost}${t.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
-	                        </div>
-	                    </dt>
-	                    <dd>
-	                        <div class="ranking-t ranking-t-name" v-text='t.nick_name'></div>
-	                        <div class="ranking-t ranking-price">&yen;{{f.total_award}}</div>
-	                    </dd>
-	                </dl>
-	            </div>
-	        </div>
-	        <ul class="ranking-box weui-updown">
-	            <li class="ranking-item border-bottom-1px" v-for="(item,index) in list" :key='index'>
-	                <i>{{index+3}}</i>
-	                <img :src="`${qnhost}${item.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
-	                <strong v-text='item.nick_name'></strong>
-	                <span class="primary">&yen;{{item.total_award}}</span>
-	            </li>
-	        </ul>
+        <div class="weui-flex-item" v-if='s.user_id'>
+          <dl class="ranking-box">
+            <dt class="ranking-s-icon">
+              <div>
+                  <img :src="`${qnhost}${s.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
+              </div>
+            </dt>
+            <dd>
+              <div class="ranking-s ranking-s-name" v-text='s.nick_name'></div>
+              <div class="ranking-s ranking-price">&yen;{{s.total_award}}</div>
+            </dd>
+          </dl>
+        </div>
+        <div class="weui-flex-item" v-if='f.user_id'>
+          <dl>
+            <dt class="ranking-f-icon">
+              <div>
+                <img :src="`${qnhost}${f.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
+              </div>
+            </dt>
+            <dd>
+              <div class="ranking-f ranking-f-name" v-text='f.nick_name'></div>
+              <div class="ranking-f ranking-price">&yen;{{f.total_award}}</div>
+            </dd>
+          </dl>
+        </div>
+        <div class="weui-flex-item" v-if='t.user_id'>
+          <dl class="ranking-box">
+            <dt class="ranking-t-icon">
+              <div>
+                <img :src="`${qnhost}${t.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
+              </div>
+            </dt>
+            <dd>
+              <div class="ranking-t ranking-t-name" v-text='t.nick_name'></div>
+              <div class="ranking-t ranking-price">&yen;{{f.total_award}}</div>
+            </dd>
+          </dl>
+        </div>
+	    </div>
+      <ul class="ranking-box weui-updown">
+        <li class="ranking-item border-bottom-1px" v-for="(item,index) in list" :key='index'>
+          <i>{{index+3}}</i>
+          <img :src="`${qnhost}${item.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
+          <strong v-text='item.nick_name'></strong>
+          <span class="primary">&yen;{{item.total_award}}</span>
+        </li>
+      </ul>
 		</div>
 		<div class="no-container" v-else>
 			暂无数据

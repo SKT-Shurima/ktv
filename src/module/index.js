@@ -11,6 +11,24 @@
     }
     return theRequest;
   }
+  function setCookie (c_name,value,expTime){  
+    var exdate = new Date();  
+    exdate.setTime(exdate.getTime() + expTime *3600 * 1000);  
+    document.cookie= c_name + "=" + escape(value)+((expTime==null) ? "" : ";expires="+exdate.toGMTString());  
+  }
+  function getCookie (c_name){  
+    if (document.cookie.length>0){  
+      var c_start=document.cookie.indexOf(c_name + "=");  
+        if (c_start!=-1){   
+        c_start=c_start + c_name.length+1;  
+           var c_end=document.cookie.indexOf(";",c_start);  
+           if (c_end==-1)   
+            c_end = document.cookie.length  
+            return unescape(document.cookie.substring(c_start, c_end))  
+        }  
+    }  
+    return ""     
+  }
 	let query=getCode();
 	if (getCookie("access_token")) {
 		  window.location.href = "module/index.html";
@@ -22,14 +40,18 @@
 		let href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxcdb40d3dfe411dab&redirect_uri=${redirectUrl}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`;
 		window.location.href = href;
 	}else{
+      let  ticketParmas = {
+        reflush: false
+      } 
       $.ajax({
           url: `${baseAjax}/login/getWechatTicket.jhtml`,
           type: 'GET',
           dataType: 'json',
+          data: ticketParmas,
           success: res=>{
             let {code,data,desc} = res;
             if (res.code===0) {
-                setCookie("ticket",data.ticket,2);
+                setCookie("ticket",data.ticket,.5);
                 getUserInfo();
             }else{
                 error(code,desc)

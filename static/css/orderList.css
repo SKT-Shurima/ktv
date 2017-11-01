@@ -88,7 +88,7 @@
 	width: 1.6rem;
     text-align: center;
     overflow: hidden;
-    padding: .24rem 0px 0px;
+    padding: .2rem 0px .02rem;
 }
 .status{
 	font-size: .24rem;

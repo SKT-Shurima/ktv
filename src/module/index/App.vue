@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-      <load-more  :on-infinite="onInfinite" :dataList="scrollData">
         <div class="slide">
           <div class="search">
             <span class="primary"><i class="icon icon-4"></i><input type="text" placeholder='搜索员工' class="search-input" v-model='message'  @keyup.enter='searchList' ></span>
@@ -10,20 +9,20 @@
         <nav class="nav">
           <ul class="weui-flex">
             <li class="nav-item weui-flex-item">
-              <dl @touchstart='typeList("all")'>
+              <dl @click='typeList("all")'>
                 <dt class="nav-img-box"><i class="nav-icon alls-icon"></i></dt>
                 <dd>全部</dd>
               </dl>
             </li>
             <li class="nav-item weui-flex-item">
-              <dl @touchstart='typeList("new")'>
+              <dl @click='typeList("new")'>
                 <dt class="nav-img-box"><i class="nav-icon newper-icon"></i></dt>
                 <dd>新人</dd>
               </dl>
               
             </li>
             <li class="nav-item weui-flex-item">
-              <dl @touchstart='typeList("hot")'>
+              <dl @click='typeList("hot")'>
                 <dt class="nav-img-box"><i class="nav-icon hot-icon"></i></dt>
                 <dd>热门</dd>
               </dl>
@@ -41,25 +40,25 @@
           </ul>
           <ul class='weui-flex'>
             <li class="nav-item weui-flex-item">
-              <dl @touchstart='typeList(1)'>
+              <dl @click='typeList(1)'>
                 <dt class="nav-img-box"><i class="nav-icon beau-icon"></i></dt>
                 <dd>高颜值</dd>
               </dl>
             </li>
             <li class="nav-item weui-flex-item">
-              <dl @touchstart='typeList(2)'>
+              <dl @click='typeList(2)'>
                 <dt class="nav-img-box"><i class="nav-icon fresh-icon"></i></dt>
                 <dd>小清新</dd>
               </dl>
             </li>
             <li class="nav-item weui-flex-item">
-              <dl @touchstart='typeList(3)'>
+              <dl @click='typeList(3)'>
                 <dt class="nav-img-box"><i class="nav-icon talent-icon"></i></dt>
                 <dd>才艺</dd>
               </dl>
             </li>
             <li class="nav-item weui-flex-item">
-              <dl @touchstart='typeList(4)'>
+              <dl @click='typeList(4)'>
                 <dt class="nav-img-box"><i class="nav-icon bud-icon"></i></dt>
                 <dd>萌妹子</dd>
               </dl>
@@ -85,14 +84,13 @@
             </dl>
           </li>
         </ul>
-    </load-more>
+        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
     <v-footer></v-footer>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import swiper from '../../component/swiper';
-  import loadMore from '../../component/loadMore';
   import vFooter from '../../component/vFooter';
   import {getList} from '../../common/js/mixins';
     export default {
@@ -110,7 +108,7 @@
           birthFilter
         },
         components: {
-          swiper,loadMore,vFooter
+          swiper,vFooter
         },
         mixins: [getList],
         methods: {

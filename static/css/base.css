@@ -1,4 +1,8 @@
 
+#app{
+    min-height: 100vh;
+}
+
 .border-bottom-1px,.border-1px{
     position: relative;
 }
@@ -296,11 +300,11 @@
     margin: 0px auto;
 }
 .tags>.weui_btn{
-    width: 1.38rem;
-    font-size: .2rem;
+    width: 1.42rem;
+    font-size: .24rem;
     margin-bottom: .2rem;
     margin-right: .26rem;
-    padding: .16rem .2rem;
+    padding: .14rem .2rem;
 }
 .tags>.border-1px::after{
     border-color: #ccc;
@@ -325,3 +329,15 @@
 .slide{
     position: relative;
 }
+/*文本内容*/
+.text-container{
+    position: relative;
+    top: .88rem;
+    width: 100%;
+    height: 100%;
+    text-indent: 2em;
+    font-size: .28rem;
+    line-height: .5rem;
+    padding: .36rem;
+    background-color: #fff;
+  }

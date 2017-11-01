@@ -23,7 +23,7 @@
 	              	</li>
 	              </ul>
 	              <div class="weui_uploader_input_wrp">
-	              	<div class="weui_uploader_input" @touchstart="previewImage"></div>
+	              	<input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" @change="previewImage($event)"/>
 	              </div> 
 	            </div>
 	        </div>
@@ -56,14 +56,11 @@
 			  :img="cropper.img"
 			  :outputSize="cropper.size"
 			  :outputType="cropper.outputType"
-			  :info="cropper.info"
 			  :prevent-white-space="false"
-			  :canScale="cropper.canScale"
 			  :autoCrop="cropper.autoCrop"
 			  :autoCropWidth="cropper.width"
 			  :autoCropHeight="cropper.height"
-			  :fixed="cropper.fixed"
-			  :fixedNumber="cropper.fixedNumber"
+			  :fixedBox="cropper.fixedBox"
 			  style='background: rgba(0,0,0,.9);'
 			></vueCropper>
 			<div class="choose-op">
@@ -87,17 +84,12 @@
 	    		chooseBol: false,
 	    		cropper: {
 		          	img: '',
-		          	info: true,
 		          	size: 1,
 		          	outputType: 'jpeg',
-		          	canScale: true,
 		          	autoCrop: true,
-		          	// 只有自动截图开启 宽度高度才生效
 		          	autoCropWidth: 300,
 		          	autoCropHeight: 400,
-		          	// 开启宽度和高度比例
-		          	fixed: true,
-		          	fixedNumber: [3, 4]
+		          	fixeBox: true,
 		        },
 	    		typePicker:'',
 	    		typeList: '',
@@ -315,19 +307,24 @@
 	    		});
 	    	},
 	    	previewImage(e){
+	            var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
+			    for (var i = 0, len = files.length; i < len; ++i) {
+	                var file = files[i];
+	                if (url) {
+	                    src = url.createObjectURL(file);
+	                } else {
+	                    src = e.target.result;
+	                }
+	            }
+	            if (!files.length) {
+	            	return false;
+	            }
 	            if (this.images.length>=10) {
 	            	$.alert("","最多选取十张图片");
 	            	return false;
 	            }
-	            wx.chooseImage({
-				    count: 1, 
-				    sizeType: ['original', 'compressed'],
-				    sourceType: ['album', 'camera'],
-				    success: (res)=> {
-				    	this.chooseBol=true;
-				        this.cropper.img = res.localIds;
-				    }
-				});
+	            this.chooseBol=true;
+	            this.cropper.img=src;
 	    	},
 	    	finish(){
 	    		this.$refs.cropper.getCropData((data) => {
@@ -455,12 +452,14 @@
 	    	this.$nextTick(()=>{
 	    		this.userInfo();
 	    		this.getType();
-	    		this.initArea();
-	    		this.initDate();
 	    		let QnToken = getCookie("QnToken");
 	    		if (!QnToken) {
 	    			this.getQnToken();
 	    		}
+	    		setTimeout(()=>{
+	    			this.initArea();
+	    			this.initDate();
+	    		},600);
 	    	})
 	    }
   	}

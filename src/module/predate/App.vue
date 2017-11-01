@@ -80,7 +80,7 @@
             let {code,data,desc} =res;
             if (code===0) {
               let employee_id=this.query.employee_id,order_id=data.order.order_id;
-              window.location.href = `orderDetail.html?employee_id=${employee_id}&order_id=${order_id}`;
+              window.location.replace(`orderDetail.html?employee_id=${employee_id}&order_id=${order_id}`);
             }else{
               $.alert('',desc);
             }
@@ -98,3 +98,8 @@
     }
   }
 </script>
+<style type="text/css" scoped>
+  .carousel-items{
+    bottom: 1.1rem;
+  }
+</style>
