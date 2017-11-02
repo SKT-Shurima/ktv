@@ -8,8 +8,11 @@
     transition: all .3s;
 }
 .reward-box{
-    bottom: 0px;
     z-index: 10000;
+}
+.pay-box{
+    padding-bottom: 2.2rem;
+    z-index: 10005;
 }
 .reward-box>ul{
     overflow: hidden;
@@ -36,11 +39,6 @@
 }
 .reward-list dd{
     line-height: .6rem;
-}
-.pay-box{
-    padding-bottom: 2.2rem;
-    bottom: -5rem;
-    z-index: 10005;
 }
 .pay-box>h1{
     font-size: .3rem;

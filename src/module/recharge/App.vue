@@ -43,23 +43,19 @@
 	          	success: res=>{
 	            	let {code,desc} =res;
 	            	if (code===0) {
-	            		if (code===0) {
-			                WeixinJSBridge.invoke('getBrandWCPayRequest',{
-			                  "appId":data.payParams.appid,
-			                  "nonceStr":data.payParams.nonceStr,
-			                  "package":data.payParams.prepayid,
-			                  "signType":"MD5",
-			                  "timeStamp":data.payParams.timestamp,
-			                  "paySign":data.payParams.sign
-			                }, function(res){
-			                  // WeixinJSBridge.log(res.err_msg);
-			                  // alert(res.err_code+res.err_desc+res.err_msg);
-			                  window.location.href = 'mine.html';
-			                });
-			            }else{
-			              error(code,desc)
-			            }
-	            	}else{
+		                WeixinJSBridge.invoke('getBrandWCPayRequest',{
+		                  "appId":data.payParams.appId,
+		                  "nonceStr":data.payParams.nonceStr,
+		                  "package":data.payParams.packageName,
+		                  "signType":data.payParams.signType,
+		                  "timeStamp":data.payParams.timeStamp,
+		                  "paySign":data.payParams.paySign
+		                }, function(res){
+		                  // WeixinJSBridge.log(res.err_msg);
+		                  // alert(res.err_code+res.err_desc+res.err_msg);
+		                  window.location.href = 'mine.html';
+		                });
+		            }else{
 	              		$.alert('',desc);
 	            	}
 	          	}

@@ -57,6 +57,8 @@
 			  :outputSize="cropper.size"
 			  :outputType="cropper.outputType"
 			  :prevent-white-space="false"
+			  :info='cropper.info'
+			  :canScale='cropper.canScale'
 			  :autoCrop="cropper.autoCrop"
 			  :autoCropWidth="cropper.width"
 			  :autoCropHeight="cropper.height"
@@ -84,12 +86,14 @@
 	    		chooseBol: false,
 	    		cropper: {
 		          	img: '',
+		          	info: false,
 		          	size: 1,
+		          	canScale: false,
 		          	outputType: 'jpeg',
 		          	autoCrop: true,
 		          	autoCropWidth: 300,
 		          	autoCropHeight: 400,
-		          	fixeBox: true,
+		          	fixedBox: true,
 		        },
 	    		typePicker:'',
 	    		typeList: '',

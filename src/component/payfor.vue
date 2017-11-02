@@ -140,5 +140,7 @@
 .wx{
 	 @include bg-image('../common/img/wx');
 }
-
+.reward-box{
+	z-index: 10010;
+}
 </style>

@@ -111,9 +111,9 @@
 	                }
 	                this.index_image = index_image;
 	              	if (this.getState) {
-	              		this.$emit('sendState',this.employee.state);
+	              		this.$emit('sendstate',this.employee.state);
 	              	}
-	              	this.loadState.loaded();
+	              	this.loadState?this.loadState.loaded():"";
 	            }else{
 	              error(code,desc)
 	            }

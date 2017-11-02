@@ -36,16 +36,19 @@
                                 </div>
                             </dt>
                             <dd v-if='item.orderDetail.ostate_id===1'>
-                                <button class="weui_btn border-1px color-blue reminder" @touchstart='feedback(item.order_id,3)'>催单</button>
+                                <button class="weui_btn border-1px color-blue reminder" @touchstart='feedback(item.order_id,3,"催单")'>催单</button>
                                 <button class="weui_btn border-1px color-9  cancle-pre" @touchstart='cancelOrder(item.order_id)'>取消预约</button>
                             </dd>
                             <dd v-if='item.orderDetail.ostate_id===2'>
-                                <button class="weui_btn border-1px color-blue complaints" @touchstart='feedback(item.order_id,2)'>投诉</button>
+                                <button class="weui_btn border-1px color-blue complaints" @touchstart='comfeed(item.order_id)'>投诉</button>
                                 <button class="weui_btn border-1px color-9  cancle-pre" @touchstart='cancelOrder(item.order_id)'>取消预约</button>
                             </dd>
                             <dd v-if='item.orderDetail.ostate_id===3'>
-                                <button class="weui_btn border-1px color-blue payment" @touchstart='payment' v-if='item.orderDetail.online_pay===1'>立即支付</button>
-                                <button class="weui_btn border-1px color-green reward" @touchstart='reward(item.orderDetail.employee_id)'>打赏</button>
+                                <button class="weui_btn border-1px color-blue payment" @touchstart='payment(item.orderDetail.order_id)' v-if='item.orderDetail.online_pay===1'>立即支付</button>
+                                <button class="weui_btn border-1px color-green reward" @touchstart='reward(item.orderDetail.employee_id,item.orderDetail.order_id)'>打赏</button>
+                            </dd>
+                            <dd v-if='item.orderDetail.ostate_id===5'>
+                                <button class="weui_btn border-1px color-green reward" @touchstart='reward(item.orderDetail.employee_id,item.orderDetail.order_id)'>打赏</button>
                             </dd>
                         </dl>
                     </div>
@@ -76,7 +79,8 @@
                 </li>
             </ul>
         </div>
-        <pay-for ref='payfor'></pay-for>
+        <complain ref='complain' @comment='feed'></complain>
+        <pay-for ref='payfor' @payType='payfor'></pay-for>
         <infinite-loading @infinite="infiniteHandler"></infinite-loading>
     </div>
 </template>
@@ -95,7 +99,8 @@
             total_page: 1,
             waitList: [],
             nowTime: 0,
-            cancelList: []
+            cancelList: [],
+            order_id: '',
         }
     },
     filters:{
@@ -114,7 +119,8 @@
                 this.tabIndex===1?this.getWaitList():this.getCancelList();
             }
         },
-        payment(){
+        payment(id){
+            this.order_id = id;
             this.$refs.payfor.maskBol = true;
         },
         payfor(payParams){
@@ -122,8 +128,9 @@
             let params ={
               token: getCookie('token'),
               optype: optype,
+              order_id: this.order_id,
               order_amount: order_amount,
-              optarget: 4
+              optarget: 1
             }
             $.ajax({
               url: `${baseAjax}/pay/pay.jhtml`,
@@ -135,19 +142,35 @@
                 if (code===0) {
                   if (optype==1) {
                     WeixinJSBridge.invoke('getBrandWCPayRequest',{
-                      "appId":data.payParams.appid,
+                      "appId":data.payParams.appId,
                       "nonceStr":data.payParams.nonceStr,
-                      "package":data.payParams.prepayid,
-                      "signType":"MD5",
-                      "timeStamp":data.payParams.timestamp,
-                      "paySign":data.payParams.sign
+                      "package":data.payParams.packageName,
+                      "signType":data.payParams.signType,
+                      "timeStamp":data.payParams.timeStamp,
+                      "paySign":data.payParams.paySign
                     }, function(res){
                       // WeixinJSBridge.log(res.err_msg);
-                      // alert(res.err_code+res.err_desc+res.err_msg);
                       window.location.href = 'mine.html';
                     });
-                  }else{
-                    window.location.href = 'mine.html';
+                  }else if (optype==2) {
+                    let cashpay = {
+                        token: getCookie('token'),
+                        pay_sn: data.payParams.pay_sn
+                    }
+                    $.ajax({
+                        url: `${payforAjax}/web/inner.jhtml`,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: cashpay,
+                        success: res=>{
+                            let {code,desc} =res;
+                            if (code===0) {
+                                window.location.href = 'mine.html';
+                            }else{
+                                error(code,desc)
+                            }
+                        }
+                    });
                   }
                 }else{
                   error(code,desc)
@@ -179,7 +202,11 @@
                 success: res=>{
                     let {code,data,desc} =res;
                     if (code===0) {
-                        this.waitList = this.waitList.concat(data.orderList.data);
+                        let waitList = this.waitList.concat(data.orderList.data);
+                        for (let i = 0; i < waitList.length; i++) {
+                            waitList[i].employeer.index_image = waitList[i].employeer.index_image?waitList[i].employeer.index_image.split(',')[0]:"";
+                        }
+                        this.waitList = waitList;
                         this.totalPage = data.orderList.total_page;
                         this.loadState?this.loadState.loaded():'';
                     }else{
@@ -237,7 +264,11 @@
                 success: res=>{
                     let {code,data,desc} =res;
                     if (code===0) {
-                        this.cancelList = this.cancelList.concat(data.orderList.data);
+                        let cancelList = this.cancelList.concat(data.orderList.data);
+                        for (let i = 0; i < cancelList.length; i++) {
+                            cancelList[i].employeer.index_image = cancelList[i].employeer.index_image?cancelList[i].employeer.index_image.split(',')[0]:"";
+                        }
+                        this.cancelList = cancelList;
                         this.totalPage = data.orderList.total_page;
                         if (this.loadState) {
                             this.loadState.loaded();
@@ -248,14 +279,21 @@
                 }
             });
         },
-        reward(id){ 
-            location.href = `review.html?employee_id=${id}`;
+        reward(employee_id,order_id){ 
+            location.href = `review.html?employee_id=${employee_id}&order_id=${order_id}`;
         },
-        feedback(id,feedback_type){
+        comfeed(id){
+            this.order_id = id;
+            this.$refs.complain.maskBol = true;
+        },
+        feed(note){
+            this.feedback(this.order_id,2,note); 
+        },
+        feedback(id,feedback_type,note){
             let params = {
                 token: getCookie('token'),
                 order_id: id,
-                comment: feedback_type==2?"投诉":"催单",
+                comment: note,
                 feedback_type: feedback_type
             }
             $.ajax({

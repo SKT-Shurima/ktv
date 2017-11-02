@@ -4,10 +4,10 @@
 	    <div class="pay-box" :class='{"box-visible":payBol}'>
 	      <h1 class="border-bottom-1px">请选择支付方式</h1>
 	      <ul>
-	        <li class="border-bottom-1px" @touchstart='payBol=false;rewardBol=true;optype=3;'>
+	        <li class="border-bottom-1px" @touchstart='ensurePay(3)'>
 	          <i class="balance"></i>余额支付
 	        </li>
-	        <li class="border-bottom-1px" @touchstart='payBol=false;rewardBol=true;optype=1;'>
+	        <li class="border-bottom-1px" @touchstart='ensurePay(1)'>
 	          <i class="wx"></i>微信支付
 	        </li>
 	      </ul>
@@ -25,7 +25,7 @@
 	    			</dl>
 	    		</li>
 	    	</ul>
-	    	<div class="ensure-sign primary" @touchstart='ensureReward'>
+	    	<div class="ensure-sign primary" @touchstart='rewardBol=false;payBol=true;'>
 	    		确认签到
 	    	</div>
 	    </div>
@@ -60,7 +60,7 @@
 			maskBol:{
 				handler(newVal,oldVal){
 					if (newVal) {
-						this.payBol=true;
+						this.rewardBol=true;
 					}else{
 						this.payBol=false;
 						this.rewardBol=false;
@@ -69,13 +69,14 @@
 			}
 		},
 		methods: {
-			ensureReward(){
+			ensurePay(type){
 				let payObj = {
-					optype: this.optype,
-					order_amount: this.order_amount
+					optype: type,
+					// order_amount: this.order_amount
+					order_amount: 0.01
 				}
 				this.$emit('payType',payObj);
-				this.rewardBol = false;
+				this.payBol = false;
 				this.maskBol=false;
 				this.order_amount = 50;
 			}
@@ -86,7 +87,7 @@
 	    			token: getCookie("token")
 	    		}
 	    		$.ajax({
-	    			url: `${baseAjax}user/signParam.jhtml`,
+	    			url: `${baseAjax}/user/signParam.jhtml`,
 	    			type: 'GET',
 	    			dataType: 'json',
 	    			data: params,
@@ -124,7 +125,7 @@
 	right: 0px;
 	z-index: 10006;
 	margin: auto;
-	width: 5.6rem;
+	width: 5.12rem;
 	padding: .2rem 0px;
 	font-size: .26rem;
 	border-radius: 5px;
@@ -142,7 +143,7 @@
 	}
 	dt{
 		float: left;
-		width: 3.44rem;
+		width: 3rem;
 		overflow: hidden;
 		span{
 			float: left;

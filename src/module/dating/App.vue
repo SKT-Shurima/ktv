@@ -18,11 +18,11 @@
             <dt>
               <a :href='"predate.html?employee_id="+item.user_id'>
                 <img :src="`${qnhost}${item.index_image}`"  @error='errorLoadImg'>
+                <i class="mood-icon" v-if='item.mood===1'></i>
+                <div class="staff-mask" v-if='item.state===0'>
+                  <span>忙碌中</span>
+                </div>
               </a>
-              <i class="mood-icon" v-if='item.mood===1'></i>
-              <div class="staff-mask" v-if='item.state===0'>
-                <span>忙碌中</span>
-              </div>
             </dt>
             <dd>
               <div class="staff-info"><span v-text='item.nick_name'></span><em class="price">&yen;{{item.price}}</em></div>
@@ -52,15 +52,6 @@ import {getList} from '../../common/js/mixins';
     mixins: [getList],
     components:{
       vFooter
-    },
-    methods: {
-    },
-    mounted(){
-      this.$nextTick(()=>{
-        // TagNav('#tagnav',{
-        //   type: 'scrollToFirst',
-        // });
-      })
     }
   }
 </script>

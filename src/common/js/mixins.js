@@ -24,11 +24,6 @@ export const getList = {
             }
           }, 1000);
         },
-        searchList(){
-          this.preMsg = this.message;
-          this.listdata =[];
-          this.typeList("search");
-        },
         typeList(mask){
           this.page = mask!==this.preType?1:this.page;
           let params = {
@@ -37,9 +32,6 @@ export const getList = {
             pageSize: this.pageSize
           }
             switch(mask){
-              case 'search':
-                params.message = this.preMsg;
-                break;
               case 'all':
                 params.message = '';
                 break;
@@ -66,7 +58,6 @@ export const getList = {
             this.getTypeList(mask,params);
         },
         getTypeList(mask,params){
-            let more = this.$el.querySelector('.load-more');
             $.ajax({
               url: `${baseAjax}/home/listEmployeeBySearch.jhtml`,
               type: 'GET',
@@ -76,6 +67,9 @@ export const getList = {
                 let {code,data,desc} =res;
                 if (code===0) {
                   let dataList = data.userList.data;
+                  for (let i = 0; i < dataList.length; i++) {
+                    dataList[i].index_image = dataList[i].index_image.split(',')[0];
+                  }
                   this.listdata = mask!==this.preType?dataList:this.listdata.concat(dataList);
                   this.total_page = data.userList.total_page;
                   this.preType = mask;

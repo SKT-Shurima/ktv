@@ -65,7 +65,6 @@
 <style type="text/css" lang='scss' scoped>
 	.carousel-wrap {
 		position: relative;
-		height: 3.82rem;
 		width: 100%;
 		overflow: hidden;
 		background-color: #fff;
@@ -83,7 +82,6 @@
 	.carousel-items {
 	  	position: absolute;
 	  	z-index: 10;
-	  	bottom: .2rem;
 	  	width: 100%;
 	  	margin: 0 auto;
 	  	text-align: center;

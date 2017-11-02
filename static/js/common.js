@@ -102,9 +102,8 @@ const error = (code,msg)=>{
 }
 
 let auth_token=getCookie('token');
-console.log(auth_token)
 if (!auth_token) {
-    // wx.closeWindow();
+    wx.closeWindow();
 }
 function randomString(len) {
 　　len = len || 32;
@@ -126,12 +125,9 @@ auth_signature = decodeURIComponent(auth_signature);
       timestamp: auth_timestamp,
       nonceStr: auth_nonceStr ,
       signature: hex_sha1(auth_signature),
-      jsApiList: ["openLocation","chooseImage",'uploadImage']
+      jsApiList: ["openLocation"]
   });
 wx.error(res=>{
-  $.alert('132',JSON.stringify(res))
-  if (res.errcode==40001) {
-    setCookie("ticket",data.ticket,.5);
     let  ticketParmas = {
         reflush: true
     } 
@@ -144,13 +140,11 @@ wx.error(res=>{
           let {code,data,desc} = res;
           if (res.code===0) {
               setCookie("ticket",data.ticket,.5);
-              getUserInfo();
           }else{
               error(code,desc)
           }
         }
     });
-  }
 });
 
 
@@ -164,7 +158,7 @@ if (!posInfo&&false) {
           console.log(res.latitude,res.longitude);
           if (dis>=1000) {
             $.alert('','不在服务范围内');
-            // wx.closeWindow();
+            wx.closeWindow();
           }else{
             posInfo = {
               lat:res.latitude,

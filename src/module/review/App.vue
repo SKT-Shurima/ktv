@@ -4,9 +4,8 @@
 	      	<i class="icon icon-109" id='back'></i>
 	      	<dl class="staff-info">
 		        <dt>
-		          <img :src="user.wechat_portrait"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
+		          <img :src="`${qnhost}${employee.index_image}`"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
 		        </dt>
-		        <dd v-text='user.nick_name'></dd>
 	      	</dl>
 	      	<div class="weui-loadmore weui-loadmore-line">
 	        	<span class="weui-loadmore-tips">打赏她小费</span>
@@ -46,7 +45,7 @@
     	return{
     		rate: 0,
     		note: '',
-    		user: {},
+    		employee: {},
     		query: {},
     		order_amount: '',
     		comLabels: [{
@@ -59,7 +58,8 @@
     			checkBol: false,
     			name: "温柔体贴"
     		}], 
-    		labelNote: ''
+    		labelNote: '',
+            qnhost: qnhost
     	}
     },
     watch:{
@@ -97,7 +97,8 @@
 	          	success: res=>{
 		            let {code,data,desc} =res;
 		            if (code===0) {
-		              this.user = data.employee.user;
+                      data.employee.index_image = data.employee.index_image.split(',')[0]; 
+		              this.employee = data.employee;
 		            }else{
 		              error(code,desc)
 		            }
@@ -107,7 +108,7 @@
       	feedback(){
       		let params = {
     			token: getCookie('token'),
-				order_id: this.query.id,
+				order_id: this.query.order_id,
 				comment: this.labelNote+this.note,
 				star: this.star?this.start:5,
 				feedback_type: 1
@@ -129,10 +130,10 @@
       	review(){
     		let params = {
     			token: getCookie('token'),
-    			order_id: this.query.id,
+    			order_id: this.query.order_id,
     			optype: 1,
 				optarget: 2,
-				order_amount: this.order_amount
+				order_amount: this.order_amount.toFixed(2)
     		}
     		$.ajax({
 	         	url: `${baseAjax}/pay/pay.jhtml;`,
@@ -143,12 +144,12 @@
 	            	let {code,desc} =res;
 	            	if (code===0) {
                         WeixinJSBridge.invoke('getBrandWCPayRequest',{
-                          "appId":data.payParams.appid,
+                          "appId":data.payParams.appId,
                           "nonceStr":data.payParams.nonceStr,
-                          "package":data.payParams.prepayid,
-                          "signType":"MD5",
-                          "timeStamp":data.payParams.timestamp,
-                          "paySign":data.payParams.sign
+                          "package":data.payParams.packageName,
+                          "signType":data.payParams.signType,
+                          "timeStamp":data.payParams.timeStamp,
+                          "paySign":data.payParams.paySign
                         }, function(res){
                           // WeixinJSBridge.log(res.err_msg);
                           // alert(res.err_code+res.err_desc+res.err_msg);

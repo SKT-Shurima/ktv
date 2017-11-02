@@ -7,8 +7,17 @@
 	top: .3rem;
 	z-index: 10;
 }
-#slide>.dot{
+.pay-box{
+	z-index: 10012 !important;
+}
+.carousel-wrap{
+    height: 7.42rem;
+}
+.carousel-items{
 	bottom: 1.1rem;
+}
+.slide-ul li{
+	top: -25%;
 }
 .price-mask{
 	position: absolute;

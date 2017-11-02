@@ -2,7 +2,7 @@
   <div id="app">
         <div class="slide">
           <div class="search">
-            <span class="primary"><i class="icon icon-4"></i><input type="text" placeholder='搜索员工' class="search-input" v-model='message'  @keyup.enter='searchList' ></span>
+            <span class="primary"><i class="icon icon-4" v-show='!fs'></i><input type="text" placeholder='搜索员工' class="search-input" v-model='message'  @keyup.enter='searchList' @focus='fs=true;' @blur='fs=false;'></span>
           </div>
           <swiper :slider-list='banner'></swiper>
         </div>
@@ -71,11 +71,11 @@
               <dt>
                 <a :href="`predate.html?employee_id=${item.user_id}`">
                   <img :src="`${qnhost}${item.index_image}`"  @error='errorLoadImg'>
+                  <i class="mood-icon" v-if='item.mood===1'></i>
+                  <div class="staff-mask" v-if='item.state===0'>
+                    <span>已被预约</span>
+                  </div>
                 </a>
-                <i class="mood-icon" v-if='item.mood===1'></i>
-                <div class="staff-mask" v-if='item.state===0'>
-                  <span>已被预约</span>
-                </div>
               </dt>
               <dd>
                 <div class="staff-info"><span v-text='item.nick_name'></span><em class="price">&yen;{{item.price}}</em></div>
@@ -99,9 +99,9 @@
             banner: [],
             qnhost: qnhost,
             slide: '',
-            preMsg: '',
             message: '',
-            qnhost: qnhost
+            qnhost: qnhost,
+            fs: false
           }
         },
         filters:{
@@ -112,6 +112,13 @@
         },
         mixins: [getList],
         methods: {
+          searchList(){
+            let keyword = this.message;
+            if (!keyword) {
+              return false;
+            }
+            window.location.href = `search.html?keyword=${keyword}`;
+          },
           getBanner(){
             let params = {
               token: getCookie('token'),

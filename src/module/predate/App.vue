@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-      <staff-info :get-state='true' @send-state='getState'></staff-info>
-      <div class="op-btn primary-bg" @touchstart='predate' v-if='state===1'>
+      <staff-info :get-state='true' @sendstate='getState'></staff-info>
+      <div class="op-btn primary-bg" @touchstart='predate' v-if='state==1'>
         立即预约
       </div>
-      <div class="op-btn bg-c" v-if='state===0'>
-        忙碌中
+      <div class="op-btn bg-c" v-if='state==0'>
+        已被预约
       </div>
   </div>
 </template>
@@ -98,8 +98,3 @@
     }
   }
 </script>
-<style type="text/css" scoped>
-  .carousel-items{
-    bottom: 1.1rem;
-  }
-</style>

@@ -23,9 +23,11 @@ body{
     width: 20%;
     line-height: .6rem;
     transition: width  .3s;
+    vertical-align: -.04rem;
   }
   .search-input:focus{
-    width: 50%;
+    width: 100%;
+    padding-left: .2rem;
   }
   .search-input:-ms-input-placeholder{
     color: #f65287;
@@ -41,6 +43,12 @@ body{
   -webkit-transition: font-size 0.25s ease-out 0s;
   -moz-transition: font-size 0.25s ease-out 0s;
   transition: font-size 0.25s ease-out 0s;
+}
+.carousel-wrap{
+    height: 3.82rem;
+}
+.carousel-items{
+	bottom: .2rem;
 }
 .nav{
 	padding: .4rem .15rem;

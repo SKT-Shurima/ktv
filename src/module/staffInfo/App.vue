@@ -81,7 +81,7 @@
             this.payment();
             return false;
         }else if(this.sign === 2){
-          return false;
+            return false;
         }
         let params = {
           token: getCookie('token')
@@ -122,12 +122,12 @@
             if (code===0) {
               if (optype==1) {
                 WeixinJSBridge.invoke('getBrandWCPayRequest',{
-                  "appId":data.payParams.appid,
+                  "appId":data.payParams.appId,
                   "nonceStr":data.payParams.nonceStr,
-                  "package":data.payParams.prepayid,
-                  "signType":"MD5",
-                  "timeStamp":data.payParams.timestamp,
-                  "paySign":data.payParams.sign
+                  "package":data.payParams.packageName,
+                  "signType":data.payParams.signType,
+                  "timeStamp":data.payParams.timeStamp,
+                  "paySign":data.payParams.paySign
                 }, function(res){
                   // WeixinJSBridge.log(res.err_msg);
                   // alert(res.err_code+res.err_desc+res.err_msg);
@@ -137,7 +137,11 @@
                 window.location.href = 'mine.html';
               }
             }else{
-              error(code,desc)
+              if (code===-1002) {
+                wx.closeWindow();
+              }else{
+                $.alert('',desc);
+              }
             }
           }
         });
