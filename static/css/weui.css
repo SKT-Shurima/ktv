@@ -567,12 +567,10 @@ a {
 
 .weui_uploader_file {
     float: left;
-    margin-right: 9px;
-    margin-bottom: 9px;
     width: 81px;
     height: 108px;
     background: no-repeat 50%;
-    background-size: cover
+    background-size: cover;
 }
 
 .weui_uploader_status {
@@ -607,6 +605,7 @@ a {
     position: relative;
     margin-right: 9px;
     margin-bottom: 9px;
+    margin-left: 10px;
     width: 81px;
     height: 108px;
     border: 1px solid #d9d9d9

@@ -125,8 +125,32 @@ auth_signature = decodeURIComponent(auth_signature);
       timestamp: auth_timestamp,
       nonceStr: auth_nonceStr ,
       signature: hex_sha1(auth_signature),
-      jsApiList: ["openLocation"]
+      jsApiList: ["getLocation"]
   });
+  wx.ready(function(){
+    // 获取地理位置信息
+    let posInfo = getCookie('posInfo');
+    if (!posInfo) {
+      wx.getLocation({
+          type: 'wgs84',
+          success: function (res) {
+              var dis = GetDistance(res.latitude,res.longitude,30.1889041686,120.1828122139);
+              alert(res.latitude,res.longitude);
+              if (dis>=10000000) {
+                $.alert('','不在服务范围内');
+                wx.closeWindow();
+              }else{
+                posInfo = {
+                  lat:res.latitude,
+                  lng:res.longitude
+                }
+                posInfo=JSON.stringify(posInfo);
+                setCookie('posInfo',posInfo,.05);
+              }
+          }
+      });
+    }
+  })
 wx.error(res=>{
     let  ticketParmas = {
         reflush: true
@@ -148,28 +172,7 @@ wx.error(res=>{
 });
 
 
-// 获取地理位置信息
-let posInfo = getCookie('posInfo');
-if (!posInfo&&false) {
-  wx.getLocation({
-      type: 'wgs84',
-      success: function (res) {
-          var dis = GetDistance(res.latitude,res.longitude,30.1889041686,120.1828122139);
-          console.log(res.latitude,res.longitude);
-          if (dis>=1000) {
-            $.alert('','不在服务范围内');
-            wx.closeWindow();
-          }else{
-            posInfo = {
-              lat:res.latitude,
-              lng:res.longitude
-            }
-            posInfo=JSON.stringify(posInfo);
-            setCookie('posInfo',posInfo,.05);
-          }
-      }
-  });
-}
+
 // 计算两点之间距离
 function rad(d){
     return d * Math.PI / 180.0;

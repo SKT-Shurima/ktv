@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div style='width: 100%;height: 100%;'>
     <header class="primary-header primary-bg">
 	    <i class="icon icon-109" id='back'></i>用户条款及协议
 	</header>
@@ -41,6 +42,7 @@
 			本平台相关声明版权及其修改权、更新权和最终解释权均属乐娱帮所有。
   		</p>
 	</div>
+</div>
   </div>
 </template>
 

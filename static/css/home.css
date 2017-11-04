@@ -1,6 +1,3 @@
-body{
-	position: relative;
-}
 .slide{
 	position: relative;
 }
@@ -44,14 +41,17 @@ body{
   -moz-transition: font-size 0.25s ease-out 0s;
   transition: font-size 0.25s ease-out 0s;
 }
+.slide-ul li{
+	top: -10%;
+}
 .carousel-wrap{
-    height: 3.82rem;
+    height: 4.2rem;
 }
 .carousel-items{
 	bottom: .2rem;
 }
 .nav{
-	padding: .4rem .15rem;
+	padding: .22rem .15rem 1px;
 	background-color: #fff;
 }
 .nav>ul{

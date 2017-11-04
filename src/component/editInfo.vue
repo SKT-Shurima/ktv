@@ -15,17 +15,15 @@
 	        <div class="upload-limit color-9">
 	          个人图册（上限10张）
 	        </div>
-	        <div class="avater-list-wrap">
-	            <div class="avater-list-box" :style='{width: (images.length+1)*92+"px"}'>
-	              <ul class="weui_uploader_files">
+	        <div class="weui_uploader_input_wrp">
+	        	<input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" @change="previewImage($event)"/>
+	        </div>
+	        <div class="avater-list-wrap" id='avater-list'>
+	              <ul class="avater-list-box" :style='{width: (images.length)*92+"px"}'>
 	              	<li v-for='(item,index) in images' :key='index' :style='{backgroundImage: `url(${item.urls})`}' class="weui_uploader_file">
 	              		<i class="icon icon-95" @touchstart='delImg(index)'></i>
 	              	</li>
 	              </ul>
-	              <div class="weui_uploader_input_wrp">
-	              	<input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" @change="previewImage($event)"/>
-	              </div> 
-	            </div>
 	        </div>
 	      </div>
 	      <ul class="base-info">
@@ -70,7 +68,10 @@
 				<span @touchstart='finish'>选取</span>
 			</div>
 	   	</div>
-	   	<div class="op-btn primary-bg" :class='{"op-btn-disable":!(real_name&&nick_name&&utype_id!==""&&height&&weight&&province_id!==""&&city_id!==""&&birthday!==""&&hobby&&tags.length&&images.length)}' @touchstart='auth'>
+	   	<div class="op-btn primary-bg op-btn-disable" v-if='!(real_name&&nick_name&&utype_id!==""&&height&&weight&&province_id!==""&&city_id!==""&&birthday!==""&&hobby&&tags.length&&images.length)'>
+	      保存
+	    </div>
+	   	<div class="op-btn primary-bg" v-else @touchstart='auth'>
 	      保存
 	    </div>
   	</div>
@@ -78,7 +79,11 @@
 
 <script type="text/ecmascript-6">
 	import {getInfo} from '../common/js/mixins';
-	import VueCropper from "vue-cropper"  
+	import VueCropper from "vue-cropper" ;
+var myScroll;
+setTimeout(()=>{
+	myScroll = new iScroll('avater-list',{vScrollbar:false,hScrollbar:false,});
+},300)
   	export default {
 	    name: 'editInfo',
 	    data(){
@@ -193,6 +198,9 @@
 	    		tags.forEach(item=>temp[item]=true);
 	    		labels.forEach((item,index)=>temp[item.text]?labels[index].checkBol=true:"");
 	    		temp = null;
+	    		setTimeout(()=>{
+		        	myScroll.refresh();
+		        },300)
 	    	},
 	    	getType(){
 	            let params ={
@@ -310,6 +318,10 @@
 		          }
 	    		});
 	    	},
+	    	chooseFile(){
+	    		 var f = this.$refs.chooseInput;
+	    		 f.click();
+	    	},
 	    	previewImage(e){
 	            var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
 			    for (var i = 0, len = files.length; i < len; ++i) {
@@ -357,13 +369,17 @@
 	    					key: key 
 			    		}
 				        this.images.push(objItem);
-				        this.chooseBol=false;  	 
+				        this.chooseBol=false;
+				        setTimeout(()=>{
+				        	myScroll.refresh();
+				        },300)
                     }
                 });
             },
 	    	delImg(index){
 	    		setTimeout(()=>{
 	    			this.images.splice(index,1);
+	    			myScroll.refresh();
 	    		},300);
 	    	},
 	    	chooseType(){

@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+  	<div style='width: 100%;height: 100%;'>
 	<div class="mine-top primary-bg">
       	<dl>
 	        <dt>
@@ -48,6 +49,7 @@
 	</div>
 	<v-footer></v-footer>
   </div>
+</div>
 </template>
 <script type="text/ecmascript-6">
 	import vFooter from '../../component/vFooter';

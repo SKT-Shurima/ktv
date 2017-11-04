@@ -8,6 +8,7 @@ html, body,p,em, img, small, strong, sub, sup, var, i,dl, ol, ul,form, label,tab
     font-size: normal;
     vertical-align:baseline;
     background:transparent;
+    touch-action: none;
 }
 body {
     min-width: 320px;

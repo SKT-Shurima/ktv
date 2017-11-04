@@ -1,5 +1,6 @@
 <template>
   	<div id="app">
+  		<div style='width: 100%;height: 100%;'>
     	<div class="account-box primary-bg">
 	      	<i class="icon icon-109" id='back'></i>
 	      	<dl class="account-info primary-bg">
@@ -28,7 +29,7 @@
 		    </a>
 		</div>
 	</div>
-	
+	</div>
   </div>
 </template>
 

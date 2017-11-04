@@ -60,20 +60,49 @@
 }
 .upload-avater{
 	background-color: #fff;
+	padding-bottom: .2rem;
 }
 .upload-limit{
 	font-size: .3rem;
 	padding: .3rem;
 }
 .avater-list-wrap{
-	width: 100%;
-	overflow-y: hidden;
-	overflow-x: scroll;
+	height: 108px;
+	overflow: hidden;
 	padding: 0px .3rem;
+	position: relative;
 }
 .avater-list-box{
 	min-width: 100%;
-	overflow: hidden;
+	height: 108px;
+}
+.avater-list-box>li{
+	display: inline-block;
+	position: relative;
+    width: 81px;
+    height: 108px;
+    margin-right: 9px;
+    margin-bottom: 9px;
+    box-sizing: border-box;
+    background: no-repeat 50%;
+    background-size: cover;
+}
+.avater-list-box img{
+	width: 100%;
+	height: 100%;
+}
+.avater-list-box i{
+	display: inline-block;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 16px;
+	height: 16px;
+	font-size: 14px;
+	line-height: 16px;
+	text-align: center;
+	color: #fff;
+	background-color: #999;
 }
 .mask{
 	position: fixed;
@@ -94,30 +123,6 @@
 	line-height: 1rem;
 	padding: 0px .3rem;
 	color: #fff;
-}
-.weui_uploader_files{
-	float: left;
-	overflow: hidden;
-}
-.weui_uploader_file{
-	position: relative;
-}
-.weui_uploader_file>i{
-	display: inline-block;
-	position: absolute;
-	top: 0px;
-	right: 0px;
-	width: 16px;
-	height: 16px;
-	font-size: 14px;
-	line-height: 16px;
-	text-align: center;
-	color: #fff;
-	background-color: #999;
-}
-.weui_uploader_file>img{
-	width: 100%;
-	height: 100%;
 }
 .base-info{
 	margin-top: .26rem;

@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+        <div style='width: 100%;height: 100%;'>
         <header class="primary-header primary-bg">
             <i class="icon icon-109" id='back'></i>
             <div class="order-tab">
@@ -28,7 +29,7 @@
                                     </span>
                                     <em v-text='item.employeer.hobby'></em>
                                 </div>
-                                <div class="status">
+                                <div class="status ellipsis-1">
                                     <span v-if='item.orderDetail.ostate_id!==3'>
                                         <i class="time-icon"></i>{{nowTime-item.orderDetail.create_time|countDownFilter}}    
                                     </span>
@@ -83,6 +84,7 @@
         <pay-for ref='payfor' @payType='payfor'></pay-for>
         <infinite-loading @infinite="infiniteHandler"></infinite-loading>
     </div>
+</div>
 </template>
 
 <script type="text/ecmascript-6">

@@ -1,6 +1,3 @@
-#app{
-	position: relative;
-}
 .order-tab{
 	width: 2.4rem;
 	height: .6rem;
@@ -36,8 +33,6 @@
 .container{
 	padding: .88rem .3rem;
 	background-color: #fff;
-	height: 100vh;
-	overflow-y: scroll;
 	-webkit-overflow-scrolling:touch;
 }
 .container li{
@@ -101,7 +96,7 @@
 	font-size: .24rem;
 }
 .status>span{
-	margin-right: .3rem;
+	margin-right: .2rem;
 }
 .con .weui_btn{
 	padding: .14rem .22rem;

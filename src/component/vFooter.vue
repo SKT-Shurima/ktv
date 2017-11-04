@@ -39,7 +39,7 @@
     z-index: 999;
     width: 100%;
     text-align: center;
-    font-size: .1rem;
+    font-size: 12px;
     background-color: #fff;
     box-shadow:  0px 0px 1px 1px #ddd;
 }
@@ -49,14 +49,15 @@
     text-align: center;
     align-items: center;
     color: #999;
+    line-height: 12px;
 }
 #footer a.selected{
     color: #f65287;
 }
 .footer-icon{
     display: inline-block;
-    width: .66rem;
-    height: .66rem;
+    width: .6rem;
+    height: .6rem;
 }
 .home{
     @include bg-image('../common/img/home-unselected');

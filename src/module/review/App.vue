@@ -1,5 +1,6 @@
 <template>
   	<div id="app">
+        <div style='width: 100%;height: 100%;'>
      	<div class="order-wrap">
 	      	<i class="icon icon-109" id='back'></i>
 	      	<dl class="staff-info">
@@ -35,6 +36,7 @@
 		      确认
 		    </div>
 		</div>
+    </div>
   </div>
 </template>
 
@@ -121,6 +123,11 @@
                 success: res=>{
                     let {code,data,desc} =res;
                     if (code===0) {
+                        if (this.order_amount-0) {
+                            this.review();
+                        }else{
+                            window.location.replace('userOrder.html');
+                        }
                     }else{
                       error(code,desc)
                     }
@@ -153,10 +160,10 @@
                         }, function(res){
                           // WeixinJSBridge.log(res.err_msg);
                           // alert(res.err_code+res.err_desc+res.err_msg);
-                          window.location.href = 'userOrder.html';
+                          window.location.replace('userOrder.html');
                         });
 	            	}else{
-	              		$.alert('',desc);
+                        $.alert('',desc);
 	            	}
 	          	}
 	        });
@@ -167,9 +174,6 @@
     			return false;
     		}else{
     			this.feedback();
-    		}
-    		if (this.order_amount-0) {
-    			this.review();
     		}
     	}
     },

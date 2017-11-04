@@ -1,16 +1,17 @@
 .nav-wrap{
 	position: fixed;
 	z-index: 1200;
+	width: 100%;
+	overflow: hidden;
 	font-size: .3rem;
 	background-color: #fff;
 }
 .nav-box{
-	height: .8rem;
-    white-space: nowrap;
-    position: relative;
-    -webkit-overflow-scrolling: touch;
-    overflow: hidden;
-    overflow-x: auto;
+	width: 516px;
+	/*position: relative;
+	display: flex;
+	width: 600px;
+	height: .8rem;*/
 }
 .nav-box .border-bottom-1px::after{
 	height: 3px;
@@ -19,15 +20,18 @@
 .nav-box .nav-active.border-bottom-1px::after{
 	background-color: #f65287;
 }
-.nav-box>li{
+#topNav .swiper-slide{
 	display: inline-block;
+	width: 60px;
+    box-sizing: border-box;
     white-space: normal;
     text-align: center;
 	line-height: .8rem;
-	padding: 0px .3rem;
+	padding: 0px 2px;
 }
-.nav-box a{
-	display: inline-block;
+#topNav .swiper-slide a{
+	transition:all .3s ease;
+	display:block;
 	color: #000;
 }
 .container{

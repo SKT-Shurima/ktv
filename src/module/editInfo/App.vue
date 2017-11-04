@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <edit-info :editBol='true'></edit-info>
+  	<div style='width: 100%;height: 100%;'>
+    	<edit-info :editBol='true'></edit-info>
+    </div>
   </div>
 </template>
 <script type="text/ecmascript-6">

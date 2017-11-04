@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div style='width: 100%;height: 100%;'>
       <staff-info :get-state='true' @sendstate='getState'></staff-info>
       <div class="op-btn primary-bg" @touchstart='predate' v-if='state==1'>
         立即预约
@@ -8,6 +9,7 @@
         已被预约
       </div>
   </div>
+</div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -18,7 +20,8 @@
     	return {
         roomPicker: '',
         state: 1,
-        query: {}
+        query: {},
+        predateBol: true
       }
     },
     components:{
@@ -60,6 +63,10 @@
         });
       },
       predate(){
+        if (!this.predateBol) {
+          return false;
+        }
+        this.predateBol = false;
         this.roomPicker.show();
         this.roomPicker.on('picker.select',(val, index)=> {
           this.createOrder(val[0]);
@@ -83,6 +90,7 @@
               window.location.replace(`orderDetail.html?employee_id=${employee_id}&order_id=${order_id}`);
             }else{
               $.alert('',desc);
+              this.predateBol = true;
             }
           }
         });

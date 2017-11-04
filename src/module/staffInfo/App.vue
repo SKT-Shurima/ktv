@@ -1,30 +1,28 @@
 <template>
   <div id="app">
-    <div class="staff-info primary-bg">
-      <i class="icon icon-109" id='back'></i>
-      <a href="editInfo.html" class="edit">编辑</a>
-      <dl class="info-box">
-        <dt class="avater">
-          <img :src="user.wechat_portrait"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
-        </dt>
-        <dd class="name ellipsis-1" v-text='user.wechat_name'>
-        <dd class="signin" :class='[sign===0?"signin-bg":sign===2?"signed-bg":"signup-bg"]' @touchstart="signin">
-          {{sign===0?"签到":sign===2?"已签":"签退"}}
-        </dd>
-      </dl>
-   </div>
+    <div style='width: 100%;height: 100%;'>
+      <div class="staff-info primary-bg">
+        <i class="icon icon-109" id='back'></i>
+        <a href="editInfo.html" class="edit">编辑</a>
+        <dl class="info-box">
+          <dt class="avater">
+            <img :src="user.wechat_portrait"  @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
+          </dt>
+          <dd class="signin" :class='[sign===0?"signin-bg":sign===2?"signed-bg":"signup-bg"]' @touchstart="signin">
+            {{sign===0?"签到":sign===2?"已签":"签退"}}
+          </dd>
+        </dl>
+     </div>
    <div class="container">
       <div class="upload-avater">
         <div class="upload-limit color-9">
           个人图册
         </div>
-        <div class="avater-list-wrap">
-              <div class="avater-list-box" :style='{width: (index_image.length+1)*90+"px"}'>
-                <ul class="weui_uploader_files">
-                  <li v-for='(item,index) in index_image' :key='index' :style='{backgroundImage: `url(${qnhost}${item})`}' class="weui_uploader_file">
-                  </li>
-                </ul>
-              </div>
+        <div class="avater-list-wrap" id='avater-list'>
+              <ul class="avater-list-box" :style='{width: (index_image.length+1)*90+"px"}'>
+                <li v-for='(item,index) in index_image' :key='index' :style='{backgroundImage: `url(${qnhost}${item})`}' class="weui_uploader_file">
+                </li>
+              </ul>
           </div>
       </div>
       <ul class="base-info">
@@ -57,6 +55,7 @@
     </div>
     <signin ref='payfor' @payType='payfor'></signin>
   </div>
+</div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -133,9 +132,26 @@
                   // alert(res.err_code+res.err_desc+res.err_msg);
                   window.location.href = 'mine.html';
                 });
-              }else{
-                window.location.href = 'mine.html';
-              }
+              }else if (optype==3) {
+                    let cashpay = {
+                        token: getCookie('token'),
+                        pay_sn: data.payParams.pay_sn
+                    }
+                    $.ajax({
+                        url: `${payforAjax}/web/inner.jhtml`,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: cashpay,
+                        success: res=>{
+                            let {code,desc} =res;
+                            if (code===0) {
+                                window.location.href = 'mine.html';
+                            }else{
+                                error(code,desc)
+                            }
+                        }
+                    });
+                  }
             }else{
               if (code===-1002) {
                 wx.closeWindow();

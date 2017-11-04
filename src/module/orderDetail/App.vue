@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div style='width: 100%;height: 100%;'>
   	<staff-info></staff-info>
     <div class="weui-flex nore-order op-btn" v-if='order.ostate_id===1' style="z-index: 10010;">
       <div class="weui-flex-item order-time color-9"><i class="time-icon"></i>{{nowTime-order.create_time|countDownFilter}}</div>
@@ -29,6 +30,7 @@
     <complain ref='complain' @comment='feed'></complain>
     <pay-for ref='payfor' @payType='payfor'></pay-for>
   </div>
+</div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -117,7 +119,7 @@
                     success: res=>{
                         let {code,desc} =res;
                         if (code===0) {
-                            window.location.href = 'mine.html';
+                            window.location.href = 'userOrder.html';
                         }else{
                             error(code,desc)
                         }

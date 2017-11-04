@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <div id='wrap'>
+      <div>
         <div class="slide">
           <div class="search">
             <span class="primary"><i class="icon icon-4" v-show='!fs'></i><input type="text" placeholder='搜索员工' class="search-input" v-model='message'  @keyup.enter='searchList' @focus='fs=true;' @blur='fs=false;'></span>
@@ -65,7 +67,7 @@
             </li>
           </ul>
         </nav>
-        <ul class="container weui-updown">
+        <ul class="container">
           <li class="con-list" v-for='(item,index) in listdata' :key='index'>
             <dl>
               <dt>
@@ -84,9 +86,11 @@
             </dl>
           </li>
         </ul>
-        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
-    <v-footer></v-footer>
-  </div>
+      </div>
+    </div>
+  <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+  <v-footer></v-footer>
+</div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -149,10 +153,6 @@
 </script>
 <style type="text/css" lang='scss' scoped>
   @import '../../common/css/mixin';
-  #app{
-    position: relative;
-    height: 100vh;
-  }
   .mood-icon{
     display: inline-block;
     width: .42rem;

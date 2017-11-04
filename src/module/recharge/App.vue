@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+  	<div style='width: 100%;height: 100%;'>
     <header class="primary-header primary-bg">
 	    <i class="icon icon-109" id='back'></i>充值
 	</header>
@@ -14,6 +15,7 @@
 	    <div class="rechargewithdraw-btn primary-bg" @touchstart='recharge'>充值</div>
 	</div>
   </div>
+</div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -33,7 +35,7 @@
     			token: getCookie('token'),
     			optype: 1,
 				optarget: 3,
-				order_amount: this.order_amount
+				order_amount: this.order_amount.toFixed(2)
     		}
     		$.ajax({
 	         	url: `${baseAjax}/pay/pay.jhtml`,

@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+        <div style='width: 100%;height: 100%;'>
         <header class="primary-header primary-bg">
             <i class="icon icon-109" id='back'></i>
             <div class="order-tab">
@@ -60,6 +61,7 @@
         </div>
         <infinite-loading @infinite="infiniteHandler"></infinite-loading>
     </div>
+</div>
 </template>
 
 <script type="text/ecmascript-6">
