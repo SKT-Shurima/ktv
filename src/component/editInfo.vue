@@ -80,10 +80,10 @@
 <script type="text/ecmascript-6">
 	import {getInfo} from '../common/js/mixins';
 	import VueCropper from "vue-cropper" ;
-var myScroll;
-setTimeout(()=>{
-	myScroll = new iScroll('avater-list',{vScrollbar:false,hScrollbar:false,});
-},300)
+	var myScroll;
+	setTimeout(()=>{
+		myScroll = new iScroll('avater-list',{vScrollbar:false,hScrollbar:false,});
+	},300);
   	export default {
 	    name: 'editInfo',
 	    data(){

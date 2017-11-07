@@ -9,57 +9,67 @@
             </div>
         </header>
         <div class="container">
-            <ul v-show='tabIndex===1'>
-                <li class="border-bottom-1px" v-for='(item,index) in waitDealList' :key='index'>
-                    <div class="p">
-                       <img :src="item.customer.wechat_portrait" @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
-                    </div>
-                    <div class="i">
-                        <dl class="con">
-                            <dt>
-                                <div class="staff-name ellipsis-1" v-text='item.customer.wechat_name'></div>
-                                <div class="staff-room ellipsis-2">
-                                  {{item.orderDetail.room_name}}号包厢
-                                </div>
-                            </dt>
-                            <dd class="staff-op" v-if='item.orderDetail.ostate_id===1'>
-                                <button class="weui_btn border-1px color-blue reject" @touchstart='receiveOrder(item.order_id)'>接单</button>
-                            </dd>
-                            <dd class="staff-op" v-if='item.orderDetail.ostate_id===2'>
-                                <button class="weui_btn border-1px color-blue ensure" @touchstart='confirmOrder(item.order_id)'>确认</button>
-                                <button class="weui_btn border-1px color-9 cancel" @touchstart='cancelOrder(item.order_id)'>取消</button>
-                            </dd>
-                        </dl>
-                        <div class="status">
-                            <span>
-                                <i class="time-icon"></i>{{nowTime-item.orderDetail.create_time|countDownFilter}}    
-                            </span>
-                            <em class="primary" v-text='item.orderDetail.ostate_name'></em>
+            <div v-show='tabIndex===1'>
+                <ul v-if='waitDealList.length'>
+                    <li class="border-bottom-1px" v-for='(item,index) in waitDealList' :key='index'>
+                        <div class="p">
+                           <img :src="item.customer.wechat_portrait" @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
                         </div>
-                    </div>
-                </li>
-            </ul>
-            <ul v-show='tabIndex===2'>
-                 <li class="border-bottom-1px" v-for='(item,index) in completeList' :key='index'>
-                    <div class="p">
-                        <img :src="item.customer.wechat_portrait" @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
-                    </div>
-                    <div class="i">
-                        <dl class="con">
-                            <dt>
-                                <div class="staff-name ellipsis-1" v-text='item.customer.wechat_name'>
-                                </div>
-                                <div class="staff-room ellipsis-2">
-                                  {{item.orderDetail.room_name}}号包厢
-                                </div>
-                            </dt>
-                        </dl>
-                        <div class="status color-9" v-text='item.orderDetail.ostate_name'></div>
-                    </div>
-                </li>
-            </ul>
+                        <div class="i">
+                            <dl class="con">
+                                <dt>
+                                    <div class="staff-name ellipsis-1" v-text='item.customer.wechat_name'></div>
+                                    <div class="staff-room ellipsis-2">
+                                      {{item.orderDetail.room_name}}号包厢
+                                    </div>
+                                </dt>
+                                <dd class="staff-op" v-if='item.orderDetail.ostate_id===1'>
+                                    <button class="weui_btn border-1px color-blue reject" @touchstart='receiveOrder(item.order_id)'>接单</button>
+                                </dd>
+                                <dd class="staff-op" v-if='item.orderDetail.ostate_id===2'>
+                                    <button class="weui_btn border-1px color-blue ensure" @touchstart='confirmOrder(item.order_id)'>确认</button>
+                                    <button class="weui_btn border-1px color-9 cancel" @touchstart='cancelOrder(item.order_id)'>取消</button>
+                                </dd>
+                            </dl>
+                            <div class="status">
+                                <span>
+                                    <i class="time-icon"></i>{{nowTime-item.orderDetail.create_time|countDownFilter}}    
+                                </span>
+                                <em class="primary" v-text='item.orderDetail.ostate_name'></em>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="no-container" v-else>
+                    暂无数据
+                </div>
+            </div>
+            <div v-show='tabIndex===2'>
+                <ul v-if='completeList.length'>
+                     <li class="border-bottom-1px" v-for='(item,index) in completeList' :key='index'>
+                        <div class="p">
+                            <img :src="item.customer.wechat_portrait" @load='successLoadAvater' @error='errorLoadAvater' class="default-avater">
+                        </div>
+                        <div class="i">
+                            <dl class="con">
+                                <dt>
+                                    <div class="staff-name ellipsis-1" v-text='item.customer.wechat_name'>
+                                    </div>
+                                    <div class="staff-room ellipsis-2">
+                                      {{item.orderDetail.room_name}}号包厢
+                                    </div>
+                                </dt>
+                            </dl>
+                            <div class="status color-9" v-text='item.orderDetail.ostate_name'></div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="no-container" v-else>
+                    暂无数据
+                </div>
+            </div>
         </div>
-        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+        <infinite-loading @infinite="infiniteHandler" force-use-infinite-wrapper="true"></infinite-loading>
     </div>
 </div>
 </template>
@@ -83,15 +93,20 @@
         filters:{
             countDownFilter
         },
+        components:{
+            InfiniteLoading:VueInfiniteLoading.default,
+        },
         methods:{
             infiniteHandler($state) {
                 this.loadState = $state;
-                if (this.page>=this.totalPage) {
-                    $state.loaded();
-                    return false; ;
-                }else{
-                    this.tabIndex===1?this.waitDeal():this.complete();
-                }
+                setTimeout(()=>{
+                     if (this.page>=this.totalPage) {
+                        $state.loaded();
+                        return false; ;
+                    }else{
+                        this.tabIndex===1?this.waitDeal():this.complete();
+                    }
+                },600)
             },
             waitDeal(mask){
                 if (mask&&this.tabIndex===1) {
@@ -119,7 +134,7 @@
                         if (code===0) {
                             this.waitDealList = this.waitDealList.concat(data.orderList.data);
                             this.totalPage = data.orderList.total_page;
-                            this.loadState?this.loadState.loaded():'';
+                            this.loadState.loaded();
                         }else{
                           error(code,desc)
                         }
@@ -219,9 +234,7 @@
                         if (code===0) {
                             this.completeList = this.completeList.concat(data.orderList.data);
                             this.totalPage = data.orderList.total_page;
-                            if (this.loadState) {
-                                this.loadState.loaded();
-                            }
+                            this.loadState.loaded();
                         }else{
                           error(code,desc)
                         }
@@ -231,7 +244,6 @@
         },
         mounted(){
             this.$nextTick(()=>{
-                this.waitDeal();
                 setInterval(() => {
                   this.nowTime = new Date().getTime();
                 }, 1000);

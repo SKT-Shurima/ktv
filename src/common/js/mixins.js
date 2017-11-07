@@ -22,7 +22,7 @@ export const getList = {
               this.page = this.page < this.total_page?++this.page:1;
               this.typeList(this.preType);
             }
-          }, 1000);
+          }, 600);
         },
         typeList(mask){
           this.page = mask!==this.preType?1:this.page;

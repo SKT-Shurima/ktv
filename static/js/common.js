@@ -1,18 +1,20 @@
 
 // 开发环境
-// let baseAjax = '/ktv/web', payforAjax = '/ktv/payrefund/',qnhost='http://oxqmde0yk.bkt.clouddn.com/';
+// var baseAjax = '/ktv/web', payforAjax = '/ktv/payrefund/',qnhost='http://oxqmde0yk.bkt.clouddn.com/';
 // 本地测试
-// let baseAjax = 'http://192.168.31.35:8080/ktv/web', payforAjax = 'http://192.168.31.35:8080/ktv/payrefund/',qnhost='http://oxqmde0yk.bkt.clouddn.com/';
+// var baseAjax = 'http://192.168.31.35:8080/ktv/web', payforAjax = 'http://192.168.31.35:8080/ktv/payrefund/',qnhost='http://oxqmde0yk.bkt.clouddn.com/';
 // 本地线上环境
-let baseAjax = 'http://120.26.90.70:8080/ktv/web', payforAjax = 'http://120.26.90.70:8080/ktv/payrefund/',qnhost='http://oxqmde0yk.bkt.clouddn.com/';
+// var baseAjax = 'http://120.26.90.70:8080/ktv/web', payforAjax = 'http://120.26.90.70:8080/ktv/payrefund/',qnhost='http://oxqmde0yk.bkt.clouddn.com/';
   
+var baseAjax = 'http://118.31.251.48:8080/ktv/web', payforAjax = 'http://118.31.251.48:8080/ktv/payrefund/',qnhost='http://oxqmde0yk.bkt.clouddn.com/';
 
-const setCookie = (c_name,value,expTime)=>{ 
+
+var setCookie =  function (c_name,value,expTime){ 
 	var exdate = new Date();  
 	exdate.setTime(exdate.getTime() + expTime *3600 * 1000);  
 	document.cookie= c_name + "=" + escape(value)+((expTime==null) ? "" : ";expires="+exdate.toGMTString());  
 }
-const getCookie = (c_name)=>{  
+var getCookie = function (c_name) {  
 	if (document.cookie.length>0){  
 		var c_start=document.cookie.indexOf(c_name + "=");  
 	 		if (c_start!=-1){   
@@ -25,7 +27,7 @@ const getCookie = (c_name)=>{
 	}  
 	return ""     
 }
-const delCookie = (c_name)=>{  
+var delCookie = function (c_name){  
 	var exp = new Date();  
 	exp.setTime(exp.getTime() - 1);  
 	var cval = getCookie(c_name);  
@@ -33,15 +35,15 @@ const delCookie = (c_name)=>{
 		document.cookie = c_name + "=" + cval + ";expires=" + exp.toGMTString();  
 	}
 }
-const trans = params => {
+var trans =  function (params){
     // Do whatever you want to transform the data
-    let ret = ''
-    for (let it in params) {
+    var ret = ''
+    for (var it in params) {
       ret += encodeURIComponent(it) + '=' + encodeURIComponent(params[it]) + '&'
     }
     return ret ;
 }
-const getRequest = ()=> {
+var getRequest = function(){
   	var url = location.search;
    	var theRequest = new Object();
    	if (url.indexOf("?") != -1) {
@@ -53,17 +55,17 @@ const getRequest = ()=> {
    return theRequest;
 }
 // 过滤器
-const transTime = (val)=>{
+var transTime = function (val){
     if (val < 10) {
       val = "0" + val ;
     }
     return val ;
 };
-const countDownFilter = (time)=>{
-	let totalTime = 10*60000;
+var countDownFilter = function(time){
+	var totalTime = 10*60000;
 	time = totalTime-time;
 	if(time>=0){
-		let m = parseInt(time / 60000) ,s = parseInt(time % 60000/1000);
+		var m = parseInt(time / 60000) ,s = parseInt(time % 60000/1000);
 		m = transTime(m);
     	s = transTime(s);
 		return `${m}:${s}`;
@@ -71,37 +73,36 @@ const countDownFilter = (time)=>{
 		return "00:00";
 	}
 }
-const timeFilter = (time)=>{
+var timeFilter = function (time){
 	time -= 0;
     var newDate = new Date(time);
-    let {h,m}={h:newDate.getHours(),m:newDate.getMinutes()};
+    var {h,m}={h:newDate.getHours(),m:newDate.getMinutes()};
     h = transTime(h);
     m = transTime(m);
     return `${h}:${m}`;
 }
-const birthFilter = (time)=>{
+var birthFilter = function(time){
 	var now = new Date().getFullYear();
   var newDate = new Date(time).getFullYear();
   return now-newDate;
 }
-const dateFilter  = time =>{
+var dateFilter  = function(time){
     time-=0;
     var newDate = new Date(time);
-    let {y,m,d}={y:newDate.getFullYear(),m:newDate.getMonth()+1,d:newDate.getDate()};
+    var {y,m,d}={y:newDate.getFullYear(),m:newDate.getMonth()+1,d:newDate.getDate()};
     m = transTime(m);
     d = transTime(d);
     return y +'-' + m + "-" + d ;
 }
 
-const error = (code,msg)=>{
+var error = function(code,msg){
 	if (code===-1002) {
     wx.closeWindow();
   }else{
     console.log(msg);
   }
 }
-
-let auth_token=getCookie('token');
+var auth_token=getCookie('token');
 if (!auth_token) {
     wx.closeWindow();
 }
@@ -129,13 +130,12 @@ auth_signature = decodeURIComponent(auth_signature);
   });
   wx.ready(function(){
     // 获取地理位置信息
-    let posInfo = getCookie('posInfo');
+    var posInfo = getCookie('posInfo');
     if (!posInfo) {
       wx.getLocation({
           type: 'wgs84',
           success: function (res) {
               var dis = GetDistance(res.latitude,res.longitude,30.1889041686,120.1828122139);
-              alert(res.latitude,res.longitude);
               if (dis>=10000000) {
                 $.alert('','不在服务范围内');
                 wx.closeWindow();
@@ -151,8 +151,8 @@ auth_signature = decodeURIComponent(auth_signature);
       });
     }
   })
-wx.error(res=>{
-    let  ticketParmas = {
+wx.error(function(res){
+    var  ticketParmas = {
         reflush: true
     } 
     $.ajax({
@@ -160,8 +160,8 @@ wx.error(res=>{
         type: 'GET',
         dataType: 'json',
         data: ticketParmas,
-        success: res=>{
-          let {code,data,desc} = res;
+        success: function(res){
+          var {code,data,desc} = res;
           if (res.code===0) {
               setCookie("ticket",data.ticket,.5);
           }else{

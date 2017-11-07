@@ -4,7 +4,8 @@
     <header class="primary-header primary-bg">
         <i class="icon icon-109" id='back'></i>搜索
     </header>
-      <ul class="container">
+    <div class="container">
+      <ul v-if='listdata.length'>
         <li class="con-list" v-for='(item,index) in listdata' :key='index'>
           <dl>
             <dt>
@@ -23,7 +24,11 @@
           </dl>
         </li>
       </ul>
-      <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+      <div class="no-container" v-else>
+        暂无数据
+      </div>
+    </div>
+      <infinite-loading @infinite="infiniteHandler" force-use-infinite-wrapper="true"></infinite-loading>
     <v-footer></v-footer>
   </div>
 </div>
@@ -50,7 +55,7 @@ import {getList} from '../../common/js/mixins';
     },
     mixins: [getList],
     components:{
-      vFooter
+      vFooter,InfiniteLoading:VueInfiniteLoading.default,
     },
     methods: {
       infiniteHandler($state) {
@@ -63,7 +68,7 @@ import {getList} from '../../common/js/mixins';
               ++this.page;
               this.getKeywordList();
             }
-          }, 1000);
+          }, 600);
         },
       getKeywordList(){
         let params = {

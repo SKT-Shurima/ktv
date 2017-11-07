@@ -12,26 +12,31 @@
           <li @click='typeList(4)' class="swiper-slide"><a href="javascript:void(0)" class="border-bottom-1px" :class='{"nav-active":navIndex===4}'>萌妹子</a></li>
         </ul>
       </div>
-      <ul class="container">
-        <li class="con-list" v-for='(item,index) in listdata' :key='index'>
-          <dl>
-            <dt>
-              <a :href='"predate.html?employee_id="+item.user_id'>
-                <img :src="`${qnhost}${item.index_image}`"  @error='errorLoadImg'>
-                <i class="mood-icon" v-if='item.mood===1'></i>
-                <div class="staff-mask" v-if='item.state===0'>
-                  <span>忙碌中</span>
-                </div>
-              </a>
-            </dt>
-            <dd>
-              <div class="staff-info"><span v-text='item.nick_name'></span><em class="price">&yen;{{item.price}}</em></div>
-              <div class="staff-detail ellipsis-1"><span>{{item.birthday|birthFilter}}岁</span><em v-text='item.hobby'></em></div>
-            </dd>
-          </dl>
-        </li>
-      </ul>
-    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+      <div class="container">
+        <ul v-if='listdata.length'>
+          <li class="con-list" v-for='(item,index) in listdata' :key='index'>
+            <dl>
+              <dt>
+                <a :href='"predate.html?employee_id="+item.user_id'>
+                  <img :src="`${qnhost}${item.index_image}`"  @error='errorLoadImg'>
+                  <i class="mood-icon" v-if='item.mood===1'></i>
+                  <div class="staff-mask" v-if='item.state===0'>
+                    <span>忙碌中</span>
+                  </div>
+                </a>
+              </dt>
+              <dd>
+                <div class="staff-info"><span v-text='item.nick_name'></span><em class="price">&yen;{{item.price}}</em></div>
+                <div class="staff-detail ellipsis-1"><span>{{item.birthday|birthFilter}}岁</span><em v-text='item.hobby'></em></div>
+              </dd>
+            </dl>
+          </li>
+        </ul>
+        <div class="no-container" v-else>
+          暂无数据
+        </div>
+      </div>
+    <infinite-loading @infinite="infiniteHandler" force-use-infinite-wrapper="true"></infinite-loading>
     <v-footer></v-footer>
 </div>
 </template>
@@ -50,16 +55,10 @@ import {getList} from '../../common/js/mixins';
     },
     mixins: [getList],
     components:{
-      vFooter
-    },
-    mounted(){
-      this.$nextTick(()=>{
-      
-      })
+      vFooter,InfiniteLoading:VueInfiniteLoading.default,
     }
   }
 </script>
-
 <style type="text/css" lang='scss' scoped>
 @import '../../common/css/mixin';
   .weui-navigator-list{

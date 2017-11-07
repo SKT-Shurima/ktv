@@ -38,6 +38,9 @@
     	filters: {
     		dateFilter
     	},
+        components:{
+            InfiniteLoading:VueInfiniteLoading.default,
+        },
         methods:{
             infiniteHandler($state) {
                 this.loadState = $state;
@@ -49,7 +52,7 @@
                         this.page++ ;
                         this.getList();
                     }
-                }, 1000);
+                }, 600);
             },
         	getList(){
         		let params ={

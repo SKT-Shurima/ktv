@@ -9,86 +9,97 @@
             </div>
         </header>
         <div class="container">
-            <ul v-if='tabIndex===1'>
-                <li class="border-bottom-1px" v-for='(item,index) in waitList' :key='index'>
-                    <div class="p">
-                        <a :href="`orderDetail.html?employee_id=${item.employeer.user_id}&order_id=${item.order_id}`">
-                            <img :src="`${qnhost}${item.employeer.index_image}`" @error='errorLoadImg'>
-                        </a>
-                    </div>
-                    <div class="i">
-                        <div class="name">
-                            <span v-text='item.employeer.nick_name'></span>
-                            <em class="price">&yen;{{item.orderDetail.order_price}}</em>
+            <div v-show='tabIndex===1'>
+                <ul v-if='waitList.length'>
+                    <li class="border-bottom-1px" v-for='(item,index) in waitList' :key='index'>
+                        <div class="p">
+                            <a :href="`orderDetail.html?employee_id=${item.employeer.user_id}&order_id=${item.order_id}`">
+                                <img :src="`${qnhost}${item.employeer.index_image}`" @error='errorLoadImg'>
+                            </a>
                         </div>
-                        <dl class="con">
-                            <dt>
+                        <div class="i">
+                            <div class="name">
+                                <span v-text='item.employeer.nick_name'></span>
+                                <em class="price">&yen;{{item.orderDetail.order_price}}</em>
+                            </div>
+                            <dl class="con">
+                                <dt>
+                                    <div class="info ellipsis-2">
+                                        <span>
+                                            {{item.employeer.birthday|birthFilter}}岁
+                                        </span>
+                                        <em v-text='item.employeer.hobby'></em>
+                                    </div>
+                                    <div class="status ellipsis-1">
+                                        <span v-if='item.orderDetail.ostate_id!==3'>
+                                            <i class="time-icon"></i>{{nowTime-item.orderDetail.create_time|countDownFilter}}    
+                                        </span>
+                                        <em class="primary" v-text='item.orderDetail.ostate_name'></em>
+                                    </div>
+                                </dt>
+                                <dd v-if='item.orderDetail.ostate_id===1'>
+                                    <button class="weui_btn border-1px color-blue reminder" @touchstart='feedback(item.order_id,3,"催单")'>催单</button>
+                                    <button class="weui_btn border-1px color-9  cancle-pre" @touchstart='cancelOrder(item.order_id)'>取消预约</button>
+                                </dd>
+                                <dd v-if='item.orderDetail.ostate_id===2'>
+                                    <button class="weui_btn border-1px color-blue complaints" @touchstart='comfeed(item.order_id)'>投诉</button>
+                                    <button class="weui_btn border-1px color-9  cancle-pre" @touchstart='cancelOrder(item.order_id)'>取消预约</button>
+                                </dd>
+                                <dd v-if='item.orderDetail.ostate_id===3'>
+                                    <button class="weui_btn border-1px color-blue payment" @touchstart='payment(item.orderDetail.order_id)' v-if='item.orderDetail.online_pay===1'>立即支付</button>
+                                    <button class="weui_btn border-1px color-green reward" @touchstart='reward(item.orderDetail.employee_id,item.orderDetail.order_id)'>打赏</button>
+                                </dd>
+                                <dd v-if='item.orderDetail.ostate_id===5'>
+                                    <button class="weui_btn border-1px color-green reward" @touchstart='reward(item.orderDetail.employee_id,item.orderDetail.order_id)'>打赏</button>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                </ul>
+                <div class="no-container" v-else>
+                    暂无数据
+                </div>
+            </div>
+            <div v-show='tabIndex===2'>
+                <ul v-if='cancelList.length'>
+                    <li class="border-bottom-1px" v-for='(item,index) in cancelList' :key='index'>
+                        <div class="p">
+                            <img :src="`${qnhost}${item.employeer.index_image}`" @error='errorLoadImg'>
+                        </div>
+                        <div class="i">
+                            <div class="name">
+                                <span v-text='item.employeer.nick_name'></span>
+                                <em class="price">&yen;{{item.orderDetail.order_price}}</em>
+                            </div>
+                            <div class="con2">
                                 <div class="info ellipsis-2">
                                     <span>
                                         {{item.employeer.birthday|birthFilter}}岁
                                     </span>
                                     <em v-text='item.employeer.hobby'></em>
                                 </div>
-                                <div class="status ellipsis-1">
-                                    <span v-if='item.orderDetail.ostate_id!==3'>
-                                        <i class="time-icon"></i>{{nowTime-item.orderDetail.create_time|countDownFilter}}    
-                                    </span>
-                                    <em class="primary" v-text='item.orderDetail.ostate_name'></em>
+                                <div class="status color-9">
+                                   已取消
                                 </div>
-                            </dt>
-                            <dd v-if='item.orderDetail.ostate_id===1'>
-                                <button class="weui_btn border-1px color-blue reminder" @touchstart='feedback(item.order_id,3,"催单")'>催单</button>
-                                <button class="weui_btn border-1px color-9  cancle-pre" @touchstart='cancelOrder(item.order_id)'>取消预约</button>
-                            </dd>
-                            <dd v-if='item.orderDetail.ostate_id===2'>
-                                <button class="weui_btn border-1px color-blue complaints" @touchstart='comfeed(item.order_id)'>投诉</button>
-                                <button class="weui_btn border-1px color-9  cancle-pre" @touchstart='cancelOrder(item.order_id)'>取消预约</button>
-                            </dd>
-                            <dd v-if='item.orderDetail.ostate_id===3'>
-                                <button class="weui_btn border-1px color-blue payment" @touchstart='payment(item.orderDetail.order_id)' v-if='item.orderDetail.online_pay===1'>立即支付</button>
-                                <button class="weui_btn border-1px color-green reward" @touchstart='reward(item.orderDetail.employee_id,item.orderDetail.order_id)'>打赏</button>
-                            </dd>
-                            <dd v-if='item.orderDetail.ostate_id===5'>
-                                <button class="weui_btn border-1px color-green reward" @touchstart='reward(item.orderDetail.employee_id,item.orderDetail.order_id)'>打赏</button>
-                            </dd>
-                        </dl>
-                    </div>
-                </li>
-            </ul>
-            <ul v-if='tabIndex===2'>
-                <li class="border-bottom-1px" v-for='(item,index) in cancelList' :key='index'>
-                    <div class="p">
-                        <img :src="`${qnhost}${item.employeer.index_image}`" @error='errorLoadImg'>
-                    </div>
-                    <div class="i">
-                        <div class="name">
-                            <span v-text='item.employeer.nick_name'></span>
-                            <em class="price">&yen;{{item.orderDetail.order_price}}</em>
-                        </div>
-                        <div class="con2">
-                            <div class="info ellipsis-2">
-                                <span>
-                                    {{item.employeer.birthday|birthFilter}}岁
-                                </span>
-                                <em v-text='item.employeer.hobby'></em>
-                            </div>
-                            <div class="status color-9">
-                               已取消
                             </div>
                         </div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+                <div class="no-container" v-else>
+                    暂无数据
+                </div>
+            </div>
         </div>
         <complain ref='complain' @comment='feed'></complain>
         <pay-for ref='payfor' @payType='payfor'></pay-for>
-        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+        <infinite-loading @infinite="infiniteHandler" force-use-infinite-wrapper="true"></infinite-loading>
     </div>
 </div>
 </template>
 
 <script type="text/ecmascript-6">
   import payFor from '../../component/payfor';
+  import complain from '../../component/complain';
   export default {
     name: 'app',
     data(){
@@ -109,17 +120,19 @@
         birthFilter,countDownFilter
     },  
     components:{
-      payFor
+      complain,payFor,InfiniteLoading:VueInfiniteLoading.default
     },
     methods:{
         infiniteHandler($state) {
             this.loadState = $state;
-            if (this.page>=this.totalPage) {
-                $state.loaded();
-                return false; ;
-            }else{
-                this.tabIndex===1?this.getWaitList():this.getCancelList();
-            }
+            setTimeout(()=>{
+                if (this.page>=this.totalPage) {
+                    $state.loaded();
+                    return false; ;
+                }else{
+                    this.tabIndex===1?this.getWaitList():this.getCancelList();
+                }
+            },600);
         },
         payment(id){
             this.order_id = id;
@@ -210,7 +223,7 @@
                         }
                         this.waitList = waitList;
                         this.totalPage = data.orderList.total_page;
-                        this.loadState?this.loadState.loaded():'';
+                        this.loadState.loaded();
                     }else{
                       error(code,desc)
                     }
@@ -272,9 +285,7 @@
                         }
                         this.cancelList = cancelList;
                         this.totalPage = data.orderList.total_page;
-                        if (this.loadState) {
-                            this.loadState.loaded();
-                        }
+                        this.loadState.loaded();
                     }else{
                       error(code,desc)
                     }
@@ -320,7 +331,6 @@
     },
     mounted(){
         this.$nextTick(()=>{
-            this.getWaitList();
             setInterval(() => {
                 this.nowTime = new Date().getTime();
             }, 1000);

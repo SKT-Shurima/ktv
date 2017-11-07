@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <div id='wrap'>
       <div>
         <div class="slide">
           <div class="search">
@@ -67,7 +66,7 @@
             </li>
           </ul>
         </nav>
-        <ul class="container">
+        <ul class="container" v-if='listdata.length'>
           <li class="con-list" v-for='(item,index) in listdata' :key='index'>
             <dl>
               <dt>
@@ -86,9 +85,11 @@
             </dl>
           </li>
         </ul>
-      </div>
+        <div class="no-container" v-else>
+          暂无数据
+        </div>
     </div>
-  <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+  <infinite-loading @infinite="infiniteHandler" force-use-infinite-wrapper="true"></infinite-loading>
   <v-footer></v-footer>
 </div>
 </template>
@@ -112,7 +113,7 @@
           birthFilter
         },
         components: {
-          swiper,vFooter
+          swiper,vFooter,InfiniteLoading:VueInfiniteLoading.default,
         },
         mixins: [getList],
         methods: {

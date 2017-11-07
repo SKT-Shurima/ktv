@@ -13,26 +13,6 @@ a:active {
 ::-webkit-input-placeholder {
   color: #CCCCCC; }
 /*基本样式*/
-.iblock {
-  display: inline-block;
-  *display: inline;
-  *zoom: 1; }
-
-.dtable {
-  display: table; }
-
-.cell {
-  display: cell-table; }
-
-.-wrap {
-  white-space: nowrap;
-  word-break: break-all;
-  overflow: hidden; }
-
-.wrap {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  word-break: break-all; }
 
 .clearfix:after, .clearfix:before {
   display: table;
@@ -332,9 +312,7 @@ a:active {
   border: 1px solid #ddd;
   -webkit-transition: all .2s ease-in-out;
   transition: all .2s ease-in-out;
-  display: inline-block;
-  *display: inline;
-  *zoom: 1; }
+  display: inline-block; }
 
 a.img-border {
   max-width: 100%;
@@ -352,7 +330,8 @@ a.img-border:focus, a.img-border:hover {
 /*
 weui-box*/  
   .weui-img-box {
-    position: relative;border-radius:2px
+    position: relative;
+    border-radius:2px;
 }
 .weui-img {
     background-position: 50% center;
@@ -450,7 +429,7 @@ weui-box*/
   overflow: hidden;
   color: #3e3e3e;font-size: 16px; }
 
-.weui-weixin-content * {
+.weui-weixin-content  {
   max-width: 100% !important;
   box-sizing: border-box !important;
   -webkit-box-sizing: border-box !important;

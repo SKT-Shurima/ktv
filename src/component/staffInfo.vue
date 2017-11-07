@@ -28,7 +28,7 @@
         </div>
         <div class="comments">
             <h1>评论</h1>
-            <ul class="comments-box">
+            <ul class="comments-box" v-if='feedbckList.length'>
                 <li class="comments-list" v-for='(item,index) in feedbckList' :key='index'>
                     <dl>
                         <dt class="avater">
@@ -47,8 +47,11 @@
                     </dl>
                 </li>
             </ul>
+            <div class="no-container" v-else>
+				暂无数据
+			</div>
         </div>
-        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+        <infinite-loading @infinite="infiniteHandler" force-use-infinite-wrapper="true"></infinite-loading>
       </div>
 	</div>
 </template>
@@ -73,19 +76,20 @@
     	props: ["getState"],
     	filters: {birthFilter,dateFilter,timeFilter},
 	    components:{
-	      	swiper
+	      	swiper,InfiniteLoading:VueInfiniteLoading.default,
 	    },
 	    methods: {
 	      infiniteHandler($state) {
 	      	this.loadState = $state;
-	        if (this.page>=this.total_page) {
-	            $state.loaded();
-                return false; ;
-	        }else{
-	            this.page++;
-	            this.getComment();
-	        }
-	        done();
+	      	setTimeout(()=>{
+	      		if (this.page>=this.total_page) {
+		            $state.loaded();
+	                return false; ;
+		        }else{
+		            this.page++;
+		            this.getComment();
+		        }
+	      	},600);
 	      },
 	      getDetail(){
 	        let params = {
@@ -137,6 +141,7 @@
 	            if (code===0) {
 	            	this.total_page = data.feedbckList.total_page;
 	              	this.feedbckList = this.feedbckList.concat(data.feedbckList.data);
+	              	this.loadState.loaded();
 	            }else{
 	              error(code,desc)
 	            }

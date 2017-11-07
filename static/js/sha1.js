@@ -17,16 +17,16 @@ var chrsz = 8; /* bits per input character. 8 - ASCII; 16 - Unicode    */
  * These are the functions you'll usually want to call
  * They take string arguments and return either hex or base-64 encoded strings
  */
-const hex_sha1 = s => { return binb2hex(core_sha1(str2binb(s), s.length * chrsz));}
-const b64_sha1 = s => {return binb2b64(core_sha1(str2binb(s), s.length * chrsz));}
- const str_sha1 = s => { return binb2str(core_sha1(str2binb(s), s.length * chrsz));}
- const hex_hmac_sha1 = (key, data) => {
+var hex_sha1 = function(s) { return binb2hex(core_sha1(str2binb(s), s.length * chrsz));}
+var b64_sha1 = function (s) {return binb2b64(core_sha1(str2binb(s), s.length * chrsz));}
+ var str_sha1 = function (s) { return binb2str(core_sha1(str2binb(s), s.length * chrsz));}
+ var hex_hmac_sha1 = function(key, data){
  return binb2hex(core_hmac_sha1(key, data));
 }
- const b64_hmac_sha1 = (key, data) => {
+ var b64_hmac_sha1 = function(key, data){
  return binb2b64(core_hmac_sha1(key, data));
 }
- const str_hmac_sha1 = (key, data) => {
+ var str_hmac_sha1 = function(key, data){
  return binb2str(core_hmac_sha1(key, data));
 }
 /*
@@ -83,7 +83,7 @@ function sha1_ft(t, b, c, d) {
  return b ^ c ^ d;
 }
 /*
- * Determine the appropriate additive constant for the current iteration
+ * Determine the appropriate additive varant for the current iteration
  */
 function sha1_kt(t) {
  return (t < 20) ? 1518500249 : (t < 40) ? 1859775393 : (t < 60) ? -1894007588 : -899497514;

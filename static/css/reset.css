@@ -1,4 +1,8 @@
-html, body,p,em, img, small, strong, sub, sup, var, i,dl, ol, ul,form, label,table, caption, tbody, tfoot, thead, tr, th, td,footer, header, hgroup, nav,li,ul,dd,dt,dl,input,div {
+html, body{
+    margin:0;
+    padding:0;
+}
+p,em, img, strong ,i,dl,  ul, footer, header, li,ul,dd,dt,dl,input,div {
     box-sizing: border-box;
     -webkit-box-sizing : border-box;  
     margin:0;
@@ -8,16 +12,12 @@ html, body,p,em, img, small, strong, sub, sup, var, i,dl, ol, ul,form, label,tab
     font-size: normal;
     vertical-align:baseline;
     background:transparent;
-    touch-action: none;
 }
 body {
     min-width: 320px;
     max-width: 640px;
-    height: 100vh;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling : touch;
-    overflow-scrolling: touch;
     margin: 0px auto;
+    -webkit-overflow-scrolling : touch;
 }
 ul,li {
     list-style:none;

@@ -29,18 +29,18 @@
     }  
     return ""     
   }
-	let query=getCode();
+	var query=getCode();
 	if (getCookie("access_token")) {
 		  window.location.href = "module/index.html";
 	}
   
 	if (!query.code) {
-		let callbackUrl = 'ktvweb.zertone2.com';
-		const redirectUrl = encodeURIComponent("http://"+callbackUrl+"/index.html" );
-		let href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxcdb40d3dfe411dab&redirect_uri=${redirectUrl}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`;
+		var callbackUrl = 'ktvweb.zertone2.com';
+		var redirectUrl = encodeURIComponent("http://"+callbackUrl+"/index.html" );
+		var href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxcdb40d3dfe411dab&redirect_uri=${redirectUrl}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`;
 		window.location.href = href;
 	}else{
-      let  ticketParmas = {
+      var ticketParmas = {
         reflush: false
       } 
       $.ajax({
@@ -48,8 +48,8 @@
           type: 'GET',
           dataType: 'json',
           data: ticketParmas,
-          success: res=>{
-            let {code,data,desc} = res;
+          success: function(res){
+            var code=res.code,data=res.data,desc=res.desc;
             if (res.code===0) {
                 setCookie("ticket",data.ticket,.5);
                 getUserInfo();
@@ -62,7 +62,7 @@
 	
 	// 登录
   function getUserInfo(){
-    let params={
+    var params={
       code: query.code
     };
     $.ajax({
@@ -70,10 +70,10 @@
       type: 'POST',
       dataType: 'json',
       data: params,
-      success: res=>{
-        let {code,data,desc} =res;
+      success:function(res){
+        var code=res.code,data=res.data,desc=res.desc;
         if (code===0) {
-            let userInfo = JSON.stringify(data.user);
+            var userInfo = JSON.stringify(data.user);
             sessionStorage.userInfo = userInfo;
             setCookie("token",data.token,2);
             setCookie("openid",data.user.wechat_openid,2);
