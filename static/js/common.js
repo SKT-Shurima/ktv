@@ -67,8 +67,8 @@ var countDownFilter = function(time){
 	if(time>=0){
 		var m = parseInt(time / 60000) ,s = parseInt(time % 60000/1000);
 		m = transTime(m);
-    	s = transTime(s);
-		return `${m}:${s}`;
+    s = transTime(s);
+		return m+":"+s;
 	}else{
 		return "00:00";
 	}
@@ -79,7 +79,7 @@ var timeFilter = function (time){
     var {h,m}={h:newDate.getHours(),m:newDate.getMinutes()};
     h = transTime(h);
     m = transTime(m);
-    return `${h}:${m}`;
+    return h+":"+m;
 }
 var birthFilter = function(time){
 	var now = new Date().getFullYear();
@@ -89,7 +89,7 @@ var birthFilter = function(time){
 var dateFilter  = function(time){
     time-=0;
     var newDate = new Date(time);
-    var {y,m,d}={y:newDate.getFullYear(),m:newDate.getMonth()+1,d:newDate.getDate()};
+    var y=newDate.getFullYear(),m=newDate.getMonth()+1,d=newDate.getDate();
     m = transTime(m);
     d = transTime(d);
     return y +'-' + m + "-" + d ;
@@ -118,7 +118,7 @@ function randomString(len) {
 }
 var jsapi_ticket = getCookie('ticket'),auth_nonceStr = randomString(32),auth_timestamp=parseInt(new Date().getTime()/1000);
 var auth_url=location.href.split('#')[0];
-var auth_signature=`jsapi_ticket=${jsapi_ticket}&noncestr=${auth_nonceStr}&timestamp=${auth_timestamp}&url=${auth_url}`;
+var auth_signature="jsapi_ticket="+jsapi_ticket+"&noncestr="+auth_nonceStr+"&timestamp="+auth_timestamp+"&url="+auth_url;
 auth_signature = decodeURIComponent(auth_signature);
   wx.config({
       debug: false, 
@@ -156,7 +156,7 @@ wx.error(function(res){
         reflush: true
     } 
     $.ajax({
-        url: `${baseAjax}/login/getWechatTicket.jhtml`,
+        url: baseAjax+"/login/getWechatTicket.jhtml",
         type: 'GET',
         dataType: 'json',
         data: ticketParmas,
