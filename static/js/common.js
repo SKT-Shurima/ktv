@@ -97,7 +97,8 @@ var dateFilter  = function(time){
 
 var error = function(code,msg){
 	if (code===-1002) {
-    wx.closeWindow();
+    $('','请重新登录');
+    window.location.href = window.location.origin;
   }else{
     console.log(msg);
   }
@@ -126,9 +127,19 @@ auth_signature = decodeURIComponent(auth_signature);
       timestamp: auth_timestamp,
       nonceStr: auth_nonceStr ,
       signature: hex_sha1(auth_signature),
-      jsApiList: ["getLocation"]
+      jsApiList: ["getLocation",'hideOptionMenu','showMenuItems']
   });
   wx.ready(function(){
+    wx.hideOptionMenu();
+    wx.showMenuItems({
+      menuList: [
+        "menuItem:refresh"
+      ],
+      success: function (res) {
+      },
+      fail: function (res) {
+      }
+    })
     // 获取地理位置信息
     var posInfo = getCookie('posInfo');
     if (!posInfo) {
@@ -151,6 +162,7 @@ auth_signature = decodeURIComponent(auth_signature);
       });
     }
   })
+
 wx.error(function(res){
     var  ticketParmas = {
         reflush: true
@@ -170,8 +182,6 @@ wx.error(function(res){
         }
     });
 });
-
-
 
 // 计算两点之间距离
 function rad(d){
@@ -193,7 +203,12 @@ function GetDistance( lat1,  lng1,  lat2,  lng2){
 
 $(function(){
 	$('#back').on('touchstart',function(){
-    	window.history.go(-1);
+      var lastUrl = document.referrer;
+      if (lastUrl) {
+        window.history.go(-1);
+      }else{
+        window.location.replace('index.html');
+      }
+    	
     });
 });
-

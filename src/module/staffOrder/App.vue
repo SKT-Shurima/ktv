@@ -155,7 +155,7 @@
                     success: res=>{
                         let {code,desc} =res;
                         if (code===0) {
-                            window.history.back();
+                            window.location.reload();
                         }else{
                             $.alert('',desc);
                         }
@@ -176,7 +176,9 @@
                     success: res=>{
                         let {code,desc} =res;
                         if (code===0) {
-                            window.history.back();
+                            this.tabIndex=2;
+                            this.page = 0;
+                            this.complete();
                         }else{
                           $.alert('',desc);
                         }
@@ -198,7 +200,8 @@
                         success: res=>{
                             let {code,data,desc} =res;
                             if (code===0) {
-                                window.history.back();
+                                this.tabIndex=2;
+                                this.page = 0;
                             }else{
                               $.alert('',desc);
                             }

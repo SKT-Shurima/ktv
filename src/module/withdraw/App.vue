@@ -38,7 +38,7 @@
     		}
     		let params = {
 	    		token: getCookie('token'),
-	    		amount: this.amount.toFixed(2)
+	    		amount: (this.amount-0).toFixed(2)
 	    	}
 	    	$.ajax({
 	         	url: `${baseAjax}/user/withdraw.jhtml`,

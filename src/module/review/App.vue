@@ -123,11 +123,7 @@
                 success: res=>{
                     let {code,data,desc} =res;
                     if (code===0) {
-                        if (this.order_amount-0) {
-                            this.review();
-                        }else{
-                            window.location.replace('userOrder.html');
-                        }
+                        window.location.replace('userOrder.html');
                     }else{
                       error(code,desc)
                     }
@@ -135,20 +131,24 @@
             });
       	},
       	review(){
+            if (this.order_amount-0===0) {
+                this.feedback();
+                return false;
+            }
     		let params = {
     			token: getCookie('token'),
     			order_id: this.query.order_id,
     			optype: 1,
 				optarget: 2,
-				order_amount: this.order_amount.toFixed(2)
+				order_amount: (this.order_amount-0).toFixed(2)
     		}
     		$.ajax({
-	         	url: `${baseAjax}/pay/pay.jhtml;`,
+	         	url: `${baseAjax}/pay/pay.jhtml`,
 	          	type: 'POST',
 	          	dataType: 'json',
 	          	data: params,
 	          	success: res=>{
-	            	let {code,desc} =res;
+	            	let {code,data,desc} =res;
 	            	if (code===0) {
                         WeixinJSBridge.invoke('getBrandWCPayRequest',{
                           "appId":data.payParams.appId,
@@ -157,10 +157,10 @@
                           "signType":data.payParams.signType,
                           "timeStamp":data.payParams.timeStamp,
                           "paySign":data.payParams.paySign
-                        }, function(res){
+                        }, res=>{
                           // WeixinJSBridge.log(res.err_msg);
                           // alert(res.err_code+res.err_desc+res.err_msg);
-                          window.location.replace('userOrder.html');
+                          this.feedback();
                         });
 	            	}else{
                         $.alert('',desc);
@@ -173,7 +173,7 @@
     			$.alert('',"请输入或者选择评价内容");
     			return false;
     		}else{
-    			this.feedback();
+    			this.review();
     		}
     	}
     },

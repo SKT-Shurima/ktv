@@ -61,6 +61,9 @@
 			  :autoCropWidth="cropper.width"
 			  :autoCropHeight="cropper.height"
 			  :fixedBox="cropper.fixedBox"
+			  :fixed='cropper.fixed'
+			  :full='cropper.full'
+			  :fixedNumber='cropper.fixedNumber'
 			  style='background: rgba(0,0,0,.9);'
 			></vueCropper>
 			<div class="choose-op">
@@ -98,7 +101,10 @@
 		          	autoCrop: true,
 		          	autoCropWidth: 300,
 		          	autoCropHeight: 400,
+		          	fixed: true,
+		          	fixedNumber: [3,4],
 		          	fixedBox: true,
+		          	full: true
 		        },
 	    		typePicker:'',
 	    		typeList: '',

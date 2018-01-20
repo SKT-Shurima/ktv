@@ -75,7 +75,7 @@ export const getList = {
                   this.preType = mask;
                   this.loadState.loaded();  
                 }else{
-                  error(desc)
+                  error(code,desc)
                 }
               }
             });
@@ -117,7 +117,7 @@ export const getInfo = {
                 this.initData();
               }
             }else{
-              error(desc)
+              error(code,desc)
             }
           }
         });

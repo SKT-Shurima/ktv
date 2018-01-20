@@ -62,7 +62,7 @@
     	data(){
     		return {
 	        	loadState:'',
-		        page: 0,
+		        page: 1,
 		        pageSize: 10,
 		        total_page: 0,
 		        query: {},
@@ -155,6 +155,7 @@
 	    mounted(){
 	    	this.$nextTick(()=>{
 		        this.getDetail();
+		        this.getComment();
 	    	})
 	    }
   	}

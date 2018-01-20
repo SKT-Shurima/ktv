@@ -35,7 +35,7 @@
     			token: getCookie('token'),
     			optype: 1,
 				optarget: 3,
-				order_amount: this.order_amount.toFixed(2)
+				order_amount: (this.order_amount-0).toFixed(2)
     		}
     		$.ajax({
 	         	url: `${baseAjax}/pay/pay.jhtml`,
@@ -43,7 +43,7 @@
 	          	dataType: 'json',
 	          	data: params,
 	          	success: res=>{
-	            	let {code,desc} =res;
+	            	let {code,data,desc} =res;
 	            	if (code===0) {
 		                WeixinJSBridge.invoke('getBrandWCPayRequest',{
 		                  "appId":data.payParams.appId,

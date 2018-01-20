@@ -336,3 +336,6 @@
     padding: .36rem;
     background-color: #fff;
   }
+  .loading-default{
+    display: none !important;
+  }

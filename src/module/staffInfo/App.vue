@@ -105,62 +105,83 @@
       },
       payfor(payParams){
         let {order_amount,optype} =payParams;
-        let params ={
-          token: getCookie('token'),
-          optype: optype,
-          order_amount: order_amount,
-          optarget: 4
-        }
-        $.ajax({
-          url: `${baseAjax}/pay/pay.jhtml`,
-          type: 'POST',
-          dataType: 'json',
-          data: params,
-          success: res=>{
-            let {code,data,desc} =res;
-            if (code===0) {
-              if (optype==1) {
-                WeixinJSBridge.invoke('getBrandWCPayRequest',{
-                  "appId":data.payParams.appId,
-                  "nonceStr":data.payParams.nonceStr,
-                  "package":data.payParams.packageName,
-                  "signType":data.payParams.signType,
-                  "timeStamp":data.payParams.timeStamp,
-                  "paySign":data.payParams.paySign
-                }, function(res){
-                  // WeixinJSBridge.log(res.err_msg);
-                  // alert(res.err_code+res.err_desc+res.err_msg);
-                  window.location.href = 'mine.html';
-                });
-              }else if (optype==3) {
-                    let cashpay = {
-                        token: getCookie('token'),
-                        pay_sn: data.payParams.pay_sn
+        if (order_amount-0!==0) {
+          let params ={
+            token: getCookie('token'),
+            optype: optype,
+            order_amount: order_amount,
+            optarget: 4
+          }
+          $.ajax({
+            url: `${baseAjax}/pay/pay.jhtml`,
+            type: 'POST',
+            dataType: 'json',
+            data: params,
+            success: res=>{
+              let {code,data,desc} =res;
+              if (code===0) {
+                if (optype==1) {
+                  WeixinJSBridge.invoke('getBrandWCPayRequest',{
+                    "appId":data.payParams.appId,
+                    "nonceStr":data.payParams.nonceStr,
+                    "package":data.payParams.packageName,
+                    "signType":data.payParams.signType,
+                    "timeStamp":data.payParams.timeStamp,
+                    "paySign":data.payParams.paySign
+                  }, function(res){
+                    // WeixinJSBridge.log(res.err_msg);
+                    // alert(res.err_code+res.err_desc+res.err_msg);
+                    window.location.href = 'mine.html';
+                  });
+                }else if (optype==3) {
+                      let cashpay = {
+                          token: getCookie('token'),
+                          pay_sn: data.payParams.pay_sn
+                      }
+                      $.ajax({
+                          url: `${payforAjax}/web/inner.jhtml`,
+                          type: 'POST',
+                          dataType: 'json',
+                          data: cashpay,
+                          success: res=>{
+                              let {code,desc} =res;
+                              if (code===0) {
+                                  window.location.href = 'mine.html';
+                              }else{
+                                  error(code,desc)
+                              }
+                          }
+                      });
                     }
-                    $.ajax({
-                        url: `${payforAjax}/web/inner.jhtml`,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: cashpay,
-                        success: res=>{
-                            let {code,desc} =res;
-                            if (code===0) {
-                                window.location.href = 'mine.html';
-                            }else{
-                                error(code,desc)
-                            }
-                        }
-                    });
-                  }
-            }else{
-              if (code===-1002) {
-                wx.closeWindow();
               }else{
-                $.alert('',desc);
+                if (code===-1002) {
+                  wx.closeWindow();
+                }else{
+                  $.alert('',desc);
+                }
               }
             }
+          });
+        }else{
+          let params0 = {
+            token: getCookie('token')
           }
-        });
+          $.ajax({
+            url: `${baseAjax}/user/signup.jhtml`,
+            type: 'POST',
+            dataType: 'json',
+            data: params0,
+            success: res=>{
+              let {code,data,desc} =res;
+              if (code===0) {
+                window.location.href = 'mine.html';
+              }else{
+                error(code,desc)
+              }
+            }
+          });
+        }
+        
       },
       toBusy(){
         let params = {
@@ -170,7 +191,7 @@
           url: `${baseAjax}/user/toBusy.jhtml`,
           type: 'POST',
           dataType: 'json',
-          data: params,
+          data: params0,
           success: res=>{
             let {code,data,desc} =res;
             if (code===0) {

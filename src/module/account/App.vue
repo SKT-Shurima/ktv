@@ -5,7 +5,7 @@
 	      	<i class="icon icon-109" id='back'></i>
 	      	<dl class="account-info primary-bg">
 			    <dt>账户余额(元)</dt>
-			    <dd>{{user.balance?user.balance.toFixed(2):"0.00"}}</dd>
+			    <dd>{{user.balance?(user.balance-0).toFixed(2):"0.00"}}</dd>
 			</dl>
 	   </div>
 	<div class="container">

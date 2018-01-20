@@ -72,8 +72,7 @@
 			ensurePay(type){
 				let payObj = {
 					optype: type,
-					// order_amount: this.order_amount
-					order_amount: 0.01
+					order_amount: this.order_amount
 				}
 				this.$emit('payType',payObj);
 				this.payBol = false;
